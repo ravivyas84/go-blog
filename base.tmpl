@@ -2,10 +2,14 @@
 <html>
 <head>
     <title>{{ .FrontMatter.Title }}</title>
+    <link rel="stylesheet" href="/styles/globals.css"/>
 </head>
 <body>
+    <div class="container">
+
     {{ template "header" . }}
     {{ template "content" . }}
     {{ template "footer" . }}
+    </div>
 </body>
 </html>

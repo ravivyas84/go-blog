@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/xml"
 	"fmt"
 	"html/template"
 	"log"
@@ -10,6 +11,7 @@ import (
 	"time"
 
 	"blog/frontmatter"
+	"blog/utilities"
 
 	"github.com/yuin/goldmark"
 	"gopkg.in/yaml.v2"
@@ -20,11 +22,53 @@ type Document struct {
 	Content     template.HTML
 }
 
+type RSS struct {
+	XMLName xml.Name `xml:"rss"`
+	Version string   `xml:"version,attr"`
+	Channel Channel  `xml:"channel"`
+}
+
+type Channel struct {
+	Title       string `xml:"title"`
+	Link        string `xml:"link"`
+	Description string `xml:"description"`
+	PubDate     string `xml:"pubDate"`
+	Items       []Item `xml:"item"`
+}
+
+type Item struct {
+	Title       string `xml:"title"`
+	Link        string `xml:"link"`
+	Description string `xml:"description"`
+	PubDate     string `xml:"pubDate"`
+}
+
 func main() {
-	// Create the build directory if it doesn't exist
+
 	buildDir := "build"
+
+	// Remove the existing build directory if it exists
+	if err := os.RemoveAll(buildDir); err != nil {
+		log.Fatalf("error removing build directory: %v", err)
+	}
+
+	// Create the build directory
 	if err := os.MkdirAll(buildDir, 0755); err != nil {
 		log.Fatalf("error creating build directory: %v", err)
+	}
+
+	log.Println("Build directory has been successfully recreated.")
+
+	// Initialize the RSS channel
+	rss := RSS{
+		Version: "2.0",
+		Channel: Channel{
+			Title:       "Your Blog Title",
+			Link:        "http://yourblog.com",
+			Description: "Your blog description",
+			PubDate:     time.Now().Format(time.RFC1123Z),
+			Items:       []Item{},
+		},
 	}
 
 	// Read all files in the "posts" directory
@@ -104,6 +148,34 @@ func main() {
 			continue
 		}
 
+		// Add to RSS items
+		rss.Channel.Items = append(rss.Channel.Items, Item{
+			Title:       fm.Title,
+			Link:        "http://yourblog.com/" + outputPath,
+			Description: string(buf.Bytes()),
+			PubDate:     parsedDate.Format(time.RFC1123Z),
+		})
+
 		fmt.Printf("Processed file %s, output %s\n", file.Name(), outputPath)
 	}
+
+	// Serialize RSS to XML
+	outputRSS, err := xml.MarshalIndent(rss, "", "  ")
+	if err != nil {
+		log.Fatalf("error marshalling RSS: %v", err)
+	}
+	err = os.WriteFile(filepath.Join(buildDir, "feed.xml"), outputRSS, 0644)
+	if err != nil {
+		log.Fatalf("error writing RSS file: %v", err)
+	}
+
+	src := "./public"
+	dst := "./build/"
+
+	copy_err := utilities.CopyDir(src, dst)
+	if copy_err != nil {
+		log.Fatalf("Failed to copy %s to %s: %s", src, dst, copy_err)
+	}
+
+	log.Printf("Successfully copied %s to %s", src, dst)
 }
