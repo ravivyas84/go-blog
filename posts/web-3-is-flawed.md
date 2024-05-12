@@ -40,7 +40,7 @@ The only real problem Crypto solves is that of an asset store for the oppressed 
 These are my personal strong opinions, which are weakly held. While I am currently bearish on most of the Crypto, I am open to learning about any real problems crypto is solving, hit me up on [Twitter](https://twitter.com/ravivyas84)
 
 ## More Opinions
-Other people’s concerns around all things web3
+Other people's concerns around all things web3
 
 [Moxie on the technology of NFTs](https://moxie.org/2022/01/07/web3-first-impressions.html)
 

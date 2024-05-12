@@ -15,7 +15,7 @@ layout: layouts/posts.njk
 
 I recently gave a talk at a "She Leads Tech" event hosted by YourStory and Facebook for the women entrepreneurs community, this is the presentation I gave there.
 
-## 1\. Don’t take advice on face value
+## 1\. Don't take advice on face value
 
 Your startup is unique, the advice is generally not, especially drive-by advice. Whenever you come up to advice that sounds good, ask why: Why did the advice work for the person who gave it to you, why will it work for you? Why will it work now? The Why's give you context, they help you understand the premise under which the advice will work or not work at all.
 
@@ -37,7 +37,7 @@ More important, when meeting customers you need to
 
 In addition, when you are doing UX Interviews, make sure your team members are a part of them. Once they see the user going through the problem, they get a whole different drive to solve the problem.
 
-## 3\. Don’t blindly listen to them
+## 3\. Don't blindly listen to them
 
 Customers are not the best at defining problem statements, if the problem statement is incorrect, the solution will not solve the right problem. Also, customers have a very narrow view of the problem which is biased from their vantage point. Blindly listening to them won't solve the problem in most cases.
 
@@ -63,7 +63,7 @@ And it is just not this set, ideally have product vision & mission docs, have a 
 
 Having a possible future org structure/chart greatly speeds ups hiring as you know what roles you may need in the future. Once the roles are defined, you can start scouting for talent so that you are ahead of the requirements and spend time with them.
 
-Unless you do this, you can’t be in an “always be hiring” mode
+Unless you do this, you can't be in an “always be hiring" mode
 
 ### 5.3 Not Projecting finances
 
@@ -79,7 +79,7 @@ Delegation is hard, but once you know what your next problem statement is, you k
 
 ### 5.5 Looking ahead, you realize you need to upskill your team
 
-Up-skilling your team is the most important aspect startups forget, some employees are great at growing themselves, others might get lost in operationally work.  The rising tide can’t leave people behind.
+Up-skilling your team is the most important aspect startups forget, some employees are great at growing themselves, others might get lost in operationally work.  The rising tide can't leave people behind.
 
 ## 6\. Not Debating
 

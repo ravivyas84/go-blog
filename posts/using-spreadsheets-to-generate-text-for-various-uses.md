@@ -33,13 +33,13 @@ Here is one of the scripts. In this case, I added an echo statement to track the
 
 ## Generating JSON
 
-We are heavy users of Firebase remote config at Jambox Games. In case you don’t know what Remote Config is, here is a definition from their docs
+We are heavy users of Firebase remote config at Jambox Games. In case you don't know what Remote Config is, here is a definition from their docs
 
 > Firebase Remote Config is **a cloud service that lets you change the behavior and appearance of your app without requiring users to download an app update**
 . When using Remote Config, you create in-app default values that control the behavior and appearance of your app.
 > 
 
-For one of our games which used the [Jambox Game’s Arena system](https:/jambox.games) ( Async Multiplayer for Games) we were required to put in puzzles for each event, which was provided to the event as a JSON parameter like the following 
+For one of our games which used the [Jambox Game's Arena system](https:/jambox.games) ( Async Multiplayer for Games) we were required to put in puzzles for each event, which was provided to the event as a JSON parameter like the following 
 
 ```json
 {"level": 0, "word_list": [	{"context": "Tiny insect - red or black ", "correct": "ANT","alphabets":"L,H,O"},		

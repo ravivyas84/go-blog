@@ -46,7 +46,7 @@ Overall:
 - 90+% penetration of mobile phone
 - What is interesting is, both rural and urban adoption of mobiles is growing at the same rate, thus the percentage split has remained constant.
 - Mobile has been the main mode of accessing the internet. It grew from 72 percent in December 2013 to 92 percent in February 2017.
-- The percentage of users consuming data has also been steadily increasing, but its growth rate has been inconsistent. Sadly, three out of four individuals don’t use data on their phone yet.
+- The percentage of users consuming data has also been steadily increasing, but its growth rate has been inconsistent. Sadly, three out of four individuals don't use data on their phone yet.
 
 ![](/assets/02-1-1.jpg)
 
@@ -69,15 +69,15 @@ Shipments of smartphones have not shown consistent growth. Growth is steadily de
 
 Startups in India and other emerging markets have pitched the mobile as a primary screen. This is true, the mobile is the first computer many Indians experience, but the job the mobile is doing for them is not the same as a PC. The mobile is going to be a more intimate and important device for them.
 
-With all this happening, the current and next Unicorns need to address the education problem. People need to know how to use smartphones and how to use the operating systems. They need to know how to use the combination of the mobile phone and the internet to simplify their life and make them more productive. Since many have not used a computer ever, they don’t know many of the human-computer interface paradigms. It is not hard to see a future where people don’t know that an “X” button can close something like a “window”. Even the concept of “closing” an app may be farfetched.
+With all this happening, the current and next Unicorns need to address the education problem. People need to know how to use smartphones and how to use the operating systems. They need to know how to use the combination of the mobile phone and the internet to simplify their life and make them more productive. Since many have not used a computer ever, they don't know many of the human-computer interface paradigms. It is not hard to see a future where people don't know that an “X" button can close something like a “window". Even the concept of “closing" an app may be farfetched.
 
-Technology may well need to simplify itself for the next billion worldwide. Like what WeChat has done with QR codes for payments, it has removed all the cognitive load for payments, you don’t need to know a card number, CVV, and one-time passcode etc. Just scan and get it done.
+Technology may well need to simplify itself for the next billion worldwide. Like what WeChat has done with QR codes for payments, it has removed all the cognitive load for payments, you don't need to know a card number, CVV, and one-time passcode etc. Just scan and get it done.
 
-One can argue that the Snapchat spectacles are actually the simplest video recording devices on earth. Just one button, using our own eyes as a viewfinder (the challenging part is using Snapchat). A lot of the initial work on getting the next 500 million Indians may well have to be done by the government, who will have to get the basic services on to the mobile ecosystem in the cheapest, most efficient way. Probably have a ‘mobile version’ of the ‘cyber cafes’ to make mobile services more accessible to others. We might need to change the paradigm of mobile being a personal device.
+One can argue that the Snapchat spectacles are actually the simplest video recording devices on earth. Just one button, using our own eyes as a viewfinder (the challenging part is using Snapchat). A lot of the initial work on getting the next 500 million Indians may well have to be done by the government, who will have to get the basic services on to the mobile ecosystem in the cheapest, most efficient way. Probably have a ‘mobile version' of the ‘cyber cafes' to make mobile services more accessible to others. We might need to change the paradigm of mobile being a personal device.
 
-> The next Unicorns will also need to innovate on new viable business models as the purchasing power of the next 500 million won’t increase overnight.
+> The next Unicorns will also need to innovate on new viable business models as the purchasing power of the next 500 million won't increase overnight.
 
-Ads won't work for the next 500 million as they will not have the same purchasing power as the first 300 million folks. As long as the cost of acquisition via ads is more than the lifetime value, trying to acquire such users won’t make sense. They won't be spending as much as the first 300 million. Increasing revenues from the current user base will just get harder as time goes on.
+Ads won't work for the next 500 million as they will not have the same purchasing power as the first 300 million folks. As long as the cost of acquisition via ads is more than the lifetime value, trying to acquire such users won't make sense. They won't be spending as much as the first 300 million. Increasing revenues from the current user base will just get harder as time goes on.
 
-Indian startups need to start focusing on growing the pie, rather than profiting from the current pie. India has a long way to go to be a digital behemoth. This is more important for the next large startups as they won’t be trying to compete with the current incumbents on the incumbent’s playing field.
+Indian startups need to start focusing on growing the pie, rather than profiting from the current pie. India has a long way to go to be a digital behemoth. This is more important for the next large startups as they won't be trying to compete with the current incumbents on the incumbent's playing field.
 

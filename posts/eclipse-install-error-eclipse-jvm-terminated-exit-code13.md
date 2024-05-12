@@ -17,7 +17,7 @@ _eclipse JVM terminated. Exit code=13_
 
 This occurs when something is wrong with your java setup. Here are 4 possible problems and their solutions:
 
-1\. Java is not installed: Hey we are human, we may have forgotten the first rule of running eclipse which states you need java. This issue won’t probably show up on ubuntu as it comes with OpenJDK installed. To solve this problem we need to install Java here is how :
+1\. Java is not installed: Hey we are human, we may have forgotten the first rule of running eclipse which states you need java. This issue won't probably show up on ubuntu as it comes with OpenJDK installed. To solve this problem we need to install Java here is how :
 
 Open your Terminal and run the following commands
 
@@ -37,7 +37,7 @@ Now if all goes well and your stars are aligned, Eclipse will start up and you c
 
 2\. So you installed java but did we set up the PATH variables so that our OS knows where java is? Now before that we need to check if already is set up correctly, for that we just need to run the command _java_ in a terminal , if set up correctly you will see a bunch of help commands related to java , else you will see a command not found error, in which case you need to set the variables for eclipse to work, here are some links to help you with it : Windows : http://goo.gl/Z61Cj , Linux : http://goo.gl/dJpjR . Try running eclipse now.
 
-3\. So you installed java, we know java is running using step 2, and you are still getting the same error? (This step is only for Linux users) . Now let’s do some diagnostics, let’s check if you have multiple version of java installed, this can occur if you forgot to uninstall OpenJDK while installing Sun-Java. To check if you have multiple versions installed, run this command :
+3\. So you installed java, we know java is running using step 2, and you are still getting the same error? (This step is only for Linux users) . Now let's do some diagnostics, let's check if you have multiple version of java installed, this can occur if you forgot to uninstall OpenJDK while installing Sun-Java. To check if you have multiple versions installed, run this command :
 
 _update-alternatives –config java_
 
@@ -47,7 +47,7 @@ _sudo apt-get remove openjdk-6-jdk_
 
 Try running eclipse now.
 
-4\. Now for the last check-in my checklist, make sure you are running the correct and similar version of java and Eclipse, don’t try to run the 32bit version of Java with 64bit version of eclipse or vice versa.  TO check the version of java installed use this command :
+4\. Now for the last check-in my checklist, make sure you are running the correct and similar version of java and Eclipse, don't try to run the 32bit version of Java with 64bit version of eclipse or vice versa.  TO check the version of java installed use this command :
 
 java -d64 -version
 

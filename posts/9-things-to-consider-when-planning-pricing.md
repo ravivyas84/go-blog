@@ -33,7 +33,7 @@ If you just started up, or have some revenue coming through the door, you probab
 
 ## It is all about Margins & Unit Economics
 
-A business without margins is pretty much a failure. At this point, you would be thinking, “but Ravi, look at the multi-billion dollar startups, they don’t seem to have margins”. To which my answer as of today would be a single word, which is trending in 2019, “WeWork”. Having bad unit economics or low margins put others in control of your long term destiny, which may be fine for a small percentage of people, but unless you can raise a billion dollars, you need Margins.
+A business without margins is pretty much a failure. At this point, you would be thinking, “but Ravi, look at the multi-billion dollar startups, they don't seem to have margins". To which my answer as of today would be a single word, which is trending in 2019, “WeWork". Having bad unit economics or low margins put others in control of your long term destiny, which may be fine for a small percentage of people, but unless you can raise a billion dollars, you need Margins.
 
 On the SaaS side of things, you need large margins, around 80% to be more accurate. This is a number you will come across time and again. [Tom Tunguz](https://tomtunguz.com/gross-margin-trends-saas/), [David Cumins](https://davidcummings.org/2014/09/01/gross-margin-and-saas/), [Jason Lemkin](https://www.saastr.com/at-what-revenue-level-is-saas-gross-margin-reasonably-calculated-i-e-what-scale/), and others have written a lot about it. [Here](https://medium.com/craft-ventures/the-gross-margin-problem-lessons-for-tech-enabled-startups-e2aefab8a0d4) is a more detailed post by David Sacks
 
@@ -49,9 +49,9 @@ Personally, I advocate on pricing higher, because you want to price on the value
 
 ## Price on Value
 
-Value is a word you will hear a lot, from me too. At the end of the day what you are charging for is the value provided to the user. More importantly, it is the value that the user can comprehend. If they can’t then figure out the value they are receiving they won’t pay. On the same lines, if they think the value you are providing is too low, they might not want to pay your asking price.
+Value is a word you will hear a lot, from me too. At the end of the day what you are charging for is the value provided to the user. More importantly, it is the value that the user can comprehend. If they can't then figure out the value they are receiving they won't pay. On the same lines, if they think the value you are providing is too low, they might not want to pay your asking price.
 
-Let’s take Slack, for example, the value users get from Slack is fully managed simplified, collaborative communication between people. The value is not derived by Slack killing email for you, it never can, neither is it derived from Slack enabling one on one communications, or having any number of chat rooms/channels. If it was, the pricing would be based on the number of chats or channels, etc. Most users would not be able to comprehend pricing based on any such abstract mechanism.
+Let's take Slack, for example, the value users get from Slack is fully managed simplified, collaborative communication between people. The value is not derived by Slack killing email for you, it never can, neither is it derived from Slack enabling one on one communications, or having any number of chat rooms/channels. If it was, the pricing would be based on the number of chats or channels, etc. Most users would not be able to comprehend pricing based on any such abstract mechanism.
 
 On the other hand, if you are PubNub, you will charge on the number of messages, and the value you are proving is delivery of chat messages and APIs for the same, thus you would charge on the number of messages and in this case, your users will understand what they are paying for.
 
@@ -99,7 +99,7 @@ If you are a sales organization, remember to have a pre-planned discount strateg
 
 When starting up the most important thing to think about will be should you have a free/freemium offering. It is probably the hardest to zero in on. At the end of the day, it is a combination of capital available, cost of free users and product-market fit which will function as inputs to the decision if you can have a free tier or not. Let take a look at 2 scenarios
 
-1. You are bootstrapping and working on product-market fit: At this stage ideally, stay away from free offerings, especially till you find product-market fit. What you can have is a free trial that converts to a paid offering. You don’t have the capital to support free users, more importantly, you need to talk to every interested customer to better understand their needs. Free users might not give you great feedback, worse they might not even give you the time to get feedback. 
+1. You are bootstrapping and working on product-market fit: At this stage ideally, stay away from free offerings, especially till you find product-market fit. What you can have is a free trial that converts to a paid offering. You don't have the capital to support free users, more importantly, you need to talk to every interested customer to better understand their needs. Free users might not give you great feedback, worse they might not even give you the time to get feedback. 
 2. You have raised capital: In this stage, you can have a free/freemium offering, but think of it as a marketing expense and have a marketing-oriented goal to it. A goal of a free offering is to get as many people talking about your product which helps in long term growth and retention. But make sure your product is stable and does its job, else users will be talking about you in the wrong ways.
 
 Those are my 9 points on pricing. Do you think I missed any? Let me know on [twitter](http://twitter.com/ravivyas84)

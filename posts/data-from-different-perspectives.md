@@ -21,13 +21,13 @@ layout: layouts/posts.njk
 
 When I was a child I was told a story, the story of 6 blind men and an Elephant. It went something like this:
 
-> A number of blind men came across an animal. Somebody told them that it was an elephant. The blind men asked, ‘What is an elephant like?’ and they began to touch its body. One of them said: ‘It is like a pillar.’ This blind man had only touched its leg. Another man said, ‘The elephant is like a husking basket.’ This person had only touched its ears. Similarly, he who touched its trunk or its belly talked of it differently.
+> A number of blind men came across an animal. Somebody told them that it was an elephant. The blind men asked, ‘What is an elephant like?' and they began to touch its body. One of them said: ‘It is like a pillar.' This blind man had only touched its leg. Another man said, ‘The elephant is like a husking basket.' This person had only touched its ears. Similarly, he who touched its trunk or its belly talked of it differently.
 
 None of the men were wrong, but none of them were right either. They were right in their own little observation. One can come across the same problem when one is looking at data. If you were just looking at Twitter revenue between [2014 and 2015](https://www.wolframalpha.com/input/?i=twitter+revenue), Twitter was a growing company. But once you look at the User Growth, it is a whole different story.
 
-**Simpson’s Paradox**
+**Simpson's Paradox**
 
-In almost all cases, when we as data analyst come across a break in the trend or an interesting observation, we have the urge to investigate and answer the question why. In 1973 P. J. Bickel, E. A. Hammel, J. W. O’Connell also came across a similar observation at the University of California, Berkeley. They noticed that 44% of the men who applied were being admitted when compared to 35% of women, a possible indication of gender bias.
+In almost all cases, when we as data analyst come across a break in the trend or an interesting observation, we have the urge to investigate and answer the question why. In 1973 P. J. Bickel, E. A. Hammel, J. W. O'Connell also came across a similar observation at the University of California, Berkeley. They noticed that 44% of the men who applied were being admitted when compared to 35% of women, a possible indication of gender bias.
 
 ![](/assets/3c3f0-19qmu_zvyuqp4kajmetxtca.png)
 
@@ -37,7 +37,7 @@ So they set out to investigate this by individual department, but interesting fo
 
 ![](/assets/12309-1gfmkuqu1x2a15va1zu52lw.png)
 
-So what happened here? What we just saw was an example of Simpson’s Paradox, which states “a trend appears in different groups of data but disappears or reverses when these groups are combined”. This does not mean we should not drill down, we just just be aware that their may be such discrepancies and more importantly not make any assumptions on the the data as a whole.
+So what happened here? What we just saw was an example of Simpson's Paradox, which states “a trend appears in different groups of data but disappears or reverses when these groups are combined". This does not mean we should not drill down, we just just be aware that their may be such discrepancies and more importantly not make any assumptions on the the data as a whole.
 
 * * *
 
@@ -49,7 +49,7 @@ While this was just an exit poll, it does give us a whole different perspective 
 
 Update: as of 2011 UK census, 48% of the population comes under the age bracket 15–49 and 35% are over 64. So one can assume most of the young folks voted to leave.
 
-#### Different perspectives of your product’s growth.
+#### Different perspectives of your product's growth.
 
 Often we keep looking for tools which will magically tell us what works and what does not, our own version of 10 friends in 7 days. Unfortunately we miss many of the simple signs in-front of us. Something as simple as a DAU can give us so much data if we look at it from a different perspective.
 
@@ -61,7 +61,7 @@ Active Users
 
 The first thing we notice that DAU growth is stagnant.
 
-But if we split the DAUs by user’s recency, we notice that the App is pretty sticky, close to 50% of the users comeback within 7 days & 25% come back after 7 days, and the percentage of users is just growing. So they are seeing value.
+But if we split the DAUs by user's recency, we notice that the App is pretty sticky, close to 50% of the users comeback within 7 days & 25% come back after 7 days, and the percentage of users is just growing. So they are seeing value.
 
 ![](/assets/cc630-1c7el15wzai0dp7juqggrfa.png)
 

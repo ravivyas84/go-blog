@@ -11,9 +11,9 @@ layout: layouts/posts.njk
 
 ---
 
-Counter Metrics have of late become very popular. Most of the folks I talk to know about it from [Julie Zhuo](https://medium.com/u/b8a4e5ae7490?source=post_page-----d8831f725bc7----------------------)’s [talk](https://medium.com/the-year-of-the-looking-glass/building-products-91aa93bea4bb), she is the Product design VP @ Facebook.
+Counter Metrics have of late become very popular. Most of the folks I talk to know about it from [Julie Zhuo](https://medium.com/u/b8a4e5ae7490?source=post_page-----d8831f725bc7----------------------)'s [talk](https://medium.com/the-year-of-the-looking-glass/building-products-91aa93bea4bb), she is the Product design VP @ Facebook.
 
-The term is relatively new to me too, I heard it for the first time when [Sharath Bulusu](https://medium.com/u/9535d97bf6d7?source=post_page-----d8831f725bc7----------------------), Myntra’s VP of product mentioned it at InMobi’s inDecode meet-up earlier this year.
+The term is relatively new to me too, I heard it for the first time when [Sharath Bulusu](https://medium.com/u/9535d97bf6d7?source=post_page-----d8831f725bc7----------------------), Myntra's VP of product mentioned it at InMobi's inDecode meet-up earlier this year.
 
 ## Not so new
 
@@ -25,11 +25,11 @@ There are scenarios where people stop trusting a metric and start moving to anot
 
 ## Single Success Metric?
 
-Retention is an important metric, it almost defines if your product has failed or succeed. But as such it does not say a lot, it may tell you had retained 40% of your users, but won’t tell you why you retained them and who the users are. Nor does it tell you how engaged your users are? Did they convert? Did they have multiple sessions? How many times in the particular week did they come?
+Retention is an important metric, it almost defines if your product has failed or succeed. But as such it does not say a lot, it may tell you had retained 40% of your users, but won't tell you why you retained them and who the users are. Nor does it tell you how engaged your users are? Did they convert? Did they have multiple sessions? How many times in the particular week did they come?
 
 # Counter Dimensions
 
-Churn is a counter metric to acquisition, the problem with churn is it is relatively lagging indicator. Another counter metric to acquisition is activation, which in fact itself is a leading indicator of churn, users who don’t activation will churn. In such scenarios it would be good to look at what we call counter dimensions. A great counter dimension to acquisition is Sessions on Day-Zero (unless you are a utility app which is not really needed to be used more than once a day, in such case try Day-2 Sessions or Week-Zero Sessions.Number of sessions new users are doing
+Churn is a counter metric to acquisition, the problem with churn is it is relatively lagging indicator. Another counter metric to acquisition is activation, which in fact itself is a leading indicator of churn, users who don't activation will churn. In such scenarios it would be good to look at what we call counter dimensions. A great counter dimension to acquisition is Sessions on Day-Zero (unless you are a utility app which is not really needed to be used more than once a day, in such case try Day-2 Sessions or Week-Zero Sessions.Number of sessions new users are doing
 
 ![](/assets/counter-metrics-image.png)
 

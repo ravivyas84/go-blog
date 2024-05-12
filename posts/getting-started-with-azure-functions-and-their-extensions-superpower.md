@@ -11,7 +11,7 @@ slug: getting-started-with-azure-functions-and-their-extensions-superpower
 
 ---
 
-_This is a part of my “_[_Journey with Azure_](/tag/journey-with-azure/)_” series_
+_This is a part of my “_[_Journey with Azure_](/tag/journey-with-azure/)_" series_
 
 I have always been fascinated by managed services and serverless computing. It started with my first startup PureMetrics, where we used AppEngine and BigQuery to built an Analytics product. Because both AppEngine and BigQuery were fully managed services, [Abhishek Nandi](https://www.abhisheknandi.com/) single handely built the entire tech for it. Later on when Abhishek & I were building Odiocast, we used other managed services to keep things simple. FireBase, AWS Lambdas and other services allowed us to worry more about the product rather than worry about devops as a 2 person startup.  
 
@@ -57,7 +57,7 @@ If you are just starting up with Azure Functions, Consumption plan is the way to
 
 Lastly, select the Runtime stack (5), I selected Javascript for this tutorial.
 
-Press create, this will take a while. The portal will first validate things and then close the blade. Don’t worry this is normal. 
+Press create, this will take a while. The portal will first validate things and then close the blade. Don't worry this is normal. 
 
 ![](/assets/azure-image-7.png)
 
@@ -103,7 +103,7 @@ VScode will take you through a wizard to create your functions app, 
 5. Lastly, add it to a workspace of your choice
 
 For now, just remember triggers are events which cause the function to run, we will take a deeper dive into trigger later  
-Next VSCode will open up the function file index.js, if you don’t see a folder like I do below, open the folder you created during the steps above  
+Next VSCode will open up the function file index.js, if you don't see a folder like I do below, open the folder you created during the steps above  
 
 ![](/assets/azure-image-2.png)
 
@@ -167,7 +167,7 @@ When you declare the binding you will need to define the following: 
 
 The rest of the parameters depend on the type of binding you are using. If you are using Tables or Queues, for example, you need to provide the storage account, and the name of the Queue or Table you want to use.
 
-Here is an example of a _function.json_ file. Here I am reading a queue which has a list of JSON objects, the function then reads in the individual objects and pushes them to the output-queue-individual queue and it’s metadata to output-queue-meta.
+Here is an example of a _function.json_ file. Here I am reading a queue which has a list of JSON objects, the function then reads in the individual objects and pushes them to the output-queue-individual queue and it's metadata to output-queue-meta.
 
 ```
 {

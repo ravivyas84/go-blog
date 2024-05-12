@@ -22,7 +22,7 @@ coverImage: "daria-nepriakhina-474036-unsplash.jpg"
 
 # The product Roadmap showcases what you are doing, in what order, and in most case by when you plan to do it.
 
-It is meant for certain use-cases and audiences, largely those who are not a key part of the decision-making process, but who are affected by it and by leadership, who don’t have the time to dive deep into the how and why of products and features.
+It is meant for certain use-cases and audiences, largely those who are not a key part of the decision-making process, but who are affected by it and by leadership, who don't have the time to dive deep into the how and why of products and features.
 
 It is quite literally a navigation map for others to see, a mechanism to get maximum relevant information that a single glance can get. It showcases what just happened, what is happening now and what will happen in the future while hiding all the other complexities.
 
@@ -45,7 +45,7 @@ That does not mean that all the missing information needs to be on the roadmap. 
 
 As a company, there are various products and features that can be built, but the real value comes from the right set of features and products while saying NO to everything else.
 
-The company’s vision statement is what it expects to achieve in the long term, it is aspirational. The mission statement is all the things it will (and will not do) to achieve its vision. You don’t need a grand document, bullet points of the will do and won’t do, who is the customer, who is not.
+The company's vision statement is what it expects to achieve in the long term, it is aspirational. The mission statement is all the things it will (and will not do) to achieve its vision. You don't need a grand document, bullet points of the will do and won't do, who is the customer, who is not.
 
 For Odiocast, the Podcast service Abhishek Nandi & I built, we "wanted to simplify the creation of audio content and bring it to the masses."
 

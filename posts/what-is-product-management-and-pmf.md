@@ -26,8 +26,8 @@ In this post I would like thorough some light on the the word "right" which hide
 
 ## Right User
 
-- Don’t sell ice to Eskimos, you are building the wrong product
-- Bad users don’t want to pay, they don’t add value to your product
+- Don't sell ice to Eskimos, you are building the wrong product
+- Bad users don't want to pay, they don't add value to your product
 
 ## Right Package
 
