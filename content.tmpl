@@ -1,8 +1,7 @@
 {{define "content"}}
     <article>
         <h1>{{ .FrontMatter.Title }}</h1>
-        <h2>Author: {{ .FrontMatter.Author }}</h2>
-        <h2>Date: {{ .FrontMatter.Date }}</h2>
+        <span>{{ .FrontMatter.Date }}</span>
         <h3>Tags: {{ range .FrontMatter.Tags }}{{ . }} {{ end }}</h3>
         <div>{{ .Content }}</div>
     </article>
