@@ -1,0 +1,13 @@
+{{define "content"}}
+    
+<h2>All Blog Posts</h2>
+<ul class="latest-posts list">
+    {{ range .Posts }}
+    <li class="listItem">
+        <span class="post-date lightText">{{ .Date.Format "Jan 2, 2006" }}</span>
+        <a href="/{{ .Slug }}" class="post-title">{{ .Title }}</a>
+    </li>
+    {{ end }}
+</ul>
+
+{{end}}

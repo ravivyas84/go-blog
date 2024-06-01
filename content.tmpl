@@ -2,7 +2,7 @@
     <article>
         <h1>{{ .FrontMatter.Title }}</h1>
         <span>{{ .FrontMatter.Date }}</span>
-        <h3>Tags: {{ range .FrontMatter.Tags }}{{ . }} {{ end }}</h3>
         <div>{{ .Content }}</div>
+        
     </article>
 {{end}}
