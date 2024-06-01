@@ -2,18 +2,21 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"html/template"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"blog/frontmatter"
 	"blog/utilities"
 
 	"github.com/yuin/goldmark"
+	"golang.org/x/net/html"
 	"gopkg.in/yaml.v2"
 
 	"database/sql"
@@ -24,6 +27,7 @@ import (
 type Document struct {
 	FrontMatter frontmatter.FrontMatter
 	Content     template.HTML
+	Headings    []string
 }
 
 type RSS struct {
@@ -117,66 +121,32 @@ func main() {
 			continue
 		}
 
-		// Parse date from front matter
-		parsedDate, err := time.Parse("2006-01-02", fm.Date)
+		// Extract headings from the HTML content
+		htmlContent := buf.String()
+		headings := extractHeadings(htmlContent)
+
+		// Convert headings to JSON
+		headingsJSON, err := json.Marshal(headings)
+		log.Printf("headings to JSON: %s", headingsJSON)
+
 		if err != nil {
-			log.Printf("error parsing date from front matter for file %s: %v", file.Name(), err)
-			continue
-		}
-
-		// Generate output path based on date
-		outputPath := filepath.Join(buildDir, fmt.Sprintf("%d/%02d/%02d", parsedDate.Year(), parsedDate.Month(), parsedDate.Day()), "index.html")
-
-		// Create output directory if it doesn't exist
-		outputDir := filepath.Dir(outputPath)
-		if err := os.MkdirAll(outputDir, 0755); err != nil {
-			log.Printf("error creating output directory %s: %v", outputDir, err)
-			continue
-		}
-
-		// Create and execute template
-		doc := Document{
-			FrontMatter: fm,
-			Content:     template.HTML(buf.String()),
-		}
-
-		tmpl := template.New("base.tmpl")
-		tmpl, err = tmpl.ParseFiles("footer.tmpl", "header.tmpl", "content.tmpl", "base.tmpl")
-		if err != nil {
-			log.Printf("error parsing template files: %v", err)
-			continue
-		}
-
-		outputFile, err := os.Create(outputPath)
-		if err != nil {
-			log.Printf("error creating output file %s: %v", outputPath, err)
-			continue
-		}
-		defer outputFile.Close()
-
-		if err := tmpl.ExecuteTemplate(outputFile, "base.tmpl", doc); err != nil {
-			log.Printf("error executing template for file %s: %v", file.Name(), err)
+			log.Printf("error marshalling headings to JSON: %v", err)
 			continue
 		}
 
 		// Insert post data into the SQLite database
-		_, err = db.Exec("INSERT INTO posts (title, content, pub_date) VALUES (?, ?, ?)",
-			fm.Title, buf.String(), fm.Date)
+		_, err = db.Exec("INSERT INTO posts (title, content, pub_date, headings) VALUES (?, ?, ?, ?)",
+			fm.Title, buf.String(), fm.Date, headingsJSON)
 		if err != nil {
 			log.Printf("error inserting post data into database for file %s: %v", filePath, err)
 			continue
 		}
 
-		// Add to RSS items
-		rss.Channel.Items = append(rss.Channel.Items, Item{
-			Title:       fm.Title,
-			Link:        "http://yourblog.com/" + outputPath,
-			Description: string(buf.Bytes()),
-			PubDate:     parsedDate.Format(time.RFC1123Z),
-		})
-
-		fmt.Printf("Processed file %s, output %s\n", file.Name(), outputPath)
+		fmt.Printf("Processed file %s\n", file.Name())
 	}
+
+	// Generate pages from database
+	generatePagesFromDB(db, buildDir)
 
 	// Serialize RSS to XML
 	outputRSS, err := xml.MarshalIndent(rss, "", "  ")
@@ -200,15 +170,15 @@ func main() {
 }
 
 func initDB(dbPath string) (*sql.DB, error) {
-	 // Check if the database file exists and remove it
-    if _, err := os.Stat(dbPath); err == nil {
-        err = os.Remove(dbPath)
-        if err != nil {
-            return nil, fmt.Errorf("error removing existing database: %v", err)
-        }
-    } else if !os.IsNotExist(err) {
-        return nil, fmt.Errorf("error checking database file: %v", err)
-    }
+	// Check if the database file exists and remove it
+	if _, err := os.Stat(dbPath); err == nil {
+		err = os.Remove(dbPath)
+		if err != nil {
+			return nil, fmt.Errorf("error removing existing database: %v", err)
+		}
+	} else if !os.IsNotExist(err) {
+		return nil, fmt.Errorf("error checking database file: %v", err)
+	}
 
 	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
@@ -219,7 +189,8 @@ func initDB(dbPath string) (*sql.DB, error) {
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			title TEXT,
 			content TEXT,
-			pub_date TEXT
+			pub_date TEXT,
+            headings TEXT NULL
 	);`
 
 	_, err = db.Exec(createTableSQL)
@@ -228,4 +199,100 @@ func initDB(dbPath string) (*sql.DB, error) {
 	}
 
 	return db, nil
+}
+
+func generatePagesFromDB(db *sql.DB, buildDir string) {
+	rows, err := db.Query("SELECT title, content, pub_date, headings FROM posts")
+	if err != nil {
+		log.Fatalf("error querying posts from database: %v", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var title, content, pubDate, headingsJSON string
+		err := rows.Scan(&title, &content, &pubDate, &headingsJSON)
+		if err != nil {
+			log.Printf("error scanning post data: %v", err)
+			continue
+		}
+
+		// Parse date from front matter
+		parsedDate, err := time.Parse("2006-01-02", pubDate)
+		if err != nil {
+			log.Printf("error parsing date from front matter for file %s: %v", title, err)
+			continue
+		}
+
+		// Parse headings JSON
+		var headings []string
+		err = json.Unmarshal([]byte(headingsJSON), &headings)
+		if err != nil {
+			log.Printf("error unmarshalling headings from JSON: %v", err)
+			continue
+		}
+
+		// Print the unmarshalled headings
+		fmt.Printf("Unmarshalled headings for post '%s'::::::: %v\n", title, headings)
+
+		// Generate output path based on date
+		outputPath := filepath.Join(buildDir, fmt.Sprintf("%d/%02d/%02d", parsedDate.Year(), parsedDate.Month(), parsedDate.Day()), "index.html")
+
+		// Create output directory if it doesn't exist
+		outputDir := filepath.Dir(outputPath)
+		if err := os.MkdirAll(outputDir, 0755); err != nil {
+			log.Printf("error creating output directory %s: %v", outputDir, err)
+			continue
+		}
+
+		doc := Document{
+			FrontMatter: frontmatter.FrontMatter{Title: title, Date: pubDate},
+			Content:     template.HTML(content),
+			Headings:    headings,
+		}
+
+		tmpl := template.New("base.tmpl")
+		tmpl, err = tmpl.ParseFiles("footer.tmpl", "header.tmpl", "content.tmpl", "base.tmpl")
+		if err != nil {
+			log.Printf("error parsing template files: %v", err)
+			continue
+		}
+
+		outputFile, err := os.Create(outputPath)
+		if err != nil {
+			log.Printf("error creating output file %s: %v", outputPath, err)
+			continue
+		}
+		defer outputFile.Close()
+
+		if err := tmpl.ExecuteTemplate(outputFile, "base.tmpl", doc); err != nil {
+			log.Printf("error executing template for file %s: %v", outputPath, err)
+			continue
+		}
+
+	}
+}
+
+func extractHeadings(htmlContent string) []string {
+	var headings []string
+	doc, err := html.Parse(strings.NewReader(htmlContent))
+	if err != nil {
+		log.Printf("error parsing HTML: %v", err)
+		return headings
+	}
+
+	var f func(*html.Node)
+	f = func(n *html.Node) {
+		if n.Type == html.ElementNode && n.Data == "h2" {
+			for c := n.FirstChild; c != nil; c = c.NextSibling {
+				if c.Type == html.TextNode {
+					headings = append(headings, c.Data)
+				}
+			}
+		}
+		for c := n.FirstChild; c != nil; c = c.NextSibling {
+			f(c)
+		}
+	}
+	f(doc)
+	return headings
 }
