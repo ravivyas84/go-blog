@@ -15,6 +15,10 @@ import (
 
 	"github.com/yuin/goldmark"
 	"gopkg.in/yaml.v2"
+
+	"database/sql"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type Document struct {
@@ -58,6 +62,13 @@ func main() {
 	}
 
 	log.Println("Build directory has been successfully recreated.")
+
+	// Initialize the SQLite database
+	db, err := initDB("posts.db")
+	if err != nil {
+		log.Fatalf("error initializing database: %v", err)
+	}
+	defer db.Close()
 
 	// Initialize the RSS channel
 	rss := RSS{
@@ -148,6 +159,14 @@ func main() {
 			continue
 		}
 
+		// Insert post data into the SQLite database
+		_, err = db.Exec("INSERT INTO posts (title, content, pub_date) VALUES (?, ?, ?)",
+			fm.Title, buf.String(), fm.Date)
+		if err != nil {
+			log.Printf("error inserting post data into database for file %s: %v", filePath, err)
+			continue
+		}
+
 		// Add to RSS items
 		rss.Channel.Items = append(rss.Channel.Items, Item{
 			Title:       fm.Title,
@@ -178,4 +197,35 @@ func main() {
 	}
 
 	log.Printf("Successfully copied %s to %s", src, dst)
+}
+
+func initDB(dbPath string) (*sql.DB, error) {
+	 // Check if the database file exists and remove it
+    if _, err := os.Stat(dbPath); err == nil {
+        err = os.Remove(dbPath)
+        if err != nil {
+            return nil, fmt.Errorf("error removing existing database: %v", err)
+        }
+    } else if !os.IsNotExist(err) {
+        return nil, fmt.Errorf("error checking database file: %v", err)
+    }
+
+	db, err := sql.Open("sqlite3", dbPath)
+	if err != nil {
+		return nil, fmt.Errorf("error opening database: %v", err)
+	}
+
+	createTableSQL := `CREATE TABLE IF NOT EXISTS posts (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			title TEXT,
+			content TEXT,
+			pub_date TEXT
+	);`
+
+	_, err = db.Exec(createTableSQL)
+	if err != nil {
+		return nil, fmt.Errorf("error creating posts table: %v", err)
+	}
+
+	return db, nil
 }
