@@ -1,0 +1,17 @@
+{{define "content"}}
+
+    <h2>All Tags</h2>
+    <ul class="latest-posts list">
+        {{ range .Tags }}
+            <li class="listItem">
+                <a href="/tag/{{ .Tag }}" >
+                    <div class="tagItem">
+                        <div class="post-title">{{ .Tag }}</div>
+                        <div class="post-title">({{ .Count }})</div>
+                    </div>
+                </a>
+            </li>
+        {{ end }}
+    </ul>
+
+{{end}}

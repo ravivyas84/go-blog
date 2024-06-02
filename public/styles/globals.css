@@ -30,6 +30,69 @@ a {
   margin: 3rem 0 0;
 }
 
+.hover-effect {
+  position: relative;
+  display: inline-block;
+  /* padding: 10px 20px; */
+  font-size: 18px;
+  cursor: pointer;
+  color: #000;
+  text-decoration: none;
+}
+
+.hover-effect::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  background-color: yellow;
+  transition: height 0.3s ease;
+  z-index: -1;
+}
+
+.hover-effect:hover::after {
+  height: 100%;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.listItem{
+  margin: 0 0 1.25rem;
+  color: #666;
+  display: flex;
+  flex-direction: row;
+}
+
+.tagItem{
+  margin: 0 0 1.25rem;
+  color: #666;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.tagItem a {
+  text-decoration: none;
+  color: #666;
+}
+
+.listItem a {
+  text-decoration: none;
+  color: #666;
+}
+
+.lightText {
+  text-decoration: none;
+  display: block;
+  margin-right: 10px;
+  min-width: 150px;
+}
 .persona {
   padding-bottom: 20px;
   padding-top: 22px;
@@ -58,9 +121,10 @@ a {
 
 .nav {
   font-size: 90%;
-  margin-top: 0.5em;
+  padding: 10px 20px;
+  /* margin-top: 0.5em;
   margin-bottom: 0.5em;
-  display: flex;
+  display: flex; */
   flex-direction: row;
   justify-content: center;
 }

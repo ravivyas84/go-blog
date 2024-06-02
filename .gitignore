@@ -23,4 +23,6 @@ main
 .DS_Store
 
 /build
+
 main
+posts.db
