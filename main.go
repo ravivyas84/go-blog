@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 
@@ -140,9 +141,16 @@ func main() {
 		// Convert headings to JSON
 		headingsJSON, err := json.Marshal(headings)
 		log.Printf("headings to JSON: %s", headingsJSON)
-
 		if err != nil {
 			log.Printf("error marshalling headings to JSON: %v", err)
+			continue
+		}
+
+		// Convert tags to JSON
+		tagsJSON, err := json.Marshal(fm.Tags)
+		log.Printf("tags to JSON: %s", tagsJSON)
+		if err != nil {
+			log.Printf("error marshalling tags to JSON: %v", err)
 			continue
 		}
 
@@ -150,8 +158,8 @@ func main() {
 		slug := generateSlug(fm.Date, fm.Slug)
 
 		// Insert post data into the SQLite database
-		_, err = db.Exec("INSERT INTO posts (title, content, pub_date, headings,slug) VALUES (?, ?, ?, ?, ?)",
-			fm.Title, buf.String(), fm.Date, headingsJSON, slug)
+		_, err = db.Exec("INSERT INTO posts (title, content, pub_date, headings,slug, tags) VALUES (?, ?, ?, ?, ?, ?)",
+			fm.Title, buf.String(), fm.Date, string(headingsJSON), slug, string(tagsJSON))
 		if err != nil {
 			log.Printf("error inserting post data into database for file %s: %v", filePath, err)
 			continue
@@ -168,6 +176,9 @@ func main() {
 
 	// Generate posts page from database
 	listAllPosts(db, buildDir)
+
+	// List all tags
+	listAllTags(db, buildDir)
 
 	// Serialize RSS to XML
 	outputRSS, err := xml.MarshalIndent(rss, "", "  ")
@@ -222,8 +233,9 @@ func initDB(dbPath string) (*sql.DB, error) {
 			title TEXT,
 			content TEXT,
 			pub_date TEXT,
-            headings TEXT NULL,
-            slug TEXT
+			headings TEXT NULL,
+			slug TEXT,
+			tags TEXT NULL
 	);`
 
 	_, err = db.Exec(createTableSQL)
@@ -235,15 +247,15 @@ func initDB(dbPath string) (*sql.DB, error) {
 }
 
 func generatePagesFromDB(db *sql.DB, buildDir string) {
-	rows, err := db.Query("SELECT title, content, pub_date, headings,slug FROM posts")
+	rows, err := db.Query("SELECT title, content, pub_date, headings,slug, tags FROM posts")
 	if err != nil {
 		log.Fatalf("error querying posts from database: %v", err)
 	}
 	defer rows.Close()
 
 	for rows.Next() {
-		var title, content, pubDate, headingsJSON, slug string
-		err := rows.Scan(&title, &content, &pubDate, &headingsJSON, &slug)
+		var title, content, pubDate, headingsJSON, slug, tags string
+		err := rows.Scan(&title, &content, &pubDate, &headingsJSON, &slug, &tags)
 		if err != nil {
 			log.Printf("error scanning post data: %v", err)
 			continue
@@ -508,4 +520,88 @@ func listAllPosts(db *sql.DB, buildDir string) {
 	}
 
 	fmt.Printf("Processed all posts, output %s\n", outputPath)
+}
+
+func listAllTags(db *sql.DB, buildDir string) {
+	// Fetch all tags from the database
+	rows, err := db.Query("SELECT tags FROM posts")
+	if err != nil {
+		log.Fatalf("error querying all tags: %v", err)
+	}
+	defer rows.Close()
+
+	tagCounts := make(map[string]int)
+	for rows.Next() {
+		var tagsJSON string
+		err := rows.Scan(&tagsJSON)
+		if err != nil {
+			log.Printf("error scanning tags: %v", err)
+			continue
+		}
+
+		var tags []string
+		err = json.Unmarshal([]byte(tagsJSON), &tags)
+		if err != nil {
+			log.Printf("error unmarshalling tags from JSON: %v", err)
+			continue
+		}
+
+		for _, tag := range tags {
+			tagCounts[tag]++
+		}
+	}
+
+	// Convert the tagCounts map to a slice of tags with counts
+	type TagCount struct {
+		Tag   string
+		Count int
+	}
+
+	var tagCountList []TagCount
+	for tag, count := range tagCounts {
+		tagCountList = append(tagCountList, TagCount{Tag: tag, Count: count})
+	}
+
+	// Sort the tagCountList by count in descending order
+	sort.Slice(tagCountList, func(i, j int) bool {
+		return tagCountList[i].Count > tagCountList[j].Count
+	})
+
+	// Generate the HTML for the list of all tags
+	outputPath := filepath.Join(buildDir, "tag", "index.html")
+
+	outputDir := filepath.Dir(outputPath)
+	if err := os.MkdirAll(outputDir, 0755); err != nil {
+		log.Printf("error creating output directory %s: %v", outputDir, err)
+		return
+	}
+
+	doc := struct {
+		Title string
+		Tags  []TagCount
+	}{
+		Title: "Tags",
+		Tags:  tagCountList,
+	}
+
+	tmpl := template.New("base_tags.tmpl")
+	tmpl, err = tmpl.ParseFiles("footer.tmpl", "header.tmpl", "tags.tmpl", "base_tags.tmpl")
+	if err != nil {
+		log.Printf("error parsing template files: %v", err)
+		return
+	}
+
+	outputFile, err := os.Create(outputPath)
+	if err != nil {
+		log.Printf("error creating output file %s: %v", outputPath, err)
+		return
+	}
+	defer outputFile.Close()
+
+	if err := tmpl.ExecuteTemplate(outputFile, "base_tags.tmpl", doc); err != nil {
+		log.Printf("error executing template for file %s: %v", outputPath, err)
+		return
+	}
+
+	fmt.Printf("Processed all tags, output %s\n", outputPath)
 }

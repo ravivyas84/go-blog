@@ -69,6 +69,19 @@ a {
   flex-direction: row;
 }
 
+.tagItem{
+  margin: 0 0 1.25rem;
+  color: #666;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.tagItem a {
+  text-decoration: none;
+  color: #666;
+}
+
 .listItem a {
   text-decoration: none;
   color: #666;
