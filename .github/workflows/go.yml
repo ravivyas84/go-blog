@@ -21,8 +21,8 @@ jobs:
       with:
         go-version: '1.22'
 
-    - name: Build
+    - name: Build code
       run: go build -v main.go
 
-    - name: Test
+    - name: Build blog
       run: ./main
