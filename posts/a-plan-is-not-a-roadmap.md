@@ -12,8 +12,6 @@ layout: layouts/posts.njk
 
 ---
 
-# A Plan is not a Roadmap
-
 Plan Definition: An orderly or step-by-step conception or proposal for accomplishing an objective.
 
 A Product Roadmap might look like a plan, but it gets punched in the face too many times to be called a plan. In addition, it never has the details for tracking what actually needs to be worked on day in and day out, nor does it track daily work. It just lists & tracks objectives, sometimes just key objectives.

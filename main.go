@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"blog/frontmatter"
+	"blog/seo"
 	"blog/utilities"
 
 	"github.com/yuin/goldmark"
@@ -67,6 +68,7 @@ type Item struct {
 func main() {
 
 	buildDir := "build"
+	seoDBPath := "seo.db"
 
 	// Remove the existing build directory if it exists
 	if err := os.RemoveAll(buildDir); err != nil {
@@ -86,18 +88,6 @@ func main() {
 		log.Fatalf("error initializing database: %v", err)
 	}
 	defer db.Close()
-
-	// Initialize the RSS channel
-	rss := RSS{
-		Version: "2.0",
-		Channel: Channel{
-			Title:       "Your Blog Title",
-			Link:        "http://yourblog.com",
-			Description: "Your blog description",
-			PubDate:     time.Now().Format(time.RFC1123Z),
-			Items:       []Item{},
-		},
-	}
 
 	// Read all files in the "posts" directory
 	postsDir := "posts"
@@ -179,6 +169,31 @@ func main() {
 
 	// List all tags
 	listAllTags(db, buildDir)
+
+	// Generate pages for each tag
+	generateTagPages(db, buildDir)
+
+	// Initialize the SEO database
+	seoDB, err := seo.InitializeSEOdb(seoDBPath)
+	if err != nil {
+		log.Fatalf("error initializing SEO database: %v", err)
+	}
+	defer seoDB.Close()
+
+	// Check links and insert SEO metadata
+	// seo.CheckLinksInBuildDirectory(seoDB, buildDir)
+
+	// Initialize the RSS channel
+	rss := RSS{
+		Version: "2.0",
+		Channel: Channel{
+			Title:       "Ravi Vyas's Blog",
+			Link:        "http://ravivyas.com",
+			Description: "Musings of a Learner",
+			PubDate:     time.Now().Format(time.RFC1123Z),
+			Items:       []Item{},
+		},
+	}
 
 	// Serialize RSS to XML
 	outputRSS, err := xml.MarshalIndent(rss, "", "  ")
@@ -604,4 +619,93 @@ func listAllTags(db *sql.DB, buildDir string) {
 	}
 
 	fmt.Printf("Processed all tags, output %s\n", outputPath)
+}
+
+func generateTagPages(db *sql.DB, buildDir string) {
+	// Fetch all tags from the database
+	rows, err := db.Query("SELECT tags, title, slug, pub_date FROM posts")
+	if err != nil {
+		log.Fatalf("error querying all tags: %v", err)
+	}
+	defer rows.Close()
+
+	tagPosts := make(map[string][]Post)
+	for rows.Next() {
+		var tagsJSON, title, slug, pubDate string
+		err := rows.Scan(&tagsJSON, &title, &slug, &pubDate)
+		if err != nil {
+			log.Printf("error scanning tags: %v", err)
+			continue
+		}
+
+		var tags []string
+		err = json.Unmarshal([]byte(tagsJSON), &tags)
+		if err != nil {
+			log.Printf("error unmarshalling tags from JSON: %v", err)
+			continue
+		}
+
+		parsedDate, err := time.Parse("2006-01-02", pubDate)
+		if err != nil {
+			log.Printf("error parsing date: %v", err)
+			continue
+		}
+
+		post := Post{
+			Title: title,
+			Slug:  slug,
+			Date:  parsedDate,
+		}
+
+		for _, tag := range tags {
+			tagPosts[tag] = append(tagPosts[tag], post)
+		}
+	}
+
+	// Generate a page for each tag
+	for tag, posts := range tagPosts {
+		// Sort posts by publication date in descending order
+		sort.Slice(posts, func(i, j int) bool {
+			return posts[i].Date.After(posts[j].Date)
+		})
+
+		outputPath := filepath.Join(buildDir, "tag", tag, "index.html")
+
+		outputDir := filepath.Dir(outputPath)
+		if err := os.MkdirAll(outputDir, 0755); err != nil {
+			log.Printf("error creating output directory %s: %v", outputDir, err)
+			continue
+		}
+
+		doc := struct {
+			Title     string
+			TagHeader string
+			Posts     []Post
+		}{
+			Title:     fmt.Sprintf("Posts tagged with '%s'", tag),
+			TagHeader: fmt.Sprintf("Tag '%s'", tag),
+			Posts:     posts,
+		}
+
+		tmpl := template.New("base_tag_page.tmpl")
+		tmpl, err = tmpl.ParseFiles("footer.tmpl", "header.tmpl", "content_tag.tmpl", "base_tag_page.tmpl")
+		if err != nil {
+			log.Printf("error parsing template files: %v", err)
+			continue
+		}
+
+		outputFile, err := os.Create(outputPath)
+		if err != nil {
+			log.Printf("error creating output file %s: %v", outputPath, err)
+			continue
+		}
+		defer outputFile.Close()
+
+		if err := tmpl.ExecuteTemplate(outputFile, "base_tag_page.tmpl", doc); err != nil {
+			log.Printf("error executing template for file %s: %v", outputPath, err)
+			continue
+		}
+
+		fmt.Printf("Generated tag page for tag '%s', output %s\n", tag, outputPath)
+	}
 }

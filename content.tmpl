@@ -1,7 +1,7 @@
 {{define "content"}}
     <article>
         <h1>{{ .FrontMatter.Title }}</h1>
-        <span>{{ .FrontMatter.Date }}</span>
+        <span class="pub-date">Published on {{ .FrontMatter.Date }}</span>
         <div>{{ .Content }}</div>
         
     </article>

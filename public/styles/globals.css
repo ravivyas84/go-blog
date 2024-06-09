@@ -87,6 +87,11 @@ a {
   color: #666;
 }
 
+.pub-date {
+  font-size: 80%;
+  font-style: italic;
+}
+
 .lightText {
   text-decoration: none;
   display: block;
