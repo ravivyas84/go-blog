@@ -181,7 +181,7 @@ func main() {
 	defer seoDB.Close()
 
 	// Check links and insert SEO metadata
-	// seo.CheckLinksInBuildDirectory(seoDB, buildDir)
+	seo.CheckLinksInBuildDirectory(seoDB, buildDir)
 
 	// Initialize the RSS channel
 	rss := RSS{

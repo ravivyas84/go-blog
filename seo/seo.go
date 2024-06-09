@@ -71,8 +71,9 @@ func checkLinksInFile(db *sql.DB, filePath string) {
 
 	title := extractTitle(doc)
 	metaDescription := extractMetaDescription(doc)
-	links := extractLinks(doc)
-	validLinks := checkLinkStatuses(links)
+	// links := extractLinks(doc)
+	// validLinks := checkLinkStatuses(links)
+	var validLinks []string //empty slice
 
 	insertSEOData(db, filePath, title, metaDescription, validLinks)
 }
