@@ -11,7 +11,7 @@ on:
 
 jobs:
 
-  build_builder:
+  blog_build_deploy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -23,16 +23,10 @@ jobs:
 
     - name: Build
       run: go build -v main.go
-
-  build_blog:
-    runs-on: ubuntu-latest
-    steps:
+  
     - name: Build blog
       run: ./main
 
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
     - name: deploy to vercel
       run: |
           cd build
