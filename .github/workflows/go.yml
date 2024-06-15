@@ -29,10 +29,10 @@ jobs:
 
     - name: deploy to vercel
       env:
-        TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        TOKEN: ${{ secrets.VERCEN_TOKEN }}
       run: |
           cd build
           ls
-          echo ${TOKEN:0:4}
+          # echo ${TOKEN:0:4}
           echo -n "$TOKEN" | md5sum | awk '{print $1}'
           npx vercel --prod --token $TOKEN
