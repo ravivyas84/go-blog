@@ -24,5 +24,8 @@ jobs:
     - name: Build
       run: go build -v main.go
 
-    - name: Test
+    - name: Build blog
       run: ./main
+
+    - name: deploy to vercel
+      run: npx vercel --prod --token ${{ secrets.VERCEN_TOKEN }} 
