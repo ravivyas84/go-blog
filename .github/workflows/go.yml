@@ -28,6 +28,8 @@ jobs:
       run: ./main
 
     - name: deploy to vercel
+      env:
+        TOKEN: ${{ secrets.VERCEL_TOKEN }}
       run: |
           cd build
-          npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+          npx vercel --prod --token $TOKEN
