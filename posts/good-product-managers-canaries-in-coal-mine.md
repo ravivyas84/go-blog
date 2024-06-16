@@ -22,5 +22,3 @@ Why they can execute better is for another day.
 Foot notes
 1. Good PMs always know their market and their competitors. If they are not from the market, they can always get up to speed in a few quarters.
 2. You don’t need to use <insert digital product name here> to become a PM
-
-#blog #published
