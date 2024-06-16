@@ -45,4 +45,4 @@ Based on this my definition of Product Market Fit became
 > 
 > [Tweet](http://twitter.com/share?&text=Getting%20the%20Right%20Product%20in%20the%20Right%20Package%20to%20the%20Right%20User%20at%20the%20Right%20time.&url=https://ravivyas.com/2019/07/25/what-is-product-management-and-pmf/&via=ravivyas84)
 
-The difference between product management and Product Market fit thus is just timing. Which also brings in luck into the picture. You can have all the right things, but fail because you were too early (the problem was not big enough) or too late (the problem was already being solved). Timing also seperates the entreprenures, who are taking a lof more risk, than a pure Product Manager, who already has a customer base to cater too.
+The difference between product management and Product Market fit thus is just timing. Which also brings in luck into the picture. You can have all the right things, but fail because you were too early (the problem was not big enough) or too late (the problem was already being solved). Timing also seperates the entrepreneurs, who are taking a lof more risk, than a pure Product Manager, who already has a customer base to cater too.

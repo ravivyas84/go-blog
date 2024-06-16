@@ -1,6 +1,7 @@
 ---
 title: Ravi Vyas - About
 layout: layouts/home.njk
+description: Ravi Vyas's home on the internet. Product Manager, Entrepreneur, Operator. This is where he pens his thoughts.
 ---
 
 ## About

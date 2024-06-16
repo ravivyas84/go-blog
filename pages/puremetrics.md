@@ -1,6 +1,7 @@
 ---
 title: PureMetrics
 layout: layouts/base.njk
+slug: puremetrics
 ---
 
 

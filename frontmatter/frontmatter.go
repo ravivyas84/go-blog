@@ -4,7 +4,7 @@ package frontmatter
 type FrontMatter struct {
 	Template         string
 	Title            string
-	ShortDescription string
+	Description      string
 	Slug             string
 	Author           string
 	Date             string

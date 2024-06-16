@@ -1,6 +1,6 @@
 ---
 layout: layouts/base.njk
-permalink: /videos/
+slug: videos
 title: Videos
 ---
 

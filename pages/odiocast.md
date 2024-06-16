@@ -1,6 +1,7 @@
 ---
 title: Odiocast
 layout: layouts/base.njk
+slug: odiocast
 ---
 
 Hi, Odiocast does not exist anymore 😞 

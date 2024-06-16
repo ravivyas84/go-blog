@@ -140,7 +140,7 @@ func main() {
 
 		// Convert headings to JSON
 		headingsJSON, err := json.Marshal(headings)
-		log.Printf("headings to JSON: %s", headingsJSON)
+		// log.Printf("headings to JSON: %s", headingsJSON)
 		if err != nil {
 			log.Printf("error marshalling headings to JSON: %v", err)
 			continue
@@ -148,7 +148,7 @@ func main() {
 
 		// Convert tags to JSON
 		tagsJSON, err := json.Marshal(fm.Tags)
-		log.Printf("tags to JSON: %s", tagsJSON)
+		// log.Printf("tags to JSON: %s", tagsJSON)
 		if err != nil {
 			log.Printf("error marshalling tags to JSON: %v", err)
 			continue
@@ -158,8 +158,8 @@ func main() {
 		slug := generateSlug(fm.Date, fm.Slug)
 
 		// Insert post data into the SQLite database
-		_, err = db.Exec("INSERT INTO posts (title, content, pub_date, headings,slug, tags) VALUES (?, ?, ?, ?, ?, ?)",
-			fm.Title, buf.String(), fm.Date, string(headingsJSON), slug, string(tagsJSON))
+		_, err = db.Exec("INSERT INTO posts (title, content, pub_date, headings,slug, tags, description) VALUES (?, ?, ?, ?, ?, ?,?)",
+			fm.Title, buf.String(), fm.Date, string(headingsJSON), slug, string(tagsJSON),fm.Description)
 		if err != nil {
 			log.Printf("error inserting post data into database for file %s: %v", filePath, err)
 			continue
@@ -235,7 +235,8 @@ func initDB(dbPath string) (*sql.DB, error) {
 			pub_date TEXT,
 			headings TEXT NULL,
 			slug TEXT,
-			tags TEXT NULL
+			tags TEXT NULL,
+			description TEXT NULL
 	);`
 
 	_, err = db.Exec(createTableSQL)
@@ -247,15 +248,15 @@ func initDB(dbPath string) (*sql.DB, error) {
 }
 
 func generatePagesFromDB(db *sql.DB, buildDir string) {
-	rows, err := db.Query("SELECT title, content, pub_date, headings,slug, tags FROM posts")
+	rows, err := db.Query("SELECT title, content, pub_date, headings,slug, tags, description FROM posts")
 	if err != nil {
 		log.Fatalf("error querying posts from database: %v", err)
 	}
 	defer rows.Close()
 
 	for rows.Next() {
-		var title, content, pubDate, headingsJSON, slug, tags string
-		err := rows.Scan(&title, &content, &pubDate, &headingsJSON, &slug, &tags)
+		var title, content, pubDate, headingsJSON, slug, tags, description string
+		err := rows.Scan(&title, &content, &pubDate, &headingsJSON, &slug, &tags, &description)
 		if err != nil {
 			log.Printf("error scanning post data: %v", err)
 			continue
@@ -263,10 +264,10 @@ func generatePagesFromDB(db *sql.DB, buildDir string) {
 
 		// Parse date from front matter
 		// parsedDate, err := time.Parse("2006-01-02", pubDate)
-		if err != nil {
-			log.Printf("error parsing date from front matter for file %s: %v", title, err)
-			continue
-		}
+		// if err != nil {
+		// 	log.Printf("error parsing date from front matter for file %s: %v", title, err)
+		// 	continue
+		// }
 
 		// Parse headings JSON
 		var headings []string
@@ -277,7 +278,7 @@ func generatePagesFromDB(db *sql.DB, buildDir string) {
 		}
 
 		// Print the unmarshalled headings
-		fmt.Printf("Unmarshalled headings for post '%s'::::::: %v\n", title, headings)
+		// fmt.Printf("Unmarshalled headings for post '%s'::::::: %v\n", title, headings)
 
 		// Generate output path based on date
 		outputPath := filepath.Join(buildDir, slug, "index.html")
@@ -290,7 +291,7 @@ func generatePagesFromDB(db *sql.DB, buildDir string) {
 		}
 
 		doc := Document{
-			FrontMatter: frontmatter.FrontMatter{Title: title, Date: pubDate},
+			FrontMatter: frontmatter.FrontMatter{Title: title, Date: pubDate,Description: description, Slug: slug},
 			Content:     template.HTML(content),
 			Headings:    headings,
 		}
@@ -370,6 +371,7 @@ func buildPages(db *sql.DB) {
 			log.Printf("error parsing front matter for file %s: %v", file.Name(), err)
 			continue
 		}
+		log.Printf("Front matter SLug %s", fm.Slug)
 
 		// Convert markdown to HTML
 		var buf bytes.Buffer
