@@ -11,7 +11,7 @@ layout: layouts/posts.njk
 
 --- 
 
-A critical job a product needs to do is to allow the user to build a mental model[^1] of how the product works. As the model gets built, the effort required to use the model becomes easier. It also allows power users, to guess with high probability, what went wrong when the product is not working. 
+A critical job a product needs to do is to allow the user to build a mental model¹ of how the product works. As the model gets built, the effort required to use the model becomes easier. It also allows power users, to guess with high probability, what went wrong when the product is not working. 
 
 To help your user build a mental model the feedback the product provides needs to be consistent. Let me share a recent story on how my EV breaks my mental model. 
 
@@ -21,4 +21,5 @@ One day, on the rare occasions the car battery was at 100%, the paddle shift doe
 
 This is a not so simple way to showcase different behaviours of the system on the same input. Imagine a digital product where pressing the same button would do different things, or a door closing with different speeds even though the same amount of effort was put in. Such things surprise a user, and most of the time the user perception will be that the product broke.
 
-[^1]: Further reading - [Mental Model](https://lawsofux.com/mental-model/)
+**Footnotes**
+1: Further reading - [Mental Model](https://lawsofux.com/mental-model/)
