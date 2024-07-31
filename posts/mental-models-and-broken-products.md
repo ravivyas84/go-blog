@@ -1,8 +1,8 @@
 ---
-title: When Surprises are perceived as broken products
+title: Mental models & broken products
 date: "2024-07-31"
  
-slug: when-surprises-are-perceived-as-broken-products
+slug: mental-models-and-broken-products
 
 tags: 
 - product-management
