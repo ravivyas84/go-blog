@@ -1,6 +1,6 @@
 ---
 title: When Surprises are perceived as broken products
-date: "2024-07-31”
+date: "2024-07-31"
  
 slug: when-surprises-are-perceived-as-broken-products
 
