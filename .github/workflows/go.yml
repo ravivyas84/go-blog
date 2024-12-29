@@ -33,6 +33,4 @@ jobs:
       run: |
           cd build
           ls
-          # echo ${TOKEN:0:4}
-          echo -n "$TOKEN" | md5sum | awk '{print $1}'
           npx vercel --prod --token $TOKEN

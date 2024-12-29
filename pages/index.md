@@ -8,11 +8,19 @@ description: Ravi Vyas's home on the internet. Product Manager, Entrepreneur, Op
 
 I am a seasoned technical product manager who has shipped products for developers in advertising, gaming, marketing, analytics, and software supply chain. I have worked on SDKs, developer dashboards, and internal developer tools.
 
-I am an entrepreneur at heart. As a perpetual learner, my career has taken me from being an Android developer to attempting to build various products and startups. Along the way, I have worked in mobile advertising, podcasting, media & marketing automation, mobile games, data analytics, and mobile game publishing. Currently, I am the Lead Product Manager for the Compute Platform at Lowe's.  India. I have built a Google Sheets Plugin as a side project [StitchIQ](https://workspace.google.com/marketplace/app/stitchiq/931004878305), and have also built software for close friends.
+I am an entrepreneur at heart. As a perpetual learner, my career has taken me from being an Android developer to attempting to build various products and startups. Along the way, I have worked in mobile advertising, podcasting, media & marketing automation, mobile games, data analytics, and mobile game publishing. Currently, I am the Lead Product Manager for the Compute Platform at Lowe's.
 
 ![](/assets/ravivyas.avif)
 
 My current interests lie in ~[Product Management](/tag/product-management/)~, Software Supply Chain, Developer Tools, and an eternal love for ~[Entrepreneurship](/tag/entrepreneurship/).
+
+## Hobby Projects
+
+**Atypical PM**: A documentation styled site where I write about Product Management. [Link](https://atypicalpm.com/).
+
+**Daily-Notes**: A Visual studio extension I am building to scratch my own itch of managing daily notes. [Link](https://marketplace.visualstudio.com/items?itemName=RaviVyas.dailynotes-panel)
+
+**StitchIQ**: A Google Sheets Plugin as a side project [StitchIQ](https://workspace.google.com/marketplace/app/stitchiq/931004878305). This project is currently on hold.
 
 ## Podcast
 
