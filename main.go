@@ -134,9 +134,10 @@ func main() {
 			continue
 		}
 
-		// Extract headings from the HTML content
+		// Extract headings from the HTML content and add lazy loading to images
 		htmlContent := buf.String()
 		headings := extractHeadings(htmlContent)
+		htmlContent = addLazyLoading(htmlContent)
 
 		// Convert headings to JSON
 		headingsJSON, err := json.Marshal(headings)
@@ -159,7 +160,7 @@ func main() {
 
 		// Insert post data into the SQLite database
 		_, err = db.Exec("INSERT INTO posts (title, content, pub_date, headings,slug, tags, description) VALUES (?, ?, ?, ?, ?, ?,?)",
-			fm.Title, buf.String(), fm.Date, string(headingsJSON), slug, string(tagsJSON),fm.Description)
+			fm.Title, htmlContent, fm.Date, string(headingsJSON), slug, string(tagsJSON),fm.Description)
 		if err != nil {
 			log.Printf("error inserting post data into database for file %s: %v", filePath, err)
 			continue
@@ -343,6 +344,11 @@ func extractHeadings(htmlContent string) []string {
 	return headings
 }
 
+// addLazyLoading adds loading="lazy" to all <img> tags in the HTML content.
+func addLazyLoading(htmlContent string) string {
+	return strings.ReplaceAll(htmlContent, "<img ", `<img loading="lazy" `)
+}
+
 func buildPages(db *sql.DB) {
 	pagesDir := "pages"
 	buildDir := "build"
@@ -404,7 +410,7 @@ func buildPages(db *sql.DB) {
 
 		doc := LatestPosts{
 			FrontMatter: fm,
-			Content:     template.HTML(buf.String()),
+			Content:     template.HTML(addLazyLoading(buf.String())),
 			Latest:      latest_Posts,
 		}
 
