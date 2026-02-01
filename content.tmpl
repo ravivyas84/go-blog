@@ -1,8 +1,9 @@
 {{define "content"}}
+    {{ .JSONLD }}
     <article>
         <h1>{{ .FrontMatter.Title }}</h1>
         <span>{{ .FrontMatter.Date }}</span>
         <div>{{ .Content }}</div>
-        
+
     </article>
 {{end}}
