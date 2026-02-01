@@ -29,6 +29,23 @@ type Document struct {
 	FrontMatter frontmatter.FrontMatter
 	Content     template.HTML
 	Headings    []string
+	JSONLD      template.HTML
+}
+
+// JSON-LD structured data types for schema.org BlogPosting
+type JSONLDBlogPosting struct {
+	Context       string     `json:"@context"`
+	Type          string     `json:"@type"`
+	Headline      string     `json:"headline"`
+	Description   string     `json:"description,omitempty"`
+	DatePublished string     `json:"datePublished"`
+	URL           string     `json:"url"`
+	Author        JSONLDAuthor `json:"author"`
+}
+
+type JSONLDAuthor struct {
+	Type string `json:"@type"`
+	Name string `json:"name"`
 }
 
 type LatestPosts struct {
@@ -159,8 +176,8 @@ func main() {
 		slug := generateSlug(fm.Date, fm.Slug)
 
 		// Insert post data into the SQLite database
-		_, err = db.Exec("INSERT INTO posts (title, content, pub_date, headings,slug, tags, description) VALUES (?, ?, ?, ?, ?, ?,?)",
-			fm.Title, htmlContent, fm.Date, string(headingsJSON), slug, string(tagsJSON),fm.Description)
+		_, err = db.Exec("INSERT INTO posts (title, content, pub_date, headings, slug, tags, description, author) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+			fm.Title, htmlContent, fm.Date, string(headingsJSON), slug, string(tagsJSON), fm.Description, fm.Author)
 		if err != nil {
 			log.Printf("error inserting post data into database for file %s: %v", filePath, err)
 			continue
@@ -237,7 +254,8 @@ func initDB(dbPath string) (*sql.DB, error) {
 			headings TEXT NULL,
 			slug TEXT,
 			tags TEXT NULL,
-			description TEXT NULL
+			description TEXT NULL,
+			author TEXT NULL
 	);`
 
 	_, err = db.Exec(createTableSQL)
@@ -249,26 +267,22 @@ func initDB(dbPath string) (*sql.DB, error) {
 }
 
 func generatePagesFromDB(db *sql.DB, buildDir string) {
-	rows, err := db.Query("SELECT title, content, pub_date, headings,slug, tags, description FROM posts")
+	rows, err := db.Query("SELECT title, content, pub_date, headings, slug, tags, description, author FROM posts")
 	if err != nil {
 		log.Fatalf("error querying posts from database: %v", err)
 	}
 	defer rows.Close()
 
+	const siteURL = "https://ravivyas.com"
+	const defaultAuthor = "Ravi Vyas"
+
 	for rows.Next() {
-		var title, content, pubDate, headingsJSON, slug, tags, description string
-		err := rows.Scan(&title, &content, &pubDate, &headingsJSON, &slug, &tags, &description)
+		var title, content, pubDate, headingsJSON, slug, tags, description, author string
+		err := rows.Scan(&title, &content, &pubDate, &headingsJSON, &slug, &tags, &description, &author)
 		if err != nil {
 			log.Printf("error scanning post data: %v", err)
 			continue
 		}
-
-		// Parse date from front matter
-		// parsedDate, err := time.Parse("2006-01-02", pubDate)
-		// if err != nil {
-		// 	log.Printf("error parsing date from front matter for file %s: %v", title, err)
-		// 	continue
-		// }
 
 		// Parse headings JSON
 		var headings []string
@@ -277,9 +291,6 @@ func generatePagesFromDB(db *sql.DB, buildDir string) {
 			log.Printf("error unmarshalling headings from JSON: %v", err)
 			continue
 		}
-
-		// Print the unmarshalled headings
-		// fmt.Printf("Unmarshalled headings for post '%s'::::::: %v\n", title, headings)
 
 		// Generate output path based on date
 		outputPath := filepath.Join(buildDir, slug, "index.html")
@@ -291,10 +302,35 @@ func generatePagesFromDB(db *sql.DB, buildDir string) {
 			continue
 		}
 
+		// Build JSON-LD structured data
+		authorName := author
+		if authorName == "" {
+			authorName = defaultAuthor
+		}
+		jsonLD := JSONLDBlogPosting{
+			Context:       "https://schema.org",
+			Type:          "BlogPosting",
+			Headline:      title,
+			Description:   description,
+			DatePublished: pubDate,
+			URL:           siteURL + "/" + slug,
+			Author: JSONLDAuthor{
+				Type: "Person",
+				Name: authorName,
+			},
+		}
+		jsonLDBytes, err := json.MarshalIndent(jsonLD, "", "  ")
+		if err != nil {
+			log.Printf("error marshalling JSON-LD for '%s': %v", title, err)
+		} else {
+			log.Printf("JSON-LD for '%s':\n%s", title, string(jsonLDBytes))
+		}
+
 		doc := Document{
-			FrontMatter: frontmatter.FrontMatter{Title: title, Date: pubDate,Description: description, Slug: slug},
+			FrontMatter: frontmatter.FrontMatter{Title: title, Date: pubDate, Description: description, Slug: slug},
 			Content:     template.HTML(content),
 			Headings:    headings,
+			JSONLD:      template.HTML(fmt.Sprintf("<script type=\"application/ld+json\">\n%s\n</script>", string(jsonLDBytes))),
 		}
 
 		tmpl := template.New("base.tmpl")
