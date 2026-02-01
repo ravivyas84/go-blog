@@ -34,18 +34,38 @@ type Document struct {
 
 // JSON-LD structured data types for schema.org BlogPosting
 type JSONLDBlogPosting struct {
-	Context       string     `json:"@context"`
-	Type          string     `json:"@type"`
-	Headline      string     `json:"headline"`
-	Description   string     `json:"description,omitempty"`
-	DatePublished string     `json:"datePublished"`
-	URL           string     `json:"url"`
-	Author        JSONLDAuthor `json:"author"`
+	Context          string          `json:"@context"`
+	Type             string          `json:"@type"`
+	MainEntityOfPage JSONLDWebPage   `json:"mainEntityOfPage"`
+	Headline         string          `json:"headline"`
+	Description      string          `json:"description,omitempty"`
+	Image            string          `json:"image"`
+	DatePublished    string          `json:"datePublished"`
+	DateModified     string          `json:"dateModified"`
+	URL              string          `json:"url"`
+	Author           JSONLDPerson    `json:"author"`
+	Publisher        JSONLDPublisher `json:"publisher"`
 }
 
-type JSONLDAuthor struct {
+type JSONLDWebPage struct {
+	Type string `json:"@type"`
+	ID   string `json:"@id"`
+}
+
+type JSONLDPerson struct {
 	Type string `json:"@type"`
 	Name string `json:"name"`
+}
+
+type JSONLDPublisher struct {
+	Type string `json:"@type"`
+	Name string `json:"name"`
+	Logo JSONLDImageObject `json:"logo"`
+}
+
+type JSONLDImageObject struct {
+	Type string `json:"@type"`
+	URL  string `json:"url"`
 }
 
 type LatestPosts struct {
@@ -275,6 +295,7 @@ func generatePagesFromDB(db *sql.DB, buildDir string) {
 
 	const siteURL = "https://ravivyas.com"
 	const defaultAuthor = "Ravi Vyas"
+	const faviconURL = siteURL + "/favicon.ico"
 
 	for rows.Next() {
 		var title, content, pubDate, headingsJSON, slug, tags, description, author string
@@ -307,16 +328,42 @@ func generatePagesFromDB(db *sql.DB, buildDir string) {
 		if authorName == "" {
 			authorName = defaultAuthor
 		}
+
+		postURL := siteURL + "/" + slug
+
+		// Extract the first image from post content, fall back to favicon
+		postImage := extractFirstImage(content)
+		if postImage != "" && !strings.HasPrefix(postImage, "http") {
+			postImage = siteURL + postImage
+		}
+		if postImage == "" {
+			postImage = faviconURL
+		}
+
 		jsonLD := JSONLDBlogPosting{
-			Context:       "https://schema.org",
-			Type:          "BlogPosting",
+			Context: "https://schema.org",
+			Type:    "BlogPosting",
+			MainEntityOfPage: JSONLDWebPage{
+				Type: "WebPage",
+				ID:   postURL,
+			},
 			Headline:      title,
 			Description:   description,
+			Image:         postImage,
 			DatePublished: pubDate,
-			URL:           siteURL + "/" + slug,
-			Author: JSONLDAuthor{
+			DateModified:  pubDate,
+			URL:           postURL,
+			Author: JSONLDPerson{
 				Type: "Person",
 				Name: authorName,
+			},
+			Publisher: JSONLDPublisher{
+				Type: "Organization",
+				Name: defaultAuthor,
+				Logo: JSONLDImageObject{
+					Type: "ImageObject",
+					URL:  faviconURL,
+				},
 			},
 		}
 		jsonLDBytes, err := json.MarshalIndent(jsonLD, "", "  ")
@@ -383,6 +430,35 @@ func extractHeadings(htmlContent string) []string {
 // addLazyLoading adds loading="lazy" to all <img> tags in the HTML content.
 func addLazyLoading(htmlContent string) string {
 	return strings.ReplaceAll(htmlContent, "<img ", `<img loading="lazy" `)
+}
+
+// extractFirstImage finds the first <img> tag in HTML content and returns its src attribute.
+func extractFirstImage(htmlContent string) string {
+	doc, err := html.Parse(strings.NewReader(htmlContent))
+	if err != nil {
+		return ""
+	}
+
+	var imgSrc string
+	var f func(*html.Node)
+	f = func(n *html.Node) {
+		if imgSrc != "" {
+			return
+		}
+		if n.Type == html.ElementNode && n.Data == "img" {
+			for _, attr := range n.Attr {
+				if attr.Key == "src" {
+					imgSrc = attr.Val
+					return
+				}
+			}
+		}
+		for c := n.FirstChild; c != nil; c = c.NextSibling {
+			f(c)
+		}
+	}
+	f(doc)
+	return imgSrc
 }
 
 func buildPages(db *sql.DB) {
