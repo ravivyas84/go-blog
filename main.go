@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strings"
 	"time"
@@ -25,10 +26,16 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+type HeadingWithID struct {
+	Text string
+	ID   string
+}
+
 type Document struct {
 	FrontMatter frontmatter.FrontMatter
 	Content     template.HTML
 	Headings    []string
+	TOCItems    []HeadingWithID
 	JSONLD      template.HTML
 }
 
@@ -171,9 +178,10 @@ func main() {
 			continue
 		}
 
-		// Extract headings from the HTML content and add lazy loading to images
+		// Extract headings from the HTML content, add heading IDs, and add lazy loading to images
 		htmlContent := buf.String()
 		headings := extractHeadings(htmlContent)
+		htmlContent = addHeadingIDs(htmlContent, headings)
 		htmlContent = addLazyLoading(htmlContent)
 
 		// Convert headings to JSON
@@ -313,6 +321,9 @@ func generatePagesFromDB(db *sql.DB, buildDir string) {
 			continue
 		}
 
+		// Generate TOC items with IDs
+		tocItems := generateTOCItems(headings)
+
 		// Generate output path based on date
 		outputPath := filepath.Join(buildDir, slug, "index.html")
 
@@ -377,6 +388,7 @@ func generatePagesFromDB(db *sql.DB, buildDir string) {
 			FrontMatter: frontmatter.FrontMatter{Title: title, Date: pubDate, Description: description, Slug: slug},
 			Content:     template.HTML(content),
 			Headings:    headings,
+			TOCItems:    tocItems,
 			JSONLD:      template.HTML(fmt.Sprintf("<script type=\"application/ld+json\">\n%s\n</script>", string(jsonLDBytes))),
 		}
 
@@ -459,6 +471,59 @@ func extractFirstImage(htmlContent string) string {
 	}
 	f(doc)
 	return imgSrc
+}
+
+var h2OpenTagRegex = regexp.MustCompile(`<h2>`)
+
+func slugify(text string) string {
+	text = strings.ToLower(strings.TrimSpace(text))
+	var result strings.Builder
+	prevHyphen := false
+	for _, r := range text {
+		if (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
+			result.WriteRune(r)
+			prevHyphen = false
+		} else if r == ' ' || r == '-' || r == '_' {
+			if !prevHyphen {
+				result.WriteRune('-')
+				prevHyphen = true
+			}
+		}
+	}
+	return strings.Trim(result.String(), "-")
+}
+
+func makeUniqueID(text string, idCount map[string]int) string {
+	baseID := slugify(text)
+	id := baseID
+	if count, exists := idCount[baseID]; exists && count > 0 {
+		id = fmt.Sprintf("%s-%d", baseID, count)
+	}
+	idCount[baseID]++
+	return id
+}
+
+func addHeadingIDs(htmlContent string, headings []string) string {
+	idCount := make(map[string]int)
+	i := 0
+	return h2OpenTagRegex.ReplaceAllStringFunc(htmlContent, func(match string) string {
+		if i < len(headings) {
+			id := makeUniqueID(headings[i], idCount)
+			i++
+			return `<h2 id="` + id + `">`
+		}
+		return match
+	})
+}
+
+func generateTOCItems(headings []string) []HeadingWithID {
+	var items []HeadingWithID
+	idCount := make(map[string]int)
+	for _, h := range headings {
+		id := makeUniqueID(h, idCount)
+		items = append(items, HeadingWithID{Text: h, ID: id})
+	}
+	return items
 }
 
 func buildPages(db *sql.DB) {
