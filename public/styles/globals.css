@@ -213,9 +213,10 @@ article img{
   text-decoration: none;
   color: #666;
   position: relative;
-  display: inline;
+  display: block;
   font-size: 13px;
   line-height: 1.4;
+  padding: 2px 4px;
 }
 
 .toc-link::after {
