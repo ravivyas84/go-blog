@@ -1,9 +1,31 @@
 {{define "content"}}
     {{ .JSONLD }}
+    {{ if .TOCItems }}
+    <nav class="toc-desktop" id="toc-desktop" aria-label="Table of Contents">
+        <div class="toc-title">Contents</div>
+        <ul class="toc-list">
+            {{ range .TOCItems }}
+            <li><a href="#{{ .ID }}" class="toc-link">{{ .Text }}</a></li>
+            {{ end }}
+        </ul>
+    </nav>
+    <div class="toc-overlay" id="toc-overlay">
+        <div class="toc-overlay-content">
+            <div class="toc-overlay-header">
+                <span>Table of Contents</span>
+                <button class="toc-overlay-close" id="toc-overlay-close">&times;</button>
+            </div>
+            <ul class="toc-overlay-list">
+                {{ range .TOCItems }}
+                <li><a href="#{{ .ID }}" class="toc-overlay-link">{{ .Text }}</a></li>
+                {{ end }}
+            </ul>
+        </div>
+    </div>
+    {{ end }}
     <article>
         <h1>{{ .FrontMatter.Title }}</h1>
         <span>{{ .FrontMatter.Date }}</span>
-        <div>{{ .Content }}</div>
-
+        <div class="article-content" id="article-content">{{ .Content }}</div>
     </article>
 {{end}}
