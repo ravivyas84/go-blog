@@ -85,5 +85,5 @@ All dependencies load via CDN — nothing to install:
 
 <div class="dn-cta-bar">
   <span class="dn-cta-label">CapabilityMap &mdash; browser-based, no install</span>
-  <a class="dn-cta-button" href="https://capabilitymap.vercel.app" target="_blank" rel="noopener noreferrer">Open CapabilityMap &rarr;</a>
+  <a class="dn-cta-button" href="https://capabilitymap.app" target="_blank" rel="noopener noreferrer">Open CapabilityMap &rarr;</a>
 </div>
