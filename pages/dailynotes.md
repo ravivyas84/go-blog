@@ -4,7 +4,7 @@ slug: dailynotes
 description: Daily Notes is a VS Code extension for writing daily notes and tracking tasks — inspired by todo.txt and NotePlan.
 ---
 
-Daily Notes is a VS Code extension for people who think and write inside their editor. It gives you a structured space for daily notes and task tracking, without pulling you into a separate app.
+Daily Notes is a vibe coded VS Code extension for people who think and write inside their editor. It gives you a structured space for daily notes and task tracking, without pulling you into a separate app.
 
 Inspired by [todo.txt](http://todotxt.org/) and [NotePlan](https://noteplan.co/), Daily Notes keeps things plain-text, portable, and fast.
 
@@ -16,6 +16,7 @@ Each day gets its own markdown file, named `yyyy-mm-dd.md` (e.g. `2024-11-01.md`
 
 No proprietary format. No lock-in. Just files.
 
+![Daily notes](/assets/sample-notes.png)
 ---
 
 ## Features
@@ -55,9 +56,9 @@ An optional autosave feature saves your note every 10 seconds while you're worki
 Daily Notes uses [todo.txt](http://todotxt.org/) conventions for tasks, inside standard markdown checkboxes:
 
 ```
-- [ ] (A) Write release notes +DailyNotes @writing
-- [ ] (B) Fix calendar scroll bug +DailyNotes due:2024-11-05
-- [x] Review PR +Work @github dd:2024-11-01
+- [ ] (A) Write release notes +DailyNotes @writing id:n5f cd:2026-02-22
+- [ ] (B) Fix calendar scroll bug +DailyNotes id:111 cd:2026-02-22 due:2024-11-05
+- [x] Review PR +Work @github id:hqo cd:2026-02-22 dd:2024-11-01
 ```
 
 | Token | Meaning |
