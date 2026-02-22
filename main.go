@@ -18,6 +18,7 @@ import (
 	"blog/utilities"
 
 	"github.com/yuin/goldmark"
+	goldmarkhtml "github.com/yuin/goldmark/renderer/html"
 	"golang.org/x/net/html"
 	"gopkg.in/yaml.v2"
 
@@ -556,10 +557,10 @@ func buildPages(db *sql.DB) {
 		}
 		log.Printf("Front matter SLug %s", fm.Slug)
 
-		// Convert markdown to HTML
+		// Convert markdown to HTML (unsafe HTML allowed so pages can embed raw HTML)
 		var buf bytes.Buffer
-
-		if err := goldmark.Convert(parts[2], &buf); err != nil {
+		mdParser := goldmark.New(goldmark.WithRendererOptions(goldmarkhtml.WithUnsafe()))
+		if err := mdParser.Convert(parts[2], &buf); err != nil {
 			log.Printf("error converting markdown for file %s: %v", filePath, err)
 			continue
 		}

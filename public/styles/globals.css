@@ -360,6 +360,63 @@ article img{
   }
 }
 
+/* ===== Daily Notes sticky CTA bar ===== */
+.dn-cta-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  z-index: 999;
+  font-size: 15px;
+  border-top: 1px solid #333;
+}
+
+.dn-cta-label {
+  font-size: 14px;
+  color: #9cdcfe;
+  font-family: Menlo, Monaco, 'Courier New', monospace;
+}
+
+.dn-cta-button {
+  background: #0078d4;
+  color: #fff !important;
+  padding: 8px 18px;
+  border-radius: 3px;
+  text-decoration: none !important;
+  font-weight: bold;
+  font-size: 14px;
+  font-family: Georgia, serif;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.dn-cta-button:hover {
+  background: #005fa3;
+  color: #fff !important;
+}
+
+/* Push page content up so sticky bar does not overlap bottom of article */
+body:has(.dn-cta-bar) article,
+body:has(.dn-cta-bar) .container {
+  padding-bottom: 70px;
+}
+
+@media (max-width: 600px) {
+  .dn-cta-bar {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 16px;
+    text-align: center;
+  }
+}
+
 /* ===== Dark mode ===== */
 @media (prefers-color-scheme: dark) {
   html {
