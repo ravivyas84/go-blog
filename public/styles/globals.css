@@ -417,6 +417,35 @@ body:has(.dn-cta-bar) .container {
   }
 }
 
+/* ===== Footnotes ===== */
+.footnotes {
+  margin-top: 2rem;
+  font-size: 0.875rem;
+  color: #666;
+  border-top: 1px solid #ddd;
+  padding-top: 1rem;
+}
+
+.footnotes ol {
+  padding-left: 1.5rem;
+}
+
+.footnotes li {
+  margin-bottom: 0.5rem;
+}
+
+.footnote-ref {
+  font-size: 0.75em;
+  vertical-align: super;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.footnote-backref {
+  text-decoration: none;
+  margin-left: 0.25em;
+}
+
 /* ===== Dark mode ===== */
 @media (prefers-color-scheme: dark) {
   html {
@@ -467,5 +496,10 @@ body:has(.dn-cta-bar) .container {
 
   .toc-section h2::after {
     color: #666;
+  }
+
+  .footnotes {
+    color: #aaa;
+    border-top-color: #333;
   }
 }
