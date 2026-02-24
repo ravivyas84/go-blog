@@ -246,6 +246,41 @@ func main() {
 	}
 
 	log.Printf("Successfully copied %s to %s", src, dst)
+
+	// Validate .llm context files are up to date
+	validateLLMContext(postsDir)
+}
+
+// validateLLMContext checks if .llm/content.md post count matches actual post count
+// and warns if context files may be out of date.
+func validateLLMContext(postsDir string) {
+	files, err := os.ReadDir(postsDir)
+	if err != nil {
+		return
+	}
+
+	mdCount := 0
+	for _, f := range files {
+		if !f.IsDir() && strings.HasSuffix(f.Name(), ".md") {
+			mdCount++
+		}
+	}
+
+	contentPath := ".llm/content.md"
+	data, err := os.ReadFile(contentPath)
+	if err != nil {
+		log.Printf("[llm-context] WARNING: %s not found. Run context update.", contentPath)
+		return
+	}
+
+	content := string(data)
+	// Check if the total count in content.md matches
+	expected := fmt.Sprintf("**Total: %d blog posts", mdCount)
+	if !strings.Contains(content, expected) {
+		log.Printf("[llm-context] WARNING: .llm/content.md may be out of date. Found %d posts in %s/ but content.md does not reflect this. Please update .llm/ context files.", mdCount, postsDir)
+	} else {
+		log.Printf("[llm-context] OK: .llm/content.md matches %d posts.", mdCount)
+	}
 }
 
 // Generate the slug
