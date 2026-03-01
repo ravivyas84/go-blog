@@ -112,12 +112,14 @@ I've already started doing this. [CapabilityMap](https://ravivyas.com/capability
 
 [Years ago I wrote about how low-code tools](/2019/12/05/forget-nocode-the-next-big-wave-is-lowcode/) would change the face of computing. The progression from no-code to low-code to AI-as-the-coder is a line I've been tracing for a while now. We might be at the logical extreme of it. Excel was the "proxy app" building tool, Claude can build actual apps for the same folks.
 
-## The Open Question
+## So what is the future of dev tools & Moats?
 
-I don't know what the future of moats is.
+The long read you just went thought, is really just a long way of saying one thing: the future of dev tools is might just be tools like Claude Code & Codex, powered by foundation model companies. The will aggregate all the demand at the top of the "jobs to be done funnel". It is the dev tools version of no one needs a drill, they need a 1 inch hole. 
 
-I don't know what the UI of a dev tool looks like when the primary consumer is an agent. I don't know what the business model is. I don't know how you charge.
+Agentic tools will strip away all the layers, thus the moats.
+
+## Open Questions
+
+I don't know what the future of dev tools or moats is, this essay is just a meditation on a possible future.
 
 I do know the direction. It is changing  quickly for those paranoid as we push the limits at the bleeding edge, and slowly for everyone else.
-
-I don't know what the future for moats is, or if there a future of moats if you are not a foundation model company. Do you?
