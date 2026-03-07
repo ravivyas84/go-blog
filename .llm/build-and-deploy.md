@@ -55,14 +55,19 @@ build/
 
 **File**: `.github/workflows/go.yml`
 
-**Trigger**: Push to `main` or PR against `main`
+**Triggers**:
+- Push to `main` → production deployment
+- Push to `preview` → preview deployment
+- PR against `main` → build only (no deploy step runs)
 
 **Steps**:
 1. `actions/checkout@v4` — checkout code
 2. `actions/setup-go@v4` — install Go 1.22
 3. `go build -v main.go` — compile
 4. `./main` — generate static site
-5. `cd build && npx vercel --prod --token $TOKEN` — deploy to Vercel
+5. Deploy step (branch-conditional):
+   - `main` branch: `cd build && npx vercel --prod --token $TOKEN` (production)
+   - `preview` branch: `cd build && npx vercel --token $TOKEN` (Vercel preview environment)
 
 **Secrets required**:
 - `VERCEN_TOKEN` — Vercel deployment token (note: variable name has a typo, kept for compatibility)
