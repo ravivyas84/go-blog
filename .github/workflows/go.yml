@@ -5,7 +5,7 @@ name: Go
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "preview" ]
   pull_request:
     branches: [ "main" ]
 
@@ -23,14 +23,24 @@ jobs:
 
     - name: Build
       run: go build -v main.go
-  
+
     - name: Build blog
       run: ./main
 
-    - name: deploy to vercel
+    - name: deploy to vercel (production)
+      if: github.ref == 'refs/heads/main'
       env:
         TOKEN: ${{ secrets.VERCEN_TOKEN }}
       run: |
           cd build
           ls
           npx vercel --prod --token $TOKEN
+
+    - name: deploy to vercel (preview)
+      if: github.ref == 'refs/heads/preview'
+      env:
+        TOKEN: ${{ secrets.VERCEN_TOKEN }}
+      run: |
+          cd build
+          ls
+          npx vercel --token $TOKEN
