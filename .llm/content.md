@@ -2,12 +2,13 @@
 
 > **Auto-maintained**: Update this file whenever posts or pages are added, removed, or renamed. See [conventions.md](conventions.md) for update instructions.
 >
-> **Total: 58 blog posts, 6 static pages**
+> **Total: 59 blog posts, 6 static pages**
 
 ## Blog Posts (sorted by date, newest first)
 
 | Date | Title | Filename | Tags |
 |---|---|---|---|
+| 2026-03-01 | Dev Tools and Moats | `devtools-and-moats.md` | artificial-intelligence, product-management |
 | 2026-02-22 | Something Big Is Indeed Happening- The Changes I See in My World | `something-big-is-happening-notes-from-my-world.md` | product-management, artificial-intelligence |
 | 2024-07-31 | Mental models & broken products | `mental-models-and-broken-products.md` | product-management |
 | 2024-06-16 | This blog is now powered by Go, GitHub actions, Vercel and ChatGPT | `powered-by-go-chatgpt-actions.md` | updates |

@@ -19,7 +19,7 @@ go-blog/
 ├── utilities/
 │   └── utilities.go           # CopyFile / CopyDir helpers
 │
-├── posts/                     # Blog post Markdown files (58 posts)
+├── posts/                     # Blog post Markdown files (59 posts)
 │   └── *.md                   # Each file: YAML front matter + Markdown body
 │
 ├── pages/                     # Static page Markdown files (6 pages)
@@ -34,7 +34,7 @@ go-blog/
 │   ├── base.tmpl              # Base layout for individual posts
 │   ├── base_2.tmpl            # Base layout for posts listing page
 │   ├── base_tags.tmpl         # Base layout for tags page
-│   ├── header.tmpl            # Shared header (nav bar)
+│   ├── header.tmpl            # Shared header (nav bar; separators styled in CSS)
 │   ├── footer.tmpl            # Shared footer
 │   ├── content.tmpl           # Post article body + TOC
 │   ├── pages.tmpl             # Static page body + latest posts
@@ -48,7 +48,8 @@ go-blog/
 │   │   ├── Home.module.css    # Page-specific styles
 │   │   └── utils.module.css   # Utility classes
 │   ├── scripts/
-│   │   └── toc.js             # Interactive table of contents (IntersectionObserver)
+│   │   ├── toc.js             # Interactive table of contents (IntersectionObserver)
+│   │   └── font-size.js       # Reader preference controls (size, spacing, width, typeface)
 │   ├── sitemap.xml            # SEO sitemap
 │   ├── favicon.ico
 │   └── .well-known/webfinger  # Mastodon federation
