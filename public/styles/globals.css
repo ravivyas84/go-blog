@@ -10,6 +10,11 @@
   --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
   --font-mono: Menlo, Monaco, "Lucida Console", Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, "Courier New", monospace;
   --container-width: 800px;
+  /* Reader preferences — overridden by JS from localStorage */
+  --font-size-base: 20px;
+  --line-height-base: 1.65;
+  --reading-width: 680px;
+  --font-body: Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -50,9 +55,9 @@ html, body {
   margin: 0;
   color: var(--color-text);
   background: var(--color-bg);
-  font-family: var(--font-serif);
-  font-size: 18px;
-  line-height: 1.65;
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
 }
 
 * {
@@ -130,7 +135,6 @@ a {
 .hover-effect {
   position: relative;
   display: inline-block;
-  font-size: 18px;
   cursor: pointer;
   color: var(--color-text);
   text-decoration: none;
@@ -171,6 +175,14 @@ article h1 {
 .content {
   margin-top: 10px;
   padding-top: 10px;
+}
+
+.article-content {
+  max-width: var(--reading-width);
+}
+
+.article-content p {
+  margin-bottom: 1.5em;
 }
 
 article img {
@@ -555,3 +567,99 @@ body:has(.dn-cta-bar) .container {
     color-scheme: dark;
   }
 }
+
+/* ===== Reader preferences panel ===== */
+.font-size-control {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1001;
+}
+
+body:has(.dn-cta-bar) .font-size-control {
+  bottom: 4.5rem;
+}
+
+.font-size-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.font-size-panel {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  width: 240px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  flex-direction: column;
+  gap: 12px;
+}
+
+.font-size-panel.open {
+  display: flex;
+}
+
+.pref-section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+
+.pref-options {
+  display: flex;
+  gap: 4px;
+}
+
+.pref-option {
+  flex: 1;
+  padding: 6px 4px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  border-radius: 5px;
+  font-size: 12px;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.pref-option:hover {
+  color: var(--color-text);
+  border-color: var(--color-text-muted);
+}
+
+.pref-option.active {
+  color: var(--color-text);
+  border-color: var(--color-text);
+  font-weight: 600;
+  background: var(--color-accent);
+}
+
+/* Font size options — visually hint at actual size */
+.pref-option[data-size="18"] { font-size: 11px; }
+.pref-option[data-size="20"] { font-size: 14px; }
+.pref-option[data-size="22"] { font-size: 18px; }
+
+/* Typeface options — rendered in their own font */
+.pref-option[data-face="georgia"] { font-family: Georgia, serif; }
+.pref-option[data-face="charter"] { font-family: "Charter", "Bitstream Charter", Georgia, serif; }
+.pref-option[data-face="sans"]    { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
