@@ -34,7 +34,7 @@ go-blog/
 │   ├── base.tmpl              # Base layout for individual posts
 │   ├── base_2.tmpl            # Base layout for posts listing page
 │   ├── base_tags.tmpl         # Base layout for tags page
-│   ├── header.tmpl            # Shared header (nav bar)
+│   ├── header.tmpl            # Shared header (nav bar; separators styled in CSS)
 │   ├── footer.tmpl            # Shared footer
 │   ├── content.tmpl           # Post article body + TOC
 │   ├── pages.tmpl             # Static page body + latest posts

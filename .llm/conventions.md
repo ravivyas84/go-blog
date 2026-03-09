@@ -78,6 +78,8 @@ These values are hardcoded in `main.go` and templates — there is no config fil
 - Named blocks: `{{define "header"}}`, `{{define "content"}}`, `{{define "footer"}}`
 - Base templates call: `{{template "header" .}}`, `{{template "content" .}}`, `{{template "footer" .}}`
 - Data passed to templates: `Document` struct (posts), `LatestPosts` struct (pages), anonymous structs (listings)
+- Header nav separators are CSS-generated (`.nav-item + .nav-item::before`) in `public/styles/globals.css`; `header.tmpl` does not contain literal `|` separators.
+- Global accent tokens are defined in `public/styles/globals.css` (`--accent`, `--accent-soft`, `--text-strong`) and used by nav/link/TOC highlight states.
 
 ## Code Style
 
