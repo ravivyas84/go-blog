@@ -25,7 +25,7 @@
     {{ end }}
     <article>
         <h1>{{ .FrontMatter.Title }}</h1>
-        <span>{{ .FrontMatter.Date }}</span>
+        <span class="article-date">{{ .FrontMatter.Date }}</span>
         <div class="article-content" id="article-content">{{ .Content }}</div>
     </article>
 {{end}}
