@@ -69,6 +69,7 @@ These values are hardcoded in `main.go` and templates — there is no config fil
 | Blog title | `header.tmpl:5` | `Ravi Vyas` |
 | Blog tagline | `header.tmpl:7` | `Musings of a Learner` |
 | Homepage latest count | `main.go:619` | 10 posts |
+| Reader defaults (size/spacing/width/typeface) | `public/styles/globals.css`, `public/scripts/font-size.js` | `18` / `1.4` / `800` / `charter` |
 | RSS title/link | `main.go:139-140` | Placeholder values (not customized) |
 | Vercel token secret | `go.yml:32` | `VERCEN_TOKEN` |
 
@@ -79,7 +80,8 @@ These values are hardcoded in `main.go` and templates — there is no config fil
 - Base templates call: `{{template "header" .}}`, `{{template "content" .}}`, `{{template "footer" .}}`
 - Data passed to templates: `Document` struct (posts), `LatestPosts` struct (pages), anonymous structs (listings)
 - Header nav separators are CSS-generated (`.nav-item + .nav-item::before`) in `public/styles/globals.css`; `header.tmpl` does not contain literal `|` separators.
-- Global accent tokens are defined in `public/styles/globals.css` (`--accent`, `--accent-soft`, `--text-strong`) and used by nav/link/TOC highlight states.
+- Global color tokens are defined in `public/styles/globals.css` (`--color-accent`, `--color-accent-soft`, `--color-text-strong`) and used by nav/link/TOC highlight states.
+- Reader preference controls are rendered in `base.tmpl`, `base_2.tmpl`, and `base_tags.tmpl`; selected values are persisted in `localStorage` with `reader-*` keys.
 
 ## Code Style
 

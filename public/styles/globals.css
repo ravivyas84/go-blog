@@ -17,10 +17,10 @@
   --font-mono: Menlo, Monaco, "Lucida Console", Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, "Courier New", monospace;
   --container-width: 800px;
   /* Reader preferences — overridden by JS from localStorage */
-  --font-size-base: 20px;
-  --line-height-base: 1.65;
-  --reading-width: 680px;
-  --font-body: Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-size-base: 18px;
+  --line-height-base: 1.4;
+  --reading-width: 800px;
+  --font-body: "Charter", "Bitstream Charter", Georgia, serif;
 }
 
 @media (prefers-color-scheme: dark) {

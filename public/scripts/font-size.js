@@ -1,9 +1,9 @@
 (function () {
   var DEFAULTS = {
-    size: 20,
-    lineHeight: 1.65,
-    width: 680,
-    face: 'georgia'
+    size: 18,
+    lineHeight: 1.4,
+    width: 800,
+    face: 'charter'
   };
 
   var FACES = {

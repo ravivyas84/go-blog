@@ -20,7 +20,9 @@
 
 - **No framework** — vanilla HTML, CSS, JavaScript
 - **CSS**: 3 stylesheets in `public/styles/` (`globals.css`, `Home.module.css`, `utils.module.css`)
-- **JavaScript**: Single script `public/scripts/toc.js` for interactive table of contents (uses `IntersectionObserver`)
+- **JavaScript**:
+  - `public/scripts/toc.js` — interactive table of contents (uses `IntersectionObserver`)
+  - `public/scripts/font-size.js` — reader preference controls (font size, line height, content width, and typeface) with `localStorage` persistence
 - **No bundler** — CSS/JS served as-is
 
 ## Analytics
