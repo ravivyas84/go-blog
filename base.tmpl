@@ -8,6 +8,7 @@
         <meta property="og:description" content="{{ . }}">
     {{ end }}
     <link rel="stylesheet" href="/styles/globals.css"/>
+    <script src="/scripts/font-size.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <link rel="canonical" href="https://ravivyas.com/{{ .FrontMatter.Slug}}">
@@ -19,6 +20,43 @@
     {{ template "header" . }}
     {{ template "content" . }}
     {{ template "footer" . }}
+    </div>
+    <div class="font-size-control" id="font-size-control">
+      <div class="font-size-panel" id="font-size-panel">
+        <div>
+          <div class="pref-section-label">Size</div>
+          <div class="pref-options">
+            <button class="pref-option" data-size="18">A</button>
+            <button class="pref-option" data-size="20">Aa</button>
+            <button class="pref-option" data-size="22">AA</button>
+          </div>
+        </div>
+        <div>
+          <div class="pref-section-label">Spacing</div>
+          <div class="pref-options">
+            <button class="pref-option" data-lh="1.4">Compact</button>
+            <button class="pref-option" data-lh="1.65">Normal</button>
+            <button class="pref-option" data-lh="1.9">Airy</button>
+          </div>
+        </div>
+        <div>
+          <div class="pref-section-label">Width</div>
+          <div class="pref-options">
+            <button class="pref-option" data-width="560">Narrow</button>
+            <button class="pref-option" data-width="680">Medium</button>
+            <button class="pref-option" data-width="800">Wide</button>
+          </div>
+        </div>
+        <div>
+          <div class="pref-section-label">Typeface</div>
+          <div class="pref-options">
+            <button class="pref-option" data-face="georgia">Serif</button>
+            <button class="pref-option" data-face="charter">Charter</button>
+            <button class="pref-option" data-face="sans">Sans</button>
+          </div>
+        </div>
+      </div>
+      <button class="font-size-btn" id="font-size-btn" aria-label="Reading preferences">Aa</button>
     </div>
     <script src="/scripts/toc.js"></script>
 </body>
