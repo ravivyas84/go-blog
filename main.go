@@ -229,6 +229,9 @@ func main() {
 	// List all tags
 	listAllTags(db, buildDir)
 
+	// Generate individual tag pages
+	generateTagPages(db, buildDir)
+
 	// Serialize RSS to XML
 	outputRSS, err := xml.MarshalIndent(rss, "", "  ")
 	if err != nil {
@@ -830,4 +833,82 @@ func listAllTags(db *sql.DB, buildDir string) {
 	}
 
 	fmt.Printf("Processed all tags, output %s\n", outputPath)
+}
+
+func generateTagPages(db *sql.DB, buildDir string) {
+	// Fetch all posts with their tags
+	rows, err := db.Query("SELECT title, slug, pub_date, tags FROM posts ORDER BY pub_date DESC")
+	if err != nil {
+		log.Fatalf("error querying posts for tag pages: %v", err)
+	}
+	defer rows.Close()
+
+	tagPosts := make(map[string][]Post)
+	for rows.Next() {
+		var post Post
+		var pubDate string
+		var tagsJSON string
+		err := rows.Scan(&post.Title, &post.Slug, &pubDate, &tagsJSON)
+		if err != nil {
+			log.Printf("error scanning post data: %v", err)
+			continue
+		}
+
+		post.Date, err = time.Parse("2006-01-02", pubDate)
+		if err != nil {
+			log.Printf("error parsing date: %v", err)
+			continue
+		}
+
+		var tags []string
+		err = json.Unmarshal([]byte(tagsJSON), &tags)
+		if err != nil {
+			log.Printf("error unmarshalling tags: %v", err)
+			continue
+		}
+
+		for _, tag := range tags {
+			tagPosts[tag] = append(tagPosts[tag], post)
+		}
+	}
+
+	for tag, posts := range tagPosts {
+		outputPath := filepath.Join(buildDir, "tag", tag, "index.html")
+
+		outputDir := filepath.Dir(outputPath)
+		if err := os.MkdirAll(outputDir, 0755); err != nil {
+			log.Printf("error creating output directory %s: %v", outputDir, err)
+			continue
+		}
+
+		doc := struct {
+			Title   string
+			TagName string
+			Posts   []Post
+		}{
+			Title:   "Posts tagged: " + tag,
+			TagName: tag,
+			Posts:   posts,
+		}
+
+		tmpl := template.New("base_tag_posts.tmpl")
+		tmpl, err = tmpl.ParseFiles("footer.tmpl", "header.tmpl", "tag_posts.tmpl", "base_tag_posts.tmpl")
+		if err != nil {
+			log.Printf("error parsing template files: %v", err)
+			continue
+		}
+
+		outputFile, err := os.Create(outputPath)
+		if err != nil {
+			log.Printf("error creating output file %s: %v", outputPath, err)
+			continue
+		}
+
+		if err := tmpl.ExecuteTemplate(outputFile, "base_tag_posts.tmpl", doc); err != nil {
+			log.Printf("error executing template for tag %s: %v", tag, err)
+		}
+		outputFile.Close()
+
+		fmt.Printf("Processed tag page: %s, output %s\n", tag, outputPath)
+	}
 }
