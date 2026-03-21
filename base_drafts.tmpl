@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ .FrontMatter.Title }}</title>
-    <meta name="og:title" content="{{ .FrontMatter.Title }}">
-    {{ with .FrontMatter.Description }}
-        <meta name="description" content="{{ . }}">
-        <meta property="og:description" content="{{ . }}">
-    {{ end }}
+    <title>Drafts | Ravi Vyas</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Draft posts by Ravi Vyas">
     <link rel="stylesheet" href="/styles/globals.css"/>
     <script src="/scripts/font-size.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    {{ if .IsDraft }}<meta name="robots" content="noindex, nofollow">{{ else }}<link rel="canonical" href="https://ravivyas.com/{{ .FrontMatter.Slug}}">{{ end }}
     <script async="" src="https://umami.ravivyas.com/script.js" data-website-id="50b4b12b-136c-43fd-9ce3-f363e870995b"></script>
 </head>
 <body>
@@ -58,6 +54,5 @@
       </div>
       <button class="font-size-btn" id="font-size-btn" aria-label="Reading preferences">Aa</button>
     </div>
-    <script src="/scripts/toc.js"></script>
 </body>
 </html>

@@ -22,6 +22,9 @@ go-blog/
 ├── posts/                     # Blog post Markdown files (59 posts)
 │   └── *.md                   # Each file: YAML front matter + Markdown body
 │
+├── drafts/                    # Draft blog posts (cryptic URLs, excluded from listings)
+│   └── *.md                   # Same format as posts; use draft: true in front matter
+│
 ├── pages/                     # Static page Markdown files (6 pages)
 │   ├── index.md               # Homepage (shows latest 10 posts)
 │   ├── capabilitymap.md
@@ -86,6 +89,7 @@ Markdown files (posts/, pages/)
         ▼
    Generate HTML pages from DB + templates:
    ├── Individual post pages     → build/YYYY/MM/DD/slug/index.html
+   ├── Draft post pages          → build/drafts/{hash}/index.html
    ├── Static pages              → build/{slug}/index.html
    ├── Homepage (index.md)       → build/index.html
    ├── All posts listing         → build/posts/index.html
@@ -115,7 +119,9 @@ Markdown files (posts/, pages/)
 | `extractFirstImage()` | Gets first image src for Open Graph / JSON-LD |
 | `generateTOCItems()` | Builds TOC data (text + slugified ID) from headings |
 | `generateSlug()` | Creates URL path: `YYYY/MM/DD/slug` |
-| `initDB()` | Creates fresh SQLite DB with posts table |
+| `generateDraftSlug()` | Creates cryptic URL path: `drafts/{sha256-hash}` |
+| `processPostFiles()` | Reads markdown files from a directory and inserts into DB (handles both posts and drafts) |
+| `initDB()` | Creates fresh SQLite DB with posts table (includes `is_draft` column) |
 
 ## Template Hierarchy
 
