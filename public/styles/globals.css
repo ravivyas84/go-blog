@@ -58,6 +58,12 @@
   }
 }
 
+/* ===== Text selection ===== */
+::selection {
+  background: var(--color-accent);
+  color: #fff;
+}
+
 /* ===== Base ===== */
 html, body {
   padding: 0;

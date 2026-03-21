@@ -8,12 +8,14 @@ import (
 	"fmt"
 	"html/template"
 	"log"
+	"math"
 	"os"
 	"path/filepath"
 	"regexp"
 	"sort"
 	"strings"
 	"time"
+	"unicode"
 
 	"blog/frontmatter"
 	"blog/utilities"
@@ -41,6 +43,8 @@ type Document struct {
 	TOCItems    []HeadingWithID
 	JSONLD      template.HTML
 	IsDraft     bool
+	WordCount   int
+	ReadingTime int
 }
 
 // JSON-LD structured data types for schema.org BlogPosting
@@ -170,6 +174,9 @@ func main() {
 	// List all tags
 	listAllTags(db, buildDir)
 
+	// List all drafts
+	listAllDrafts(db, buildDir)
+
 	// Serialize RSS to XML
 	outputRSS, err := xml.MarshalIndent(rss, "", "  ")
 	if err != nil {
@@ -277,6 +284,8 @@ func processPostFiles(db *sql.DB, dir string, isDraft bool) {
 			continue
 		}
 
+		wordCount := countWords(parts[2])
+
 		var slug string
 		draftFlag := 0
 		if isDraft || fm.Draft {
@@ -286,8 +295,8 @@ func processPostFiles(db *sql.DB, dir string, isDraft bool) {
 			slug = generateSlug(fm.Date, fm.Slug)
 		}
 
-		_, err = db.Exec("INSERT INTO posts (title, content, pub_date, headings, slug, tags, description, author, is_draft) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-			fm.Title, htmlContent, fm.Date, string(headingsJSON), slug, string(tagsJSON), fm.Description, fm.Author, draftFlag)
+		_, err = db.Exec("INSERT INTO posts (title, content, pub_date, headings, slug, tags, description, author, is_draft, word_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			fm.Title, htmlContent, fm.Date, string(headingsJSON), slug, string(tagsJSON), fm.Description, fm.Author, draftFlag, wordCount)
 		if err != nil {
 			log.Printf("error inserting post data into database for file %s: %v", filePath, err)
 			continue
@@ -346,7 +355,8 @@ func initDB(dbPath string) (*sql.DB, error) {
 			tags TEXT NULL,
 			description TEXT NULL,
 			author TEXT NULL,
-			is_draft INTEGER DEFAULT 0
+			is_draft INTEGER DEFAULT 0,
+			word_count INTEGER DEFAULT 0
 	);`
 
 	_, err = db.Exec(createTableSQL)
@@ -358,7 +368,7 @@ func initDB(dbPath string) (*sql.DB, error) {
 }
 
 func generatePagesFromDB(db *sql.DB, buildDir string) {
-	rows, err := db.Query("SELECT title, content, pub_date, headings, slug, tags, description, author, is_draft FROM posts")
+	rows, err := db.Query("SELECT title, content, pub_date, headings, slug, tags, description, author, is_draft, word_count FROM posts")
 	if err != nil {
 		log.Fatalf("error querying posts from database: %v", err)
 	}
@@ -370,8 +380,8 @@ func generatePagesFromDB(db *sql.DB, buildDir string) {
 
 	for rows.Next() {
 		var title, content, pubDate, headingsJSON, slug, tags, description, author string
-		var isDraft int
-		err := rows.Scan(&title, &content, &pubDate, &headingsJSON, &slug, &tags, &description, &author, &isDraft)
+		var isDraft, wordCount int
+		err := rows.Scan(&title, &content, &pubDate, &headingsJSON, &slug, &tags, &description, &author, &isDraft, &wordCount)
 		if err != nil {
 			log.Printf("error scanning post data: %v", err)
 			continue
@@ -460,6 +470,8 @@ func generatePagesFromDB(db *sql.DB, buildDir string) {
 			TOCItems:    tocItems,
 			JSONLD:      jsonLDHTML,
 			IsDraft:     isDraft == 1,
+			WordCount:   wordCount,
+			ReadingTime: readingTime(wordCount),
 		}
 
 		tmpl := template.New("base.tmpl")
@@ -507,6 +519,32 @@ func extractHeadings(htmlContent string) []string {
 	}
 	f(doc)
 	return headings
+}
+
+// countWords counts the number of words in raw markdown text.
+func countWords(text []byte) int {
+	count := 0
+	inWord := false
+	for _, r := range string(text) {
+		if unicode.IsLetter(r) || unicode.IsDigit(r) {
+			if !inWord {
+				count++
+				inWord = true
+			}
+		} else {
+			inWord = false
+		}
+	}
+	return count
+}
+
+// readingTime estimates minutes to read based on word count (average 200 wpm).
+func readingTime(wordCount int) int {
+	minutes := int(math.Ceil(float64(wordCount) / 200.0))
+	if minutes < 1 {
+		minutes = 1
+	}
+	return minutes
 }
 
 // addLazyLoading adds loading="lazy" to all <img> tags in the HTML content.
@@ -862,4 +900,73 @@ func listAllTags(db *sql.DB, buildDir string) {
 	}
 
 	fmt.Printf("Processed all tags, output %s\n", outputPath)
+}
+
+func listAllDrafts(db *sql.DB, buildDir string) {
+	rows, err := db.Query("SELECT title, slug, pub_date FROM posts WHERE is_draft = 1 ORDER BY pub_date DESC")
+	if err != nil {
+		log.Fatalf("error querying all drafts: %v", err)
+	}
+	defer rows.Close()
+
+	var posts []Post
+	for rows.Next() {
+		var post Post
+		var pubDate string
+		err := rows.Scan(&post.Title, &post.Slug, &pubDate)
+		if err != nil {
+			log.Printf("error scanning draft data: %v", err)
+			continue
+		}
+
+		post.Date, err = time.Parse("2006-01-02", pubDate)
+		if err != nil {
+			log.Printf("error parsing date: %v", err)
+			continue
+		}
+
+		posts = append(posts, post)
+	}
+
+	if len(posts) == 0 {
+		log.Println("No drafts found, skipping drafts listing page.")
+		return
+	}
+
+	outputPath := filepath.Join(buildDir, "drafts", "index.html")
+
+	outputDir := filepath.Dir(outputPath)
+	if err := os.MkdirAll(outputDir, 0755); err != nil {
+		log.Printf("error creating output directory %s: %v", outputDir, err)
+		return
+	}
+
+	doc := struct {
+		Title string
+		Posts []Post
+	}{
+		Title: "Drafts",
+		Posts: posts,
+	}
+
+	tmpl := template.New("base_drafts.tmpl")
+	tmpl, err = tmpl.ParseFiles("footer.tmpl", "header.tmpl", "drafts_list.tmpl", "base_drafts.tmpl")
+	if err != nil {
+		log.Printf("error parsing template files: %v", err)
+		return
+	}
+
+	outputFile, err := os.Create(outputPath)
+	if err != nil {
+		log.Printf("error creating output file %s: %v", outputPath, err)
+		return
+	}
+	defer outputFile.Close()
+
+	if err := tmpl.ExecuteTemplate(outputFile, "base_drafts.tmpl", doc); err != nil {
+		log.Printf("error executing template for file %s: %v", outputPath, err)
+		return
+	}
+
+	fmt.Printf("Processed all drafts, output %s\n", outputPath)
 }

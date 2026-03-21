@@ -31,7 +31,7 @@
         </div>
         {{ end }}
         <h1>{{ .FrontMatter.Title }}</h1>
-        <span class="article-date">{{ .FrontMatter.Date }}{{ if .IsDraft }} &middot; Draft{{ end }}</span>
+        <span class="article-date">{{ .FrontMatter.Date }}{{ if .IsDraft }} &middot; Draft{{ end }} &middot; {{ .WordCount }} words &middot; {{ .ReadingTime }} min read</span>
         <div class="article-content" id="article-content">{{ .Content }}</div>
     </article>
 {{end}}
