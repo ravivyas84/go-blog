@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
@@ -39,6 +40,7 @@ type Document struct {
 	Headings    []string
 	TOCItems    []HeadingWithID
 	JSONLD      template.HTML
+	IsDraft     bool
 }
 
 // JSON-LD structured data types for schema.org BlogPosting
@@ -81,6 +83,7 @@ type LatestPosts struct {
 	FrontMatter frontmatter.FrontMatter
 	Content     template.HTML
 	Latest      []Post
+	IsDraft     bool
 }
 
 type Post struct {
@@ -145,76 +148,14 @@ func main() {
 		},
 	}
 
-	// Read all files in the "posts" directory
+	// Process published posts
 	postsDir := "posts"
-	files, err := os.ReadDir(postsDir)
-	if err != nil {
-		log.Fatalf("error reading posts directory: %v", err)
-	}
+	processPostFiles(db, postsDir, false)
 
-	// Iterate over each file in the "posts" directory
-	for _, file := range files {
-		if file.IsDir() {
-			continue // Skip directories
-		}
-
-		// Read the content of the file
-		filePath := filepath.Join(postsDir, file.Name())
-		data, err := os.ReadFile(filePath)
-		if err != nil {
-			log.Printf("error reading file %s: %v", file.Name(), err)
-			continue
-		}
-
-		// Parse front matter and content
-		parts := bytes.SplitN(data, []byte("---"), 3)
-		var fm frontmatter.FrontMatter
-		if err := yaml.Unmarshal(parts[1], &fm); err != nil {
-			log.Printf("error parsing front matter for file %s: %v", file.Name(), err)
-			continue
-		}
-
-		var buf bytes.Buffer
-		mdParser := goldmark.New(goldmark.WithExtensions(extension.Footnote))
-		if err := mdParser.Convert(parts[2], &buf); err != nil {
-			log.Printf("error converting markdown to HTML for file %s: %v", file.Name(), err)
-			continue
-		}
-
-		// Extract headings from the HTML content, add heading IDs, and add lazy loading to images
-		htmlContent := buf.String()
-		headings := extractHeadings(htmlContent)
-		htmlContent = addHeadingIDs(htmlContent, headings)
-		htmlContent = addLazyLoading(htmlContent)
-
-		// Convert headings to JSON
-		headingsJSON, err := json.Marshal(headings)
-		// log.Printf("headings to JSON: %s", headingsJSON)
-		if err != nil {
-			log.Printf("error marshalling headings to JSON: %v", err)
-			continue
-		}
-
-		// Convert tags to JSON
-		tagsJSON, err := json.Marshal(fm.Tags)
-		// log.Printf("tags to JSON: %s", tagsJSON)
-		if err != nil {
-			log.Printf("error marshalling tags to JSON: %v", err)
-			continue
-		}
-
-		// Generate slug
-		slug := generateSlug(fm.Date, fm.Slug)
-
-		// Insert post data into the SQLite database
-		_, err = db.Exec("INSERT INTO posts (title, content, pub_date, headings, slug, tags, description, author) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-			fm.Title, htmlContent, fm.Date, string(headingsJSON), slug, string(tagsJSON), fm.Description, fm.Author)
-		if err != nil {
-			log.Printf("error inserting post data into database for file %s: %v", filePath, err)
-			continue
-		}
-
-		fmt.Printf("Processed file %s\n", file.Name())
+	// Process draft posts
+	draftsDir := "drafts"
+	if _, err := os.Stat(draftsDir); err == nil {
+		processPostFiles(db, draftsDir, true)
 	}
 
 	// Generate pages from database
@@ -285,6 +226,89 @@ func validateLLMContext(postsDir string) {
 	}
 }
 
+// processPostFiles reads markdown files from a directory and inserts them into the database.
+// If isDraft is true, posts are marked as drafts and get cryptic slugs under /drafts/.
+func processPostFiles(db *sql.DB, dir string, isDraft bool) {
+	files, err := os.ReadDir(dir)
+	if err != nil {
+		log.Fatalf("error reading directory %s: %v", dir, err)
+	}
+
+	for _, file := range files {
+		if file.IsDir() {
+			continue
+		}
+
+		filePath := filepath.Join(dir, file.Name())
+		data, err := os.ReadFile(filePath)
+		if err != nil {
+			log.Printf("error reading file %s: %v", file.Name(), err)
+			continue
+		}
+
+		parts := bytes.SplitN(data, []byte("---"), 3)
+		var fm frontmatter.FrontMatter
+		if err := yaml.Unmarshal(parts[1], &fm); err != nil {
+			log.Printf("error parsing front matter for file %s: %v", file.Name(), err)
+			continue
+		}
+
+		var buf bytes.Buffer
+		mdParser := goldmark.New(goldmark.WithExtensions(extension.Footnote))
+		if err := mdParser.Convert(parts[2], &buf); err != nil {
+			log.Printf("error converting markdown to HTML for file %s: %v", file.Name(), err)
+			continue
+		}
+
+		htmlContent := buf.String()
+		headings := extractHeadings(htmlContent)
+		htmlContent = addHeadingIDs(htmlContent, headings)
+		htmlContent = addLazyLoading(htmlContent)
+
+		headingsJSON, err := json.Marshal(headings)
+		if err != nil {
+			log.Printf("error marshalling headings to JSON: %v", err)
+			continue
+		}
+
+		tagsJSON, err := json.Marshal(fm.Tags)
+		if err != nil {
+			log.Printf("error marshalling tags to JSON: %v", err)
+			continue
+		}
+
+		var slug string
+		draftFlag := 0
+		if isDraft || fm.Draft {
+			slug = generateDraftSlug(fm.Title, fm.Slug)
+			draftFlag = 1
+		} else {
+			slug = generateSlug(fm.Date, fm.Slug)
+		}
+
+		_, err = db.Exec("INSERT INTO posts (title, content, pub_date, headings, slug, tags, description, author, is_draft) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			fm.Title, htmlContent, fm.Date, string(headingsJSON), slug, string(tagsJSON), fm.Description, fm.Author, draftFlag)
+		if err != nil {
+			log.Printf("error inserting post data into database for file %s: %v", filePath, err)
+			continue
+		}
+
+		label := "post"
+		if draftFlag == 1 {
+			label = "draft"
+		}
+		fmt.Printf("Processed %s %s → /%s\n", label, file.Name(), slug)
+	}
+}
+
+// generateDraftSlug creates a cryptic URL path under /drafts/ using a SHA-256 hash.
+func generateDraftSlug(title, slug string) string {
+	input := title + "|" + slug
+	hash := sha256.Sum256([]byte(input))
+	short := fmt.Sprintf("%x", hash[:8]) // 16 hex chars
+	return "drafts/" + short
+}
+
 // Generate the slug
 func generateSlug(dateStr, frontmatterSlug string) string {
 	parsedDate, err := time.Parse("2006-01-02", dateStr)
@@ -321,7 +345,8 @@ func initDB(dbPath string) (*sql.DB, error) {
 			slug TEXT,
 			tags TEXT NULL,
 			description TEXT NULL,
-			author TEXT NULL
+			author TEXT NULL,
+			is_draft INTEGER DEFAULT 0
 	);`
 
 	_, err = db.Exec(createTableSQL)
@@ -333,7 +358,7 @@ func initDB(dbPath string) (*sql.DB, error) {
 }
 
 func generatePagesFromDB(db *sql.DB, buildDir string) {
-	rows, err := db.Query("SELECT title, content, pub_date, headings, slug, tags, description, author FROM posts")
+	rows, err := db.Query("SELECT title, content, pub_date, headings, slug, tags, description, author, is_draft FROM posts")
 	if err != nil {
 		log.Fatalf("error querying posts from database: %v", err)
 	}
@@ -345,7 +370,8 @@ func generatePagesFromDB(db *sql.DB, buildDir string) {
 
 	for rows.Next() {
 		var title, content, pubDate, headingsJSON, slug, tags, description, author string
-		err := rows.Scan(&title, &content, &pubDate, &headingsJSON, &slug, &tags, &description, &author)
+		var isDraft int
+		err := rows.Scan(&title, &content, &pubDate, &headingsJSON, &slug, &tags, &description, &author, &isDraft)
 		if err != nil {
 			log.Printf("error scanning post data: %v", err)
 			continue
@@ -422,12 +448,18 @@ func generatePagesFromDB(db *sql.DB, buildDir string) {
 			log.Printf("JSON-LD for '%s':\n%s", title, string(jsonLDBytes))
 		}
 
+		var jsonLDHTML template.HTML
+		if isDraft == 0 {
+			jsonLDHTML = template.HTML(fmt.Sprintf("<script type=\"application/ld+json\">\n%s\n</script>", string(jsonLDBytes)))
+		}
+
 		doc := Document{
 			FrontMatter: frontmatter.FrontMatter{Title: title, Date: pubDate, Description: description, Slug: slug},
 			Content:     template.HTML(content),
 			Headings:    headings,
 			TOCItems:    tocItems,
-			JSONLD:      template.HTML(fmt.Sprintf("<script type=\"application/ld+json\">\n%s\n</script>", string(jsonLDBytes))),
+			JSONLD:      jsonLDHTML,
+			IsDraft:     isDraft == 1,
 		}
 
 		tmpl := template.New("base.tmpl")
@@ -656,7 +688,7 @@ func buildPages(db *sql.DB) {
 }
 
 func fetchLatestPosts(db *sql.DB) ([]Post, error) {
-	rows, err := db.Query("SELECT title, slug, pub_date FROM posts ORDER BY pub_date DESC LIMIT 10")
+	rows, err := db.Query("SELECT title, slug, pub_date FROM posts WHERE is_draft = 0 ORDER BY pub_date DESC LIMIT 10")
 	if err != nil {
 		return nil, fmt.Errorf("error querying latest posts: %v", err)
 	}
@@ -684,7 +716,7 @@ func fetchLatestPosts(db *sql.DB) ([]Post, error) {
 
 func listAllPosts(db *sql.DB, buildDir string) {
 	// Fetch all posts from the database
-	rows, err := db.Query("SELECT title, slug, pub_date FROM posts ORDER BY pub_date DESC")
+	rows, err := db.Query("SELECT title, slug, pub_date FROM posts WHERE is_draft = 0 ORDER BY pub_date DESC")
 	if err != nil {
 		log.Fatalf("error querying all posts: %v", err)
 	}
@@ -750,7 +782,7 @@ func listAllPosts(db *sql.DB, buildDir string) {
 
 func listAllTags(db *sql.DB, buildDir string) {
 	// Fetch all tags from the database
-	rows, err := db.Query("SELECT tags FROM posts")
+	rows, err := db.Query("SELECT tags FROM posts WHERE is_draft = 0")
 	if err != nil {
 		log.Fatalf("error querying all tags: %v", err)
 	}

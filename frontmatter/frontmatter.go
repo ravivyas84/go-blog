@@ -9,4 +9,5 @@ type FrontMatter struct {
 	Author           string
 	Date             string
 	Tags             []string
+	Draft            bool     `yaml:"draft"`
 }

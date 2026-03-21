@@ -11,7 +11,7 @@
     <script src="/scripts/font-size.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <link rel="canonical" href="https://ravivyas.com/{{ .FrontMatter.Slug}}">
+    {{ if .IsDraft }}<meta name="robots" content="noindex, nofollow">{{ else }}<link rel="canonical" href="https://ravivyas.com/{{ .FrontMatter.Slug}}">{{ end }}
     <script async="" src="https://umami.ravivyas.com/script.js" data-website-id="50b4b12b-136c-43fd-9ce3-f363e870995b"></script>
 </head>
 <body>
