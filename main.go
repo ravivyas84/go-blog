@@ -73,8 +73,8 @@ type JSONLDPerson struct {
 }
 
 type JSONLDPublisher struct {
-	Type string `json:"@type"`
-	Name string `json:"name"`
+	Type string            `json:"@type"`
+	Name string            `json:"name"`
 	Logo JSONLDImageObject `json:"logo"`
 }
 
@@ -918,17 +918,7 @@ func generateTagPages(db *sql.DB, buildDir string) {
 		var post Post
 		var pubDate string
 		var tagsJSON string
-func listAllDrafts(db *sql.DB, buildDir string) {
-	rows, err := db.Query("SELECT title, slug, pub_date FROM posts WHERE is_draft = 1 ORDER BY pub_date DESC")
-	if err != nil {
-		log.Fatalf("error querying all drafts: %v", err)
-	}
-	defer rows.Close()
 
-	var posts []Post
-	for rows.Next() {
-		var post Post
-		var pubDate string
 		err := rows.Scan(&post.Title, &post.Slug, &pubDate, &tagsJSON)
 		if err != nil {
 			log.Printf("error scanning post data: %v", err)
@@ -953,7 +943,13 @@ func listAllDrafts(db *sql.DB, buildDir string) {
 		}
 	}
 
-	for tag, posts := range tagPosts {
+	var tagNames []string
+	for tag := range tagPosts {
+		tagNames = append(tagNames, tag)
+	}
+	sort.Strings(tagNames)
+
+	for _, tag := range tagNames {
 		outputPath := filepath.Join(buildDir, "tag", tag, "index.html")
 
 		outputDir := filepath.Dir(outputPath)
@@ -969,7 +965,7 @@ func listAllDrafts(db *sql.DB, buildDir string) {
 		}{
 			Title:   "Posts tagged: " + tag,
 			TagName: tag,
-			Posts:   posts,
+			Posts:   tagPosts[tag],
 		}
 
 		tmpl := template.New("base_tag_posts.tmpl")
