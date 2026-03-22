@@ -24,8 +24,14 @@
     </div>
     {{ end }}
     <article>
+        {{ if .IsDraft }}
+        <div class="draft-banner">
+            <span class="draft-badge">DRAFT</span>
+            <span class="draft-text">This is an unpublished draft. Please do not share this link publicly.</span>
+        </div>
+        {{ end }}
         <h1>{{ .FrontMatter.Title }}</h1>
-        <span class="article-date">{{ .FrontMatter.Date }}</span>
+        <span class="article-date">{{ .FrontMatter.Date }}{{ if .IsDraft }} &middot; Draft{{ end }} &middot; {{ .WordCount }} words &middot; {{ .ReadingTime }} min read</span>
         <div class="article-content" id="article-content">{{ .Content }}</div>
     </article>
 {{end}}

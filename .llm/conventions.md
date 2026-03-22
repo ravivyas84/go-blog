@@ -27,6 +27,7 @@ author: "Author Name"
 | `tags` | No | Array of strings. Aggregated on `/tag/` page |
 | `description` | No | Used in meta description and OG description |
 | `author` | No | Defaults to "Ravi Vyas" if empty |
+| `draft` | No | Boolean. If `true` (or file is in `drafts/`), post gets a cryptic URL and is excluded from listings |
 
 ## URL Structure
 
@@ -34,6 +35,7 @@ author: "Author Name"
 - Static pages: `https://ravivyas.com/page-slug/`
 - Posts listing: `https://ravivyas.com/posts/`
 - Tags listing: `https://ravivyas.com/tag/`
+- Draft posts: `https://ravivyas.com/drafts/{sha256-hash}`
 - RSS: `https://ravivyas.com/feed.xml`
 
 ## Adding a New Blog Post
@@ -45,6 +47,17 @@ author: "Author Name"
 5. Images: place in `public/assets/` and reference as `/assets/filename.ext`
 6. Run the build: `go build -v main.go && ./main`
 7. **Update `.llm/content.md`** with the new post entry
+
+## Adding a Draft Post
+
+1. Create a new `.md` file in `drafts/`
+2. Add YAML front matter with `draft: true` (files in `drafts/` are automatically treated as drafts)
+3. Write content in Markdown below the front matter
+4. Run the build: `go build -v main.go && ./main`
+5. The build output will show the cryptic URL: `Processed draft filename.md → /drafts/{hash}`
+6. Drafts are excluded from: sitemap, RSS feed, post listings, tag pages, latest posts on homepage
+7. Drafts show a visible "DRAFT" banner to readers and include `<meta name="robots" content="noindex, nofollow">`
+8. No canonical URL is generated for drafts
 
 ## Adding a New Static Page
 

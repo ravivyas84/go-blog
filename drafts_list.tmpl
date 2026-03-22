@@ -1,0 +1,17 @@
+{{define "content"}}
+
+<h2>All Drafts</h2>
+<div class="draft-banner">
+    <span class="draft-badge">DRAFT</span>
+    <span class="draft-text">These are unpublished drafts. Please do not share these links publicly.</span>
+</div>
+<ul class="latest-posts list">
+    {{ range .Posts }}
+    <li class="listItem">
+        <span class="post-date lightText">{{ .Date.Format "Jan 2, 2006" }}</span>
+        <a href="/{{ .Slug }}" class="post-title">{{ .Title }}</a>
+    </li>
+    {{ end }}
+</ul>
+
+{{end}}
