@@ -2,12 +2,13 @@
 
 > **Auto-maintained**: Update this file whenever posts or pages are added, removed, or renamed. See [conventions.md](conventions.md) for update instructions.
 >
-> **Total: 59 blog posts, 6 static pages**
+> **Total: 60 blog posts, 6 static pages**
 
 ## Blog Posts (sorted by date, newest first)
 
 | Date | Title | Filename | Tags |
 |---|---|---|---|
+| 2026-03-21 | The Future of Knowledge Work | `future-of-knowledge-work.md` | AI, Knowledge Work, Productivity |
 | 2026-03-01 | Dev Tools and Moats | `devtools-and-moats.md` | artificial-intelligence, product-management |
 | 2026-02-22 | Something Big Is Indeed Happening- The Changes I See in My World | `something-big-is-happening-notes-from-my-world.md` | product-management, artificial-intelligence |
 | 2024-07-31 | Mental models & broken products | `mental-models-and-broken-products.md` | product-management |
@@ -81,4 +82,4 @@
 
 ## Tags (across all posts)
 
-product-management, entrepreneurship, strategy, leadership, growth, metrics, opinions, software-development, user-experience, seo, updates, Pricing, management, journey-with-azure, web3, personal-development, productivity, nocode-lowcode, community, engagement, hacks, spreadsheets, ad-monetization, india, Podcasts, Sales, Incentives, Learnings, mission, product-prioritization, vision, post, people management, artificial-intelligence
+product-management, entrepreneurship, strategy, leadership, growth, metrics, opinions, software-development, user-experience, seo, updates, Pricing, management, journey-with-azure, web3, personal-development, productivity, nocode-lowcode, community, engagement, hacks, spreadsheets, ad-monetization, india, Podcasts, Sales, Incentives, Learnings, mission, product-prioritization, vision, post, people management, artificial-intelligence, AI, Knowledge Work, Productivity
