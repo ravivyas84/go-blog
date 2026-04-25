@@ -9,7 +9,7 @@ tags:
 
 layout: layouts/posts.njk
 
---- 
+---
 
 A critical job a product needs to do is to allow the user to build a mental model¹ of how the product works. As the model gets built, the effort required to use the model becomes easier. It also allows power users, to guess with high probability, what went wrong when the product is not working. 
 

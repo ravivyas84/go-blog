@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SectionHeading } from '../../ui/SectionHeading';
+import { getTagSummaries } from '../../lib/content';
+
+const tags = await getTagSummaries();
+---
+
+<BaseLayout title="Tags" canonicalPath="/tag/" pageClass="page-shell--content">
+  <section class="content-panel">
+    <SectionHeading eyebrow="Topics" title="Browse by tag" />
+    <div class="tag-grid">
+      {tags.map((tag) => (
+        <a class="tag-pill-card" href={`/tag/${tag.slug}/`}>
+          <span>{tag.name}</span>
+          <strong>{tag.count}</strong>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

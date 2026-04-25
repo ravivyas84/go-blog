@@ -4,62 +4,75 @@
 
 ## Overview
 
-Custom static blog generator written in Go. Converts Markdown blog posts (with YAML front matter) into a static HTML website. Uses SQLite as an intermediate store during build, then outputs plain HTML to a `build/` directory deployed on Vercel.
+Astro static site that renders Markdown blog posts and static pages into a `build/` directory for deployment on Vercel. The active site architecture now uses Astro content collections and route generation, while the previous Go generator remains in the repo as legacy migration context.
 
 ## Directory Tree
 
 ```
-go-blog/
-├── main.go                    # Core build engine (~793 lines). Orchestrates entire pipeline.
-├── go.mod / go.sum            # Go module (module name: "blog", Go 1.22.2)
+markdown-html/
+├── package.json / package-lock.json   # Node package manifest + lockfile
+├── astro.config.mjs                   # Astro site/build/markdown configuration
+├── tsconfig.json                      # TypeScript config for Astro
 │
-├── frontmatter/
-│   └── frontmatter.go         # FrontMatter struct & YAML parsing
+├── src/
+│   ├── content.config.ts              # Astro content collections loading from root posts/ + pages/
+│   ├── components/                    # Astro-only UI fragments
+│   │   ├── ReaderPreferences.astro
+│   │   └── Toc.astro
+│   ├── layouts/
+│   │   └── BaseLayout.astro           # Shared HTML document shell + SEO + scripts
+│   ├── lib/                           # Site constants, content helpers, metadata helpers
+│   │   ├── content.ts
+│   │   ├── post-meta.ts
+│   │   ├── rehype-lazy-images.mjs
+│   │   ├── site-profile.ts            # Concept homepage/profile/navigation/footer data
+│   │   └── site.ts
+│   ├── ui/                            # React UI components used by Astro + Storybook
+│   │   ├── home/HomePage.tsx          # Concept homepage composition
+│   │   ├── SiteHeader.tsx / SiteFooter.tsx
+│   │   ├── BrandMark.tsx / Icon.tsx / Button.tsx
+│   │   ├── ThemeToggle.tsx / SearchField.tsx / NavItem.tsx / SectionTitle.tsx
+│   │   ├── TagPill.tsx / StatusPill.tsx / TopicChip.tsx
+│   │   ├── HeroCanvas.tsx / HeroProfileCard.tsx
+│   │   ├── LatestWritingSection.tsx / WritingListItem.tsx / CurrentlyExploringCard.tsx
+│   │   ├── ProjectsSection.tsx / ProjectCardConcept.tsx
+│   │   ├── TopicBrowserSection.tsx / AboutBanner.tsx / InboxSubscribeCard.tsx
+│   │   ├── storybook-fixtures.ts
+│   │   └── *.stories.tsx              # Storybook stories loaded from src/ui/**
+│   └── pages/                         # Astro routes
+│       ├── index.astro                # Concept homepage with latest posts + page metadata
+│       ├── feed.xml.js                # RSS feed generator
+│       ├── sitemap.xml.js             # Sitemap generator
+│       ├── posts/index.astro          # All-posts listing
+│       ├── tag/index.astro            # All-tags listing
+│       ├── tag/[tag]/index.astro      # Per-tag post listing
+│       ├── [slug]/index.astro         # Static pages from pages/
+│       └── [year]/[month]/[day]/[slug]/index.astro  # Blog post permalinks
 │
-├── utilities/
-│   └── utilities.go           # CopyFile / CopyDir helpers
-│
-├── posts/                     # Blog post Markdown files (58 posts)
-│   └── *.md                   # Each file: YAML front matter + Markdown body
-│
-├── pages/                     # Static page Markdown files (6 pages)
-│   ├── index.md               # Homepage (shows latest 10 posts)
-│   ├── capabilitymap.md
-│   ├── dailynotes.md
-│   ├── odiocast.md
-│   ├── puremetrics.md
-│   └── videos.md
-│
-├── *.tmpl                     # Go html/template files
-│   ├── base.tmpl              # Base layout for individual posts
-│   ├── base_2.tmpl            # Base layout for posts listing page
-│   ├── base_tags.tmpl         # Base layout for tags page
-│   ├── header.tmpl            # Shared header (nav bar)
-│   ├── footer.tmpl            # Shared footer
-│   ├── content.tmpl           # Post article body + TOC
-│   ├── pages.tmpl             # Static page body + latest posts
-│   ├── posts.tmpl             # All-posts listing body
-│   └── tags.tmpl              # All-tags listing body
-│
-├── public/                    # Static assets (copied as-is to build/)
-│   ├── assets/                # Images (130+ files: PNG, JPG, AVIF)
+├── posts/                             # Blog post Markdown files (59 posts)
+├── pages/                             # Static page Markdown files (6 pages)
+├── public/                            # Static assets copied as-is to build/
+│   ├── assets/
+│   ├── scripts/                       # toc.js, font-size.js, theme-toggle.js
 │   ├── styles/
-│   │   ├── globals.css        # Main stylesheet
-│   │   ├── Home.module.css    # Page-specific styles
-│   │   └── utils.module.css   # Utility classes
-│   ├── scripts/
-│   │   └── toc.js             # Interactive table of contents (IntersectionObserver)
-│   ├── sitemap.xml            # SEO sitemap
 │   ├── favicon.ico
-│   └── .well-known/webfinger  # Mastodon federation
+│   └── .well-known/webfinger
+│
+├── .storybook/                        # Storybook config for the React design system
+│   ├── main.ts
+│   └── preview.ts
 │
 ├── .github/workflows/
-│   └── go.yml                 # CI/CD: build Go → run main → deploy to Vercel
+│   └── go.yml                         # CI/CD: npm ci → astro build → deploy build/ to Vercel
 │
-├── .llm/                      # LLM context files (this directory)
+├── .llm/                              # LLM context files
+├── build/                             # Generated static output (git-ignored)
 │
-├── build/                     # Generated output (git-ignored)
-└── posts.db                   # Transient SQLite DB used during build (git-ignored)
+├── main.go                            # Legacy Go generator kept during migration
+├── go.mod / go.sum                    # Legacy Go module metadata
+├── frontmatter/frontmatter.go         # Legacy Go helper
+├── utilities/utilities.go             # Legacy Go helper
+└── *.tmpl                             # Legacy Go templates retained during migration
 ```
 
 ## Build Pipeline
@@ -68,61 +81,66 @@ go-blog/
 Markdown files (posts/, pages/)
         │
         ▼
-   Parse YAML front matter
+  Astro content collections
+  ├── validate front matter with Zod
+  ├── expose typed entries to routes
+  └── keep source files in place (no content move)
         │
         ▼
-   Convert Markdown → HTML (Goldmark)
+  Astro Markdown rendering
+  ├── generate heading metadata for TOC
+  ├── preserve raw HTML in markdown
+  ├── add loading="lazy" to images via rehype
+  └── render static pages and post bodies
         │
         ▼
-   Post-process HTML:
-   ├── Extract H2 headings for TOC
-   ├── Add id="" attributes to headings
-   └── Add loading="lazy" to images
+  React UI layer inside Astro
+  ├── renders the concept homepage redesign
+  ├── renders the shared site header/footer
+  └── supplies the same components to Storybook
         │
         ▼
-   Store in SQLite (posts.db)
+  Static route generation:
+  ├── Homepage                  → build/index.html
+  ├── Individual posts          → build/YYYY/MM/DD/slug/index.html
+  ├── Static pages              → build/{slug}/index.html
+  ├── All posts listing         → build/posts/index.html
+  ├── Tag listing               → build/tag/index.html
+  ├── Per-tag pages             → build/tag/{tag}/index.html
+  ├── RSS feed                  → build/feed.xml
+  └── Sitemap                   → build/sitemap.xml
         │
         ▼
-   Generate HTML pages from DB + templates:
-   ├── Individual post pages     → build/YYYY/MM/DD/slug/index.html
-   ├── Static pages              → build/{slug}/index.html
-   ├── Homepage (index.md)       → build/index.html
-   ├── All posts listing         → build/posts/index.html
-   ├── All tags listing          → build/tag/index.html
-   └── RSS feed                  → build/feed.xml
+  Copy public/ → build/
         │
         ▼
-   Copy public/ → build/
-        │
-        ▼
-   Deploy build/ to Vercel
+  Deploy build/ to Vercel
 ```
 
-## Key Functions in main.go
+## Key Astro Modules
 
-| Function | Purpose |
+| File | Purpose |
 |---|---|
-| `main()` | Orchestrates build: clean → init DB → process posts → generate pages → RSS → copy assets |
-| `generatePagesFromDB()` | Renders each post to HTML using `base.tmpl` + `content.tmpl` |
-| `buildPages()` | Renders static pages from `pages/` using `base.tmpl` + `pages.tmpl` |
-| `listAllPosts()` | Generates the all-posts listing page |
-| `listAllTags()` | Aggregates tags with counts, generates tags page |
-| `fetchLatestPosts()` | Queries DB for 10 most recent posts (used on homepage) |
-| `extractHeadings()` | Parses HTML to find all H2 text |
-| `addHeadingIDs()` | Injects `id` attributes on H2 tags for anchor linking |
-| `addLazyLoading()` | Adds `loading="lazy"` to all `<img>` tags |
-| `extractFirstImage()` | Gets first image src for Open Graph / JSON-LD |
-| `generateTOCItems()` | Builds TOC data (text + slugified ID) from headings |
-| `generateSlug()` | Creates URL path: `YYYY/MM/DD/slug` |
-| `initDB()` | Creates fresh SQLite DB with posts table |
+| `src/content.config.ts` | Defines typed `posts` and `pages` collections loaded from the existing root folders |
+| `src/lib/content.ts` | Sorts posts, resolves page slugs, builds latest-post and tag data |
+| `src/lib/post-meta.ts` | Builds JSON-LD and post image metadata |
+| `src/lib/site-profile.ts` | Stores concept-homepage navigation, hero, footer, projects, topics, and about-banner data |
+| `src/layouts/BaseLayout.astro` | Shared HTML shell, SEO tags, analytics, scripts, and React-backed site chrome |
+| `src/pages/index.astro` | Renders the concept homepage using `src/ui/home/HomePage.tsx` and latest-post data |
+| `src/pages/[year]/[month]/[day]/[slug]/index.astro` | Renders post pages with TOC and metadata |
+| `src/pages/posts/index.astro` | All-posts listing page |
+| `src/pages/tag/index.astro` / `src/pages/tag/[tag]/index.astro` | Tag index and per-tag pages |
+| `src/pages/feed.xml.js` | Generates the RSS feed |
+| `.storybook/main.ts` / `.storybook/preview.ts` | Storybook entrypoints for the shared component system |
 
-## Template Hierarchy
+## Astro Layout Hierarchy
 
 ```
-base.tmpl (posts)          base_2.tmpl (post list)    base_tags.tmpl (tags)
-  ├── header.tmpl            ├── header.tmpl            ├── header.tmpl
-  ├── content.tmpl           ├── posts.tmpl             ├── tags.tmpl
-  └── footer.tmpl            └── footer.tmpl            └── footer.tmpl
+BaseLayout.astro
+  ├── SiteHeader.tsx
+  ├── route content (`index.astro`, post page, list pages, etc.)
+  ├── SiteFooter.tsx
+  └── ReaderPreferences.astro
 ```
 
-Each `base*.tmpl` is a full HTML document. The inner templates define a `{{define "content"}}` block and a `{{define "header"}}` / `{{define "footer"}}` block.
+Post pages additionally render `Toc.astro` before the article body when H2 headings are present.

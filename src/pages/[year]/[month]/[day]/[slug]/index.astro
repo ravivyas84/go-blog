@@ -1,0 +1,52 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+
+import Toc from '../../../../../components/Toc.astro';
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import { getAllPosts, getPostPermalink } from '../../../../../lib/content';
+import { buildPostJsonLd } from '../../../../../lib/post-meta';
+import { formatPostDate } from '../../../../../lib/site';
+
+export const getStaticPaths = (async () => {
+  const posts = await getAllPosts();
+
+  return posts.map((post) => ({
+    params: {
+      year: post.data.date.getUTCFullYear().toString(),
+      month: (post.data.date.getUTCMonth() + 1).toString().padStart(2, '0'),
+      day: post.data.date.getUTCDate().toString().padStart(2, '0'),
+      slug: post.data.slug,
+    },
+    props: { post },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const tocItems = headings
+  .filter((heading) => heading.depth === 2)
+  .map((heading) => ({ id: heading.slug, text: heading.text }));
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  canonicalPath={getPostPermalink(post)}
+  jsonLd={buildPostJsonLd(post)}
+  pageClass="page-shell--content"
+>
+  <div class="article-layout">
+    {tocItems.length > 0 && <Toc items={tocItems} />}
+    <article class="content-panel content-panel--article">
+      <div class="page-intro">
+        <p class="page-intro__eyebrow">Essay</p>
+        <h1>{post.data.title}</h1>
+        <span class="article-date">{formatPostDate(post.data.date)}</span>
+      </div>
+      <div class="article-content generic-content" id="article-content">
+        <Content />
+      </div>
+    </article>
+  </div>
+</BaseLayout>

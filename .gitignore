@@ -29,3 +29,8 @@ posts.db
 seo.db
 main
 go-blog
+node_modules
+.astro
+
+*storybook.log
+storybook-static

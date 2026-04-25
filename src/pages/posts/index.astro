@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { PostPreviewCard } from '../../ui/PostPreviewCard';
+import { SectionHeading } from '../../ui/SectionHeading';
+import { getAllPosts, getPostPermalink } from '../../lib/content';
+import { formatDisplayDate } from '../../lib/site';
+
+const posts = await getAllPosts();
+---
+
+<BaseLayout title="Blog" canonicalPath="/posts/" pageClass="page-shell--content">
+  <section class="content-panel">
+    <SectionHeading
+      eyebrow="Writing"
+      title="All Blog Posts"
+    />
+    <div class="post-grid post-grid--archive">
+      {posts.map((post) => (
+        <PostPreviewCard
+          title={post.data.title}
+          href={getPostPermalink(post)}
+          date={formatDisplayDate(post.data.date)}
+          description={post.data.description}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

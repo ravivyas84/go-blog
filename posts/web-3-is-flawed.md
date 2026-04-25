@@ -1,4 +1,4 @@
---- 
+---
 title: Web 3 is Flawed
 date: "2022-06-19"
 slug: web-3-is-flawed
@@ -45,6 +45,5 @@ Other people's concerns around all things web3
 [Moxie on the technology of NFTs](https://moxie.org/2022/01/07/web3-first-impressions.html)
 
 [Aaron Levie](https://twitter.com/levie) has recently been critical of it in various tweets [here](https://twitter.com/levie/status/1538183603510575106?s=21&t=6OwOSnU1tNVTBLTLLEPUjg), [here ](https://twitter.com/levie/status/1538228322290651136?s=21&t=hU494Yb5Ex2nRfbQTeU7Dw) and [here](https://twitter.com/levie/status/1537432154811944966)
-
 
 
