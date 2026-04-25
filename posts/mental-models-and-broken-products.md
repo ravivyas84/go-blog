@@ -6,6 +6,10 @@ slug: mental-models-and-broken-products
 
 tags: 
 - product-management
+relatedPosts:
+- good-product-managers-canaries-in-coal-mine
+- a-plan-is-not-a-roadmap
+- dev-tools-and-moats
 
 layout: layouts/posts.njk
 

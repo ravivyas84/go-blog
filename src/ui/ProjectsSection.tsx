@@ -1,4 +1,4 @@
-import { projectItems } from '../lib/site-profile';
+import { featuredProjectItems } from '../lib/site-profile';
 
 import { ProjectCardConcept } from './ProjectCardConcept';
 import { SectionTitle } from './SectionTitle';
@@ -8,7 +8,7 @@ export function ProjectsSection() {
     <section className="projects-section" id="projects">
       <SectionTitle icon="projects" title="Projects and Tools" />
       <div className="projects-section__carousel" aria-label="Projects and tools">
-        {projectItems.map((project) => (
+        {featuredProjectItems.map((project) => (
           <ProjectCardConcept key={project.title} {...project} />
         ))}
       </div>

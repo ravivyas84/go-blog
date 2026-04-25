@@ -16,8 +16,12 @@ function extractFirstImageSource(body: string) {
   return markdownMatch?.[1];
 }
 
+export function getPostImageSource(post: CollectionEntry<'posts'>) {
+  return extractFirstImageSource(post.body) ?? null;
+}
+
 export function getPostImageUrl(post: CollectionEntry<'posts'>) {
-  const firstImage = extractFirstImageSource(post.body);
+  const firstImage = getPostImageSource(post);
   if (!firstImage) {
     return toAbsoluteUrl(FAVICON_PATH);
   }

@@ -1,5 +1,6 @@
 ---
 import ReaderPreferences from '../components/ReaderPreferences.astro';
+import { getSiteNavItems } from '../lib/content';
 import { FAVICON_PATH, SITE_URL, UMAMI_SCRIPT_SRC, UMAMI_WEBSITE_ID } from '../lib/site';
 import { SiteFooter } from '../ui/SiteFooter';
 import { SiteHeader } from '../ui/SiteHeader';
@@ -14,6 +15,7 @@ interface Props {
 
 const { canonicalPath, description, jsonLd, pageClass = '', title } = Astro.props;
 const canonicalUrl = new URL(canonicalPath, Astro.site ?? SITE_URL).toString();
+const siteNav = await getSiteNavItems(Astro.url.pathname);
 
 const themeBootstrapScript = `
   (() => {
@@ -52,13 +54,14 @@ const themeBootstrapScript = `
     {jsonLd && <script type="application/ld+json" set:html={jsonLd}></script>}
   </head>
   <body>
-    <SiteHeader currentPath={Astro.url.pathname} />
+    <SiteHeader currentPath={Astro.url.pathname} items={siteNav} />
     <main class:list={['page-shell', pageClass]}>
       <slot />
     </main>
     <SiteFooter />
     <ReaderPreferences />
     <script is:inline src="/scripts/theme-toggle.js"></script>
+    <script is:inline src="/scripts/site-chrome.js"></script>
     <script is:inline src="/scripts/toc.js"></script>
   </body>
 </html>

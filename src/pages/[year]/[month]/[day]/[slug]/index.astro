@@ -2,11 +2,23 @@
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 
-import Toc from '../../../../../components/Toc.astro';
 import BaseLayout from '../../../../../layouts/BaseLayout.astro';
-import { getAllPosts, getPostPermalink } from '../../../../../lib/content';
-import { buildPostJsonLd } from '../../../../../lib/post-meta';
-import { formatPostDate } from '../../../../../lib/site';
+import {
+  getAdjacentPosts,
+  getAllPosts,
+  getPostPermalink,
+  getPostReadTimeMinutes,
+  getPostWordCount,
+  getRelatedPosts,
+} from '../../../../../lib/content';
+import { buildPostJsonLd, getPostImageSource } from '../../../../../lib/post-meta';
+import { formatDisplayDate, toAbsoluteUrl } from '../../../../../lib/site';
+import { PostNavigation } from '../../../../../ui/PostNavigation';
+import { PostNoteCard } from '../../../../../ui/PostNoteCard';
+import { PostRelatedPostsCard } from '../../../../../ui/PostRelatedPostsCard';
+import { PostShareCard } from '../../../../../ui/PostShareCard';
+import { PostSubscribeCard } from '../../../../../ui/PostSubscribeCard';
+import { PostTableOfContentsCard } from '../../../../../ui/PostTableOfContentsCard';
 
 export const getStaticPaths = (async () => {
   const posts = await getAllPosts();
@@ -27,6 +39,23 @@ const { Content, headings } = await render(post);
 const tocItems = headings
   .filter((heading) => heading.depth === 2)
   .map((heading) => ({ id: heading.slug, text: heading.text }));
+const { newer, older } = await getAdjacentPosts(post);
+const relatedPosts = (await getRelatedPosts(post)).map((relatedPost) => ({
+  href: getPostPermalink(relatedPost),
+  title: relatedPost.data.title,
+  date: formatDisplayDate(relatedPost.data.date),
+}));
+const postUrl = toAbsoluteUrl(getPostPermalink(post));
+const heroImageSource = getPostImageSource(post);
+const tagLabels = post.data.tags.map((tag) =>
+  tag === 'artificial-intelligence'
+    ? 'AI'
+    : tag
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, (char) => char.toUpperCase()),
+);
+const wordCount = getPostWordCount(post);
+const readTime = getPostReadTimeMinutes(post);
 ---
 
 <BaseLayout
@@ -34,19 +63,66 @@ const tocItems = headings
   description={post.data.description}
   canonicalPath={getPostPermalink(post)}
   jsonLd={buildPostJsonLd(post)}
-  pageClass="page-shell--content"
+  pageClass="page-shell--post"
 >
-  <div class="article-layout">
-    {tocItems.length > 0 && <Toc items={tocItems} />}
-    <article class="content-panel content-panel--article">
-      <div class="page-intro">
-        <p class="page-intro__eyebrow">Essay</p>
-        <h1>{post.data.title}</h1>
-        <span class="article-date">{formatPostDate(post.data.date)}</span>
-      </div>
-      <div class="article-content generic-content" id="article-content">
+  <div class="post-page">
+    <article class="post-page__main">
+      <a class="post-page__back-link" href="/posts/">
+        <span aria-hidden="true">←</span>
+        <span>All posts</span>
+      </a>
+
+      <header class="post-page__hero">
+        <h1 class="post-page__title">{post.data.title}</h1>
+
+        <div class="post-page__meta">
+          <time datetime={post.data.date.toISOString()}>{formatDisplayDate(post.data.date)}</time>
+          <span aria-hidden="true">•</span>
+          <span>{wordCount} words</span>
+          <span aria-hidden="true">•</span>
+          <span>{readTime} min read</span>
+        </div>
+
+        {tagLabels.length > 0 && (
+          <div class="post-page__tags">
+            {tagLabels.map((tag) => (
+              <span class="post-page__tag">{tag}</span>
+            ))}
+          </div>
+        )}
+
+        <div class="post-page__doodles" aria-hidden="true">
+          <span class="post-page__doodle post-page__doodle--curve">↶</span>
+          <span class="post-page__doodle post-page__doodle--spark">✳</span>
+        </div>
+
+        {heroImageSource && (
+          <figure class="post-page__hero-image">
+            <img src={heroImageSource} alt={post.data.title} loading="eager" />
+          </figure>
+        )}
+      </header>
+
+      <div
+        class="post-article-content generic-content article-content"
+        id="article-content"
+        data-hero-source={heroImageSource ?? undefined}
+      >
         <Content />
       </div>
+
+      <PostNavigation
+        newer={newer ? { href: getPostPermalink(newer), title: newer.data.title } : null}
+        older={older ? { href: getPostPermalink(older), title: older.data.title } : null}
+      />
     </article>
+
+    <aside class="post-page__sidebar">
+      {tocItems.length > 0 && <PostTableOfContentsCard items={tocItems} />}
+      <PostShareCard postTitle={post.data.title} postUrl={postUrl} />
+      <PostRelatedPostsCard items={relatedPosts} />
+      <PostSubscribeCard />
+      <PostNoteCard />
+    </aside>
   </div>
 </BaseLayout>

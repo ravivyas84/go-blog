@@ -36,13 +36,17 @@ markdown-html/
 │   │   ├── HeroCanvas.tsx / HeroProfileCard.tsx
 │   │   ├── LatestWritingSection.tsx / WritingListItem.tsx / CurrentlyExploringCard.tsx
 │   │   ├── ProjectsSection.tsx / ProjectCardConcept.tsx
-│   │   ├── TopicBrowserSection.tsx / AboutBanner.tsx / InboxSubscribeCard.tsx
+│   │   ├── AboutPage.tsx / TopicBrowserSection.tsx / AboutBanner.tsx / InboxSubscribeCard.tsx
+│   │   ├── PostTableOfContentsCard.tsx / PostShareCard.tsx / PostRelatedPostsCard.tsx
+│   │   ├── PostSubscribeCard.tsx / PostNoteCard.tsx / PostNavigation.tsx
 │   │   ├── storybook-fixtures.ts
 │   │   └── *.stories.tsx              # Storybook stories loaded from src/ui/**
 │   └── pages/                         # Astro routes
 │       ├── index.astro                # Concept homepage with latest posts + page metadata
+│       ├── about/index.astro          # Dedicated About page
 │       ├── feed.xml.js                # RSS feed generator
 │       ├── sitemap.xml.js             # Sitemap generator
+│       ├── projects-and-tools/index.astro # Dedicated projects/tools catalog page
 │       ├── posts/index.astro          # All-posts listing
 │       ├── tag/index.astro            # All-tags listing
 │       ├── tag/[tag]/index.astro      # Per-tag post listing
@@ -53,7 +57,7 @@ markdown-html/
 ├── pages/                             # Static page Markdown files (6 pages)
 ├── public/                            # Static assets copied as-is to build/
 │   ├── assets/
-│   ├── scripts/                       # toc.js, font-size.js, theme-toggle.js
+│   ├── scripts/                       # toc.js, font-size.js, theme-toggle.js, site-chrome.js
 │   ├── styles/
 │   ├── favicon.ico
 │   └── .well-known/webfinger
@@ -97,6 +101,7 @@ Markdown files (posts/, pages/)
   React UI layer inside Astro
   ├── renders the concept homepage redesign
   ├── renders the shared site header/footer
+  ├── renders the redesigned post-page sidebar cards/navigation
   └── supplies the same components to Storybook
         │
         ▼
@@ -122,12 +127,14 @@ Markdown files (posts/, pages/)
 | File | Purpose |
 |---|---|
 | `src/content.config.ts` | Defines typed `posts` and `pages` collections loaded from the existing root folders |
-| `src/lib/content.ts` | Sorts posts, resolves page slugs, builds latest-post and tag data |
+| `src/lib/content.ts` | Sorts posts, resolves page slugs, builds latest-post/tag data, and assembles the primary header nav |
 | `src/lib/post-meta.ts` | Builds JSON-LD and post image metadata |
 | `src/lib/site-profile.ts` | Stores concept-homepage navigation, hero, footer, projects, topics, and about-banner data |
 | `src/layouts/BaseLayout.astro` | Shared HTML shell, SEO tags, analytics, scripts, and React-backed site chrome |
 | `src/pages/index.astro` | Renders the concept homepage using `src/ui/home/HomePage.tsx` and latest-post data |
-| `src/pages/[year]/[month]/[day]/[slug]/index.astro` | Renders post pages with TOC and metadata |
+| `src/pages/about/index.astro` | Renders the dedicated About page |
+| `src/pages/projects-and-tools/index.astro` | Renders the dedicated projects/tools catalog page |
+| `src/pages/[year]/[month]/[day]/[slug]/index.astro` | Renders redesigned post pages with hero metadata, sidebar cards, and adjacent navigation |
 | `src/pages/posts/index.astro` | All-posts listing page |
 | `src/pages/tag/index.astro` / `src/pages/tag/[tag]/index.astro` | Tag index and per-tag pages |
 | `src/pages/feed.xml.js` | Generates the RSS feed |
@@ -142,5 +149,3 @@ BaseLayout.astro
   ├── SiteFooter.tsx
   └── ReaderPreferences.astro
 ```
-
-Post pages additionally render `Toc.astro` before the article body when H2 headings are present.

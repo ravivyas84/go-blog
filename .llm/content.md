@@ -2,7 +2,7 @@
 
 > **Auto-maintained**: Update this file whenever posts or pages are added, removed, or renamed. See [conventions.md](conventions.md) for update instructions.
 >
-> **Total: 59 blog posts, 6 static pages**
+> **Total: 59 blog posts, 8 static pages**
 
 ## Blog Posts (sorted by date, newest first)
 
@@ -73,6 +73,8 @@
 | Filename | Title | Slug | Description |
 |---|---|---|---|
 | `index.md` | Ravi Vyas - About | (homepage) | About page with bio, hobby projects, podcast, professional experience |
+| `src/pages/about/index.astro` | About Ravi Vyas | about | Dedicated About page |
+| `src/pages/projects-and-tools/index.astro` | Projects and Tools | projects-and-tools | Dedicated catalog for active, on-hold, and shutdown projects/tools |
 | `capabilitymap.md` | CapabilityMap | capabilitymap | Browser-based capability mapping tool |
 | `dailynotes.md` | Daily Notes | dailynotes | VS Code extension for daily notes and task tracking |
 | `odiocast.md` | Odiocast | odiocast | Defunct podcast/audio product |

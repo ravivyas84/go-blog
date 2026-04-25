@@ -6,6 +6,10 @@ slug: good-product-managers-canaries-in-coal-mine
 
 tags: 
 - product-management
+relatedPosts:
+- mental-models-and-broken-products
+- a-plan-is-not-a-roadmap
+- dev-tools-and-moats
 
 layout: layouts/posts.njk
 

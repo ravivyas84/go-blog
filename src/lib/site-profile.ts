@@ -10,6 +10,7 @@ export type IconName =
   | 'linkedin'
   | 'mail'
   | 'mastodon'
+  | 'menu'
   | 'moon'
   | 'notes'
   | 'pen'
@@ -55,7 +56,7 @@ export type ProjectItem = {
   href: string;
   icon: IconName;
   label: string;
-  status: 'active' | 'on-hold';
+  status: 'active' | 'on-hold' | 'shutdown';
   title: string;
 };
 
@@ -65,10 +66,10 @@ export type ExplorationItem = {
 };
 
 export const siteNav: NavItem[] = [
-  { href: '/', icon: 'writing', label: 'Writing', match: '/' },
-  { href: '/#projects', icon: 'projects', label: 'Projects', match: '/#projects' },
-  { href: '/#about', icon: 'about', label: 'About', match: '/#about' },
-  { href: '/#links', icon: 'link', label: 'Links', match: '/#links' },
+  { href: '/posts/', icon: 'writing', label: 'Writing', match: '/posts/' },
+  { href: '/projects-and-tools/', icon: 'projects', label: 'Projects and Tools', match: '/projects-and-tools/' },
+  { href: '/about/', icon: 'about', label: 'About', match: '/about/' },
+  { href: '/videos/', icon: 'book-open', label: 'Videos', match: '/videos/' },
 ];
 
 export const heroTraits = ['Product builder', 'Tinkerer', 'AI-powered learner'];
@@ -82,7 +83,7 @@ export const heroProfile = {
     "I'm a product leader and builder interested in how AI changes the way we work, build, learn and make decisions.",
   current:
     'Currently exploring AI adoption across my personal workflows and professional product work.',
-  href: '/#about',
+  href: '/about/',
   cta: 'More about me',
 };
 
@@ -105,7 +106,7 @@ export const explorationItems: ExplorationItem[] = [
   },
 ];
 
-export const projectItems: ProjectItem[] = [
+export const featuredProjectItems: ProjectItem[] = [
   {
     title: 'Atypical PM',
     description: 'Documentation styled site where I write about Product Management.',
@@ -156,6 +157,26 @@ export const projectItems: ProjectItem[] = [
   },
 ];
 
+export const projectsAndToolsPageItems: ProjectItem[] = [
+  ...featuredProjectItems,
+  {
+    title: 'Odiocast',
+    description: 'Archived audio product page for the original podcasting experiment.',
+    href: '/odiocast/',
+    icon: 'podcast',
+    label: 'Open',
+    status: 'shutdown',
+  },
+  {
+    title: 'PureMetrics',
+    description: 'Archived analytics product page for the discontinued product.',
+    href: '/puremetrics/',
+    icon: 'box',
+    label: 'Open',
+    status: 'shutdown',
+  },
+];
+
 export const topicChips: TopicChipItem[] = [
   { label: 'Product Management', href: '/tag/product-management/', color: 'blue' },
   { label: 'AI', href: '/tag/artificial-intelligence/', color: 'violet' },
@@ -171,10 +192,74 @@ export const aboutBanner = {
   title: 'About Ravi Vyas',
   summary:
     "I'm a product leader, builder, and lifelong learner. My journey spans product management, entrepreneurship, developer tools, analytics, and embracing AI to multiply impact.",
-  href: '/#about',
+  href: '/about/',
   cta: 'Read the full story',
   quote: 'The best way to predict the future is to build it.',
 };
+
+export const aboutPageProfile = {
+  title: "At heart, I’m a perpetual learner and tinkerer.",
+  intro:
+    'I love turning ideas into products and exploring how technology changes the way we work and live.',
+  current:
+    'Right now, I’m deeply focused on adopting AI across my personal workflows and professional product work.',
+  traits: ['India', 'Builder', 'Curious', 'Impact driven'],
+};
+
+export const aboutPageExperience = [
+  "Lead Product Manager – Lowe's India",
+  'Head of Product – Jambox Games',
+  'Product & Growth Consultant – Various',
+  'Head of Growth – Arctype',
+  'Co-founder & CEO – PureMetrics',
+  'Chief Product Officer – YourStory',
+  'Co-founder & CEO – Odiocast',
+  'VP Product – MoEngage',
+  'Head of Marketing & Customer Development – MoEngage',
+  'Product Manager – Vserv',
+  'Developer Evangelist – Vserv',
+  'Android Developer – TechJini',
+];
+
+export const aboutPageOtherActivities =
+  'Founding co-organizer at Blrdroid, a 7000+ strong Android community. I am inactive now.';
+
+export const aboutPageWritingContributions = ['HackerNoon', 'Product Coalition', 'YourStory'];
+
+export const aboutPageEducation =
+  'I hold a Masters in Computer Science from Florida State University and a Bachelors from R.N.S.I.T Bangalore.';
+
+export const aboutPageSiteLinks = [
+  {
+    title: 'Read my writing',
+    copy: 'essays & notes',
+    href: '/posts/',
+    icon: 'writing' as const,
+  },
+  {
+    title: 'Explore projects',
+    copy: "what I'm building",
+    href: '/projects-and-tools/',
+    icon: 'projects' as const,
+  },
+  {
+    title: 'Podcast',
+    copy: 'Multiple Lenses',
+    href: 'https://multiplelenses.com/',
+    icon: 'podcast' as const,
+    external: true,
+  },
+  {
+    title: 'All my links',
+    copy: 'social & more',
+    href: '#links',
+    icon: 'link' as const,
+  },
+];
+
+export const aboutPageQuote = 'The best way to predict the future is to build it.';
+
+export const aboutPageNote = ['Curious forever.', 'Building always.'];
 
 export const footerLinks: LinkItem[] = [
   { href: 'https://mastodon.social/@ravi', icon: 'mastodon', label: 'Mastodon', external: true },

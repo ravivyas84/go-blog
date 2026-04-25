@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { ProjectsToolsPage } from '../../ui/ProjectsToolsPage';
+
+const title = 'Projects and Tools';
+const description =
+  'A catalog of Ravi Vyas projects, tools, experiments, and archived products including active work and shutdown side projects.';
+---
+
+<BaseLayout title={title} description={description} canonicalPath="/projects-and-tools/">
+  <ProjectsToolsPage />
+</BaseLayout>

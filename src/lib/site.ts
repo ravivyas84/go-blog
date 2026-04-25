@@ -6,6 +6,8 @@ export const FAVICON_PATH = '/favicon.ico';
 export const UMAMI_SCRIPT_SRC = 'https://umami.ravivyas.com/script.js';
 export const UMAMI_WEBSITE_ID = '50b4b12b-136c-43fd-9ce3-f363e870995b';
 export const LATEST_POST_COUNT = 10;
+export const NEWSLETTER_URL = 'https://ravivyas.substack.com/';
+export const NEWSLETTER_SUBSCRIBE_ACTION = 'https://ravivyas.substack.com/api/v1/free?nojs=true';
 
 function pad(value: number) {
   return value.toString().padStart(2, '0');

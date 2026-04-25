@@ -27,6 +27,7 @@ author: "Author Name"
 | `tags` | Optional | Optional | Arrays of strings; posts drive tag pages |
 | `description` | Optional | Optional | Used in meta description and OG description |
 | `author` | Optional | Optional | Defaults to "Ravi Vyas" if empty |
+| `relatedPosts` | Optional | N/A | Ordered array of post ids/slugs for the post-page sidebar related-posts card |
 | `layout` | Optional legacy | Optional legacy | Accepted for backward compatibility but ignored by Astro routing |
 
 Legacy fields such as `discuss`, `hnlink`, and `twitter` may exist in older posts. They are tolerated but not used by the current site.
@@ -74,8 +75,11 @@ These values are hardcoded in Astro config, helper modules, and layout/component
 | Blog title | `src/lib/site.ts`, `src/ui/SiteHeader.tsx` | `Ravi Vyas` |
 | Blog tagline | `src/lib/site.ts`, `src/ui/SiteHeader.tsx` | `Musings of a Learner` |
 | Homepage latest count | `src/lib/site.ts` | 10 posts |
-| Homepage/profile/nav/footer/topic/project data | `src/lib/site-profile.ts` | hardcoded structured site data for the concept homepage |
+| Homepage/profile/footer/topic/project data | `src/lib/site-profile.ts` | hardcoded structured site data for the concept homepage |
+| Primary header nav | `src/lib/content.ts`, `src/layouts/BaseLayout.astro` | derived from selected static pages plus special `Writing`, `Projects and Tools`, and dedicated `/about/` entries |
 | Theme toggle script | `public/scripts/theme-toggle.js` | explicit light/dark toggle |
+| Post chrome script | `public/scripts/site-chrome.js` | copy-link interactions + mobile header drawer |
+| TOC script | `public/scripts/toc.js` | H2-based post TOC activation, divider insertion, and duplicate-hero suppression |
 | Vercel token secret | `.github/workflows/go.yml` | `VERCEN_TOKEN` |
 
 ## Astro Conventions
@@ -87,6 +91,7 @@ These values are hardcoded in Astro config, helper modules, and layout/component
 - Content queries and sorting should live in `src/lib/content.ts`
 - Site-wide constants should live in `src/lib/site.ts`
 - Site/profile/homepage data should live in `src/lib/site-profile.ts`
+- The shared header nav is assembled from the `pages/` collection in `src/lib/content.ts` and passed into `SiteHeader` from `BaseLayout.astro`
 - Shared UI intended for Storybook should be written as React components in `src/ui/`, then imported into Astro pages/layouts
 
 ## Storybook Conventions
@@ -103,6 +108,14 @@ These values are hardcoded in Astro config, helper modules, and layout/component
 - `BrandMark` is the composed wordmark lockup; the green dot is a purely visual separator/accent, not a status indicator
 - The homepage search field is currently presentational only; it does not execute real search queries
 - The theme toggle remains functional and is wired by `public/scripts/theme-toggle.js`
+
+## Post Page Conventions
+
+- Individual posts at `src/pages/[year]/[month]/[day]/[slug]/index.astro` use a dedicated two-column layout with a sidebar TOC, share card, related-posts card, subscribe card, handwritten note card, and previous/next navigation
+- Post metadata such as word count and estimated reading time is derived in `src/lib/content.ts`
+- Post hero images are inferred from the first suitable markdown image using helpers in `src/lib/post-meta.ts`; no placeholder hero is rendered when a post has no image
+- Related posts are hand-curated using the optional `relatedPosts` front matter field; no automatic similarity logic is used
+- Post-page interactivity is handled by `public/scripts/toc.js` and `public/scripts/site-chrome.js`
 
 ## Code Style
 

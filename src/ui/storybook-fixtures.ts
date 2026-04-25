@@ -42,3 +42,43 @@ export const samplePosts = [
     tags: ['Product Management'],
   },
 ];
+
+export const samplePostTocItems = [
+  { id: 'what-if-most-knowledge-work-isnt-knowledge', text: "What If Most Knowledge Work Isn’t Knowledge?" },
+  { id: 'quick-note', text: "Quick Note: This Isn’t Paranoia or Doomerism" },
+  {
+    id: 'the-harness-is-where-time-goes',
+    text: 'The Harness Is Where The Time Goes, And It Is The First To Go',
+  },
+  { id: 'i-already-work-this-way', text: 'I Already Work This Way' },
+  { id: 'task-vs-purpose', text: 'Task vs. Purpose' },
+];
+
+export const sampleRelatedPosts = [
+  {
+    title: 'Task vs. Purpose',
+    href: '/2026/02/10/task-vs-purpose/',
+    date: 'Feb 10, 2026',
+  },
+  {
+    title: 'Less Work, More Knowledge',
+    href: '/2026/01/28/less-work-more-knowledge/',
+    date: 'Jan 28, 2026',
+  },
+  {
+    title: 'I Write to Think in Public',
+    href: '/2026/01/12/i-write-to-think-in-public/',
+    date: 'Jan 12, 2026',
+  },
+];
+
+export const samplePostNavigation = {
+  newer: {
+    href: '/2026/03/01/dev-tools-and-moats/',
+    title: 'Dev Tools and Moats',
+  },
+  older: {
+    href: '/2026/02/22/something-big-is-happening-notes-from-my-world/',
+    title: 'Something Big Is Indeed Happening',
+  },
+};
