@@ -1400,15 +1400,6 @@ pre {
   line-height: 1;
 }
 
-.brand-mark__separator {
-  width: 10px;
-  height: 10px;
-  flex: none;
-  border-radius: 999px;
-  background: #67c56f;
-  box-shadow: 0 0 0 5px rgba(103, 197, 111, 0.14);
-}
-
 .site-header {
   position: sticky;
   top: 0;
@@ -2903,10 +2894,6 @@ body.site-menu-open .site-header__drawer {
   color: #86a9ff;
 }
 
-[data-theme="dark"] .brand-mark__separator {
-  box-shadow: 0 0 0 5px rgba(103, 197, 111, 0.18);
-}
-
 [data-theme="dark"] .nav-item {
   color: #d7def1;
 }
@@ -3474,7 +3461,6 @@ body.site-menu-open .site-header__drawer {
 }
 
 .post-article-content blockquote::before {
-  content: "Key\A idea";
   position: absolute;
   left: var(--quote-badge-left);
   top: var(--quote-badge-top);
