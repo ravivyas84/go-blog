@@ -1,5 +1,6 @@
 import { SectionTitle } from './SectionTitle';
 import { WritingListItem } from './WritingListItem';
+import { TopicBrowserSection } from './TopicBrowserSection';
 
 type LatestWritingSectionProps = {
   items: Array<{
@@ -31,6 +32,7 @@ export function LatestWritingSection({ items }: LatestWritingSectionProps) {
           />
         ))}
       </div>
+      <TopicBrowserSection />
     </section>
   );
 }

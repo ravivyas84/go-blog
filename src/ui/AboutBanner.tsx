@@ -13,7 +13,6 @@ export function AboutBanner() {
           <Icon name="arrow-right" className="about-banner__link-icon" />
         </a>
       </div>
-      <blockquote className="about-banner__quote">“ {aboutBanner.quote} ”</blockquote>
     </section>
   );
 }

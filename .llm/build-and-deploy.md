@@ -30,9 +30,10 @@ The build will:
 5. Render the all-posts listing → `build/posts/index.html`
 6. Render the all-tags listing → `build/tag/index.html`
 7. Render per-tag listing pages → `build/tag/{tag}/index.html`
-8. Generate RSS feed → `build/feed.xml`
-9. Generate sitemap → `build/sitemap.xml`
-10. Copy `public/` into `build/`
+8. Render dedicated app/static routes such as `/quotes/` and `/projects-and-tools/`
+9. Generate RSS feed → `build/feed.xml`
+10. Generate sitemap → `build/sitemap.xml`
+11. Copy `public/` into `build/`
 
 ## Storybook
 
@@ -52,6 +53,7 @@ Storybook outputs to `storybook-static/` and documents the shared React UI compo
 build/
 ├── index.html                        # Homepage
 ├── posts/index.html                  # All posts listing
+├── quotes/index.html                 # Favorite quotes page
 ├── tag/index.html                    # All tags listing
 ├── tag/{tag}/index.html              # Per-tag post listings
 ├── feed.xml                          # RSS feed

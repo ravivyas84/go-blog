@@ -4,11 +4,11 @@ import {
   aboutPageNote,
   aboutPageOtherActivities,
   aboutPageProfile,
-  aboutPageQuote,
   aboutPageSiteLinks,
   aboutPageWritingContributions,
 } from '../lib/site-profile';
 
+import { FavoriteQuoteSection } from './FavoriteQuoteSection';
 import { Icon } from './Icon';
 import { PostSubscribeCard } from './PostSubscribeCard';
 import { PostTableOfContentsCard } from './PostTableOfContentsCard';
@@ -90,8 +90,9 @@ export function AboutPage() {
             <p>{aboutPageProfile.current}</p>
             <div className="about-page__traits">
               {aboutPageProfile.traits.map((trait) => (
-                <span className="about-page__trait" key={trait}>
-                  {trait}
+                <span className="about-page__trait" key={trait.label}>
+                  <Icon name={trait.icon} className="about-page__trait-icon" />
+                  <span>{trait.label}</span>
                 </span>
               ))}
             </div>
@@ -127,7 +128,11 @@ export function AboutPage() {
             </div>
             <ul className="about-page__contributions-list">
               {aboutPageWritingContributions.map((item) => (
-                <li key={item}>{item}</li>
+                <li key={item.label}>
+                  <a href={item.href} target="_blank" rel="noreferrer noopener">
+                    {item.label}
+                  </a>
+                </li>
               ))}
             </ul>
           </article>
@@ -141,7 +146,7 @@ export function AboutPage() {
           </article>
         </section>
 
-        <blockquote className="about-page__quote">{aboutPageQuote}</blockquote>
+        <FavoriteQuoteSection className="about-page__quote" />
       </article>
 
       <aside className="about-page__sidebar">

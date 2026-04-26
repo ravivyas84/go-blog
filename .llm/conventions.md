@@ -75,7 +75,7 @@ These values are hardcoded in Astro config, helper modules, and layout/component
 | Blog title | `src/lib/site.ts`, `src/ui/SiteHeader.tsx` | `Ravi Vyas` |
 | Blog tagline | `src/lib/site.ts`, `src/ui/SiteHeader.tsx` | `Musings of a Learner` |
 | Homepage latest count | `src/lib/site.ts` | 10 posts |
-| Homepage/profile/footer/topic/project data | `src/lib/site-profile.ts` | hardcoded structured site data for the concept homepage |
+| Homepage/profile/footer/topic/project/quote data | `src/lib/site-profile.ts` | hardcoded structured site data for the concept homepage, projects/tools page, and favorite quotes |
 | Primary header nav | `src/lib/content.ts`, `src/layouts/BaseLayout.astro` | derived from selected static pages plus special `Writing`, `Projects and Tools`, and dedicated `/about/` entries |
 | Theme toggle script | `public/scripts/theme-toggle.js` | explicit light/dark toggle |
 | Post chrome script | `public/scripts/site-chrome.js` | copy-link interactions + mobile header drawer |
@@ -108,6 +108,7 @@ These values are hardcoded in Astro config, helper modules, and layout/component
 - `BrandMark` is the composed wordmark lockup; the green dot is a purely visual separator/accent, not a status indicator
 - The homepage search field is currently presentational only; it does not execute real search queries
 - The theme toggle remains functional and is wired by `public/scripts/theme-toggle.js`
+- Favorite quotes are stored in `src/lib/site-profile.ts`; `FavoriteQuoteSection` randomly displays one quote on load and links to `/quotes/`
 
 ## Post Page Conventions
 

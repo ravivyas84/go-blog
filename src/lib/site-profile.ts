@@ -14,6 +14,7 @@ export type IconName =
   | 'moon'
   | 'notes'
   | 'pen'
+  | 'pin'
   | 'podcast'
   | 'projects'
   | 'rss'
@@ -63,6 +64,15 @@ export type ProjectItem = {
 export type ExplorationItem = {
   icon: IconName;
   text: string;
+};
+
+export type FavoriteQuote = {
+  attribution: string;
+  href?: string;
+  id: string;
+  source?: string;
+  text: string;
+  why: string;
 };
 
 export const siteNav: NavItem[] = [
@@ -194,8 +204,33 @@ export const aboutBanner = {
     "I'm a product leader, builder, and lifelong learner. My journey spans product management, entrepreneurship, developer tools, analytics, and embracing AI to multiply impact.",
   href: '/about/',
   cta: 'Read the full story',
-  quote: 'The best way to predict the future is to build it.',
 };
+
+export const favoriteQuotes: FavoriteQuote[] = [
+  {
+    id: 'alan-kay-build-future',
+    text: 'The best way to predict the future is to build it.',
+    attribution: 'Alan Kay',
+    why: 'It keeps me biased toward making things instead of only forecasting what might happen.',
+  },
+  {
+    id: 'last-of-us-paying-attention',
+    text: 'Paying attention to things, it’s how we show love.',
+    attribution: 'The Last of Us',
+    source: 'Long, Long Time (S1 E3)',
+    why: 'It connects care to noticing details, which is true in relationships and product work.',
+  },
+  {
+    id: 'tools-used-by-millions',
+    text: 'Tools used by millions go away all the time.',
+    attribution: 'Michal Malewicz',
+    href: 'https://medium.com/@michalmalewicz/figma-is-not-forever-cb8c103f64eb',
+    why: 'It is a useful reminder not to confuse popular tools with permanent foundations.',
+  },
+  { id: 'steve-jobs-customers', text: 'Get closer than ever to your customers. So close that you tell them what they need well before they realize it themselves.', attribution: 'Steve Jobs', why: 'Customer proximity beats abstract planning.' },
+  { id: 'marlene-blaszczyk-care', text: "If you don't care, your customer never will.", attribution: 'Marlene Blaszczyk', why: 'It puts responsibility for customer care where it belongs: with the builder.' },
+  { id: 'bill-gates-unhappy-customers', text: 'Your most unhappy customers are your greatest source of learning.', attribution: 'Bill Gates', why: 'It reframes complaints as signal instead of noise.' },
+];
 
 export const aboutPageProfile = {
   title: "At heart, I’m a perpetual learner and tinkerer.",
@@ -203,11 +238,17 @@ export const aboutPageProfile = {
     'I love turning ideas into products and exploring how technology changes the way we work and live.',
   current:
     'Right now, I’m deeply focused on adopting AI across my personal workflows and professional product work.',
-  traits: ['India', 'Builder', 'Curious', 'Impact driven'],
+  traits: [
+    { label: 'India', icon: 'pin' as const },
+    { label: 'Builder', icon: 'pen' as const },
+    { label: 'Curious', icon: 'spark' as const },
+    { label: 'AGI pilled', icon: 'flask' as const },
+  ],
 };
 
 export const aboutPageExperience = [
-  "Lead Product Manager – Lowe's India",
+  "Principal Product Manager, MarTech & Media Network - Lowe's India",
+  "Lead Product Manager, Compute Platform – Lowe's India",
   'Head of Product – Jambox Games',
   'Product & Growth Consultant – Various',
   'Head of Growth – Arctype',
@@ -224,7 +265,20 @@ export const aboutPageExperience = [
 export const aboutPageOtherActivities =
   'Founding co-organizer at Blrdroid, a 7000+ strong Android community. I am inactive now.';
 
-export const aboutPageWritingContributions = ['HackerNoon', 'Product Coalition', 'YourStory'];
+export const aboutPageWritingContributions = [
+  {
+    label: 'HackerNoon',
+    href: 'https://hackernoon.com/u/Ravivyas?tab=stories',
+  },
+  {
+    label: 'Product Coalition',
+    href: 'https://medium.productcoalition.com/5-things-you-need-before-building-the-product-roadmap-522ad8f9040d',
+  },
+  {
+    label: 'YourStory',
+    href: 'https://yourstory.com/people/ravi-vyas',
+  },
+];
 
 export const aboutPageEducation =
   'I hold a Masters in Computer Science from Florida State University and a Bachelors from R.N.S.I.T Bangalore.';
@@ -256,8 +310,6 @@ export const aboutPageSiteLinks = [
     icon: 'link' as const,
   },
 ];
-
-export const aboutPageQuote = 'The best way to predict the future is to build it.';
 
 export const aboutPageNote = ['Curious forever.', 'Building always.'];
 

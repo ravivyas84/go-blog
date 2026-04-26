@@ -100,6 +100,12 @@ const paths: Record<IconName, JSX.Element> = {
       <path d="M8 21H4v-4l7-7 4 4Z" />
     </>
   ),
+  pin: (
+    <>
+      <path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z" />
+      <circle cx="12" cy="10" r="2.2" />
+    </>
+  ),
   podcast: (
     <>
       <path d="M12 18v4" />

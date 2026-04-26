@@ -1,9 +1,8 @@
-import { AboutBanner } from '../AboutBanner';
 import { CurrentlyExploringCard } from '../CurrentlyExploringCard';
+import { FavoriteQuoteSection } from '../FavoriteQuoteSection';
 import { HeroCanvas } from '../HeroCanvas';
 import { LatestWritingSection } from '../LatestWritingSection';
 import { ProjectsSection } from '../ProjectsSection';
-import { TopicBrowserSection } from '../TopicBrowserSection';
 
 type HomePageProps = {
   latestPosts: Array<{
@@ -24,10 +23,8 @@ export function HomePage({ latestPosts }: HomePageProps) {
         <LatestWritingSection items={latestPosts} />
         <CurrentlyExploringCard />
       </section>
-
       <ProjectsSection />
-      <TopicBrowserSection />
-      <AboutBanner />
+      <FavoriteQuoteSection />
     </div>
   );
 }

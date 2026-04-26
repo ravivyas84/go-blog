@@ -36,7 +36,7 @@ markdown-html/
 │   │   ├── HeroCanvas.tsx / HeroProfileCard.tsx
 │   │   ├── LatestWritingSection.tsx / WritingListItem.tsx / CurrentlyExploringCard.tsx
 │   │   ├── ProjectsSection.tsx / ProjectCardConcept.tsx
-│   │   ├── AboutPage.tsx / TopicBrowserSection.tsx / AboutBanner.tsx / InboxSubscribeCard.tsx
+│   │   ├── AboutPage.tsx / QuotesPage.tsx / FavoriteQuoteSection.tsx / TopicBrowserSection.tsx / AboutBanner.tsx / InboxSubscribeCard.tsx
 │   │   ├── PostTableOfContentsCard.tsx / PostShareCard.tsx / PostRelatedPostsCard.tsx
 │   │   ├── PostSubscribeCard.tsx / PostNoteCard.tsx / PostNavigation.tsx
 │   │   ├── storybook-fixtures.ts
@@ -47,6 +47,7 @@ markdown-html/
 │       ├── feed.xml.js                # RSS feed generator
 │       ├── sitemap.xml.js             # Sitemap generator
 │       ├── projects-and-tools/index.astro # Dedicated projects/tools catalog page
+│       ├── quotes/index.astro        # Dedicated favorite quotes page
 │       ├── posts/index.astro          # All-posts listing
 │       ├── tag/index.astro            # All-tags listing
 │       ├── tag/[tag]/index.astro      # Per-tag post listing
@@ -109,6 +110,7 @@ Markdown files (posts/, pages/)
   ├── Homepage                  → build/index.html
   ├── Individual posts          → build/YYYY/MM/DD/slug/index.html
   ├── Static pages              → build/{slug}/index.html
+  ├── Favorite quotes           → build/quotes/index.html
   ├── All posts listing         → build/posts/index.html
   ├── Tag listing               → build/tag/index.html
   ├── Per-tag pages             → build/tag/{tag}/index.html
@@ -134,6 +136,7 @@ Markdown files (posts/, pages/)
 | `src/pages/index.astro` | Renders the concept homepage using `src/ui/home/HomePage.tsx` and latest-post data |
 | `src/pages/about/index.astro` | Renders the dedicated About page |
 | `src/pages/projects-and-tools/index.astro` | Renders the dedicated projects/tools catalog page |
+| `src/pages/quotes/index.astro` | Renders the dedicated favorite quotes page |
 | `src/pages/[year]/[month]/[day]/[slug]/index.astro` | Renders redesigned post pages with hero metadata, sidebar cards, and adjacent navigation |
 | `src/pages/posts/index.astro` | All-posts listing page |
 | `src/pages/tag/index.astro` / `src/pages/tag/[tag]/index.astro` | Tag index and per-tag pages |
