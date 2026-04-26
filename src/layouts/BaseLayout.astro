@@ -1,0 +1,64 @@
+---
+import { getSiteNavItems } from '../lib/content';
+import { FAVICON_PATH, SITE_URL, UMAMI_SCRIPT_SRC, UMAMI_WEBSITE_ID } from '../lib/site';
+import { SiteFooter } from '../ui/SiteFooter';
+import { SiteHeader } from '../ui/SiteHeader';
+
+interface Props {
+  canonicalPath: string;
+  description?: string;
+  jsonLd?: string;
+  pageClass?: string;
+  title: string;
+}
+
+const { canonicalPath, description, jsonLd, pageClass = '', title } = Astro.props;
+const canonicalUrl = new URL(canonicalPath, Astro.site ?? SITE_URL).toString();
+const siteNav = await getSiteNavItems(Astro.url.pathname);
+
+const themeBootstrapScript = `
+  (() => {
+    const stored = localStorage.getItem('site-theme');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = stored === 'light' || stored === 'dark' ? stored : (systemDark ? 'dark' : 'light');
+    document.documentElement.dataset.theme = theme;
+  })();
+`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <script is:inline>{themeBootstrapScript}</script>
+    <title>{title}</title>
+    <meta property="og:title" content={title} />
+    {description && (
+      <>
+        <meta name="description" content={description} />
+        <meta property="og:description" content={description} />
+      </>
+    )}
+    <link rel="stylesheet" href="/styles/globals.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charSet="UTF-8" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href={FAVICON_PATH} />
+    <link rel="alternate" type="application/rss+xml" title="Ravi Vyas RSS Feed" href="/feed.xml" />
+    <script
+      async
+      src={UMAMI_SCRIPT_SRC}
+      data-website-id={UMAMI_WEBSITE_ID}
+    ></script>
+    {jsonLd && <script type="application/ld+json" set:html={jsonLd}></script>}
+  </head>
+  <body>
+    <SiteHeader currentPath={Astro.url.pathname} items={siteNav} />
+    <main class:list={['page-shell', pageClass]}>
+      <slot />
+    </main>
+    <SiteFooter />
+    <script is:inline src="/scripts/theme-toggle.js"></script>
+    <script is:inline src="/scripts/site-chrome.js"></script>
+    <script is:inline src="/scripts/toc.js"></script>
+  </body>
+</html>

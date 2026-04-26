@@ -1,0 +1,36 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getResolvedPagePath, getResolvedPageSlug, getStaticPages } from '../../lib/content';
+import { formatPostDate } from '../../lib/site';
+
+export const getStaticPaths = (async () => {
+  const pages = await getStaticPages();
+
+  return pages.map((page) => ({
+    params: { slug: getResolvedPageSlug(page) },
+    props: { page },
+  }));
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+---
+
+<BaseLayout
+  title={page.data.title}
+  description={page.data.description}
+  canonicalPath={getResolvedPagePath(page)}
+  pageClass="page-shell--content"
+>
+  <article class="content-panel content-panel--article">
+    <div class="page-intro">
+      <p class="page-intro__eyebrow">Page</p>
+      <h1>{page.data.title}</h1>
+    </div>
+    {page.data.date && <span class="article-date">{formatPostDate(page.data.date)}</span>}
+    <div class="generic-content"><Content /></div>
+  </article>
+</BaseLayout>

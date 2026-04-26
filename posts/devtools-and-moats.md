@@ -4,6 +4,10 @@ date: "2026-03-01"
 tags: 
 - product-management
 - artificial-intelligence
+relatedPosts:
+- something-big-is-happening-notes-from-my-world
+- mental-models-and-broken-products
+- good-product-managers-canaries-in-coal-mine
 layout: layouts/posts.njk
 slug: dev-tools-and-moats
 ---

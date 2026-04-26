@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { AboutPage } from '../../ui/AboutPage';
+
+const title = 'About Ravi Vyas';
+const description =
+  'About Ravi Vyas: product leader, builder, writer, and lifelong learner working across product management, entrepreneurship, developer tools, analytics, and AI.';
+---
+
+<BaseLayout title={title} description={description} canonicalPath="/about/" pageClass="page-shell--about">
+  <AboutPage />
+</BaseLayout>

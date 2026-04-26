@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getHomePage, getLatestPosts, getPostPermalink } from '../lib/content';
+import { formatDisplayDate } from '../lib/site';
+import { HomePage } from '../ui/home/HomePage';
+
+const homePage = await getHomePage();
+
+if (!homePage) {
+  throw new Error('Expected pages/index.md to exist for the homepage.');
+}
+
+const latestPosts = (await getLatestPosts()).slice(0, 6).map((post) => ({
+  id: post.id,
+  title: post.data.title,
+  href: getPostPermalink(post),
+  date: formatDisplayDate(post.data.date),
+  tags: post.data.tags.slice(0, 3).map((tag) =>
+    tag
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase()),
+  ),
+}));
+---
+
+<BaseLayout
+  title={homePage.data.title}
+  description={homePage.data.description}
+  canonicalPath="/"
+  pageClass="page-shell--home"
+>
+  <HomePage latestPosts={latestPosts} />
+</BaseLayout>

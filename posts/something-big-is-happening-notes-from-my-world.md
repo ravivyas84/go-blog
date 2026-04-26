@@ -4,6 +4,10 @@ date: "2026-02-22"
 tags: 
 - product-management
 - artificial-intelligence
+relatedPosts:
+- dev-tools-and-moats
+- mental-models-and-broken-products
+- notes-on-note-taking
 layout: layouts/posts.njk
 slug: something-big-is-happening-notes-from-my-world
 ---

@@ -4,31 +4,48 @@
 
 ## Prerequisites
 
-- Go 1.22+ installed
-- GCC/CGO enabled (required by `go-sqlite3`)
+- Node.js 20+ installed
+- npm available locally
 
 ## Local Build
 
 ```bash
 # From the project root:
 
-# 1. Compile the build binary
-go build -v main.go
+# 1. Install dependencies
+npm install
 
-# 2. Run the build (generates static site in build/)
-./main
+# 2. Build the static site into build/
+npm run build
+
+# Optional: build Storybook into storybook-static/
+npm run build-storybook
 ```
 
 The build will:
-1. Delete and recreate `build/` directory
-2. Delete and recreate `posts.db` SQLite database
-3. Read all `posts/*.md` files, parse front matter, convert markdown, store in DB
-4. Generate individual post pages → `build/YYYY/MM/DD/slug/index.html`
-5. Generate static pages from `pages/` → `build/{slug}/index.html` (or `build/index.html` for homepage)
-6. Generate all-posts listing → `build/posts/index.html`
-7. Generate all-tags listing → `build/tag/index.html`
-8. Generate RSS feed → `build/feed.xml`
-9. Copy `public/` → `build/` (assets, styles, scripts, sitemap, favicon, etc.)
+1. Sync Astro content collections from `posts/` and `pages/`
+2. Validate front matter with the collection schemas
+3. Render individual post pages → `build/YYYY/MM/DD/slug/index.html`
+4. Render static pages from `pages/` → `build/{slug}/index.html` (or `build/index.html` for the homepage)
+5. Render the all-posts listing → `build/posts/index.html`
+6. Render the all-tags listing → `build/tag/index.html`
+7. Render per-tag listing pages → `build/tag/{tag}/index.html`
+8. Render dedicated app/static routes such as `/quotes/` and `/projects-and-tools/`
+9. Generate RSS feed → `build/feed.xml`
+10. Generate sitemap → `build/sitemap.xml`
+11. Copy `public/` into `build/`
+
+## Storybook
+
+```bash
+# Run Storybook locally
+npm run storybook
+
+# Build the static Storybook site
+npm run build-storybook
+```
+
+Storybook outputs to `storybook-static/` and documents the shared React UI components used by Astro pages.
 
 ## Output Structure
 
@@ -36,8 +53,11 @@ The build will:
 build/
 ├── index.html                        # Homepage
 ├── posts/index.html                  # All posts listing
+├── quotes/index.html                 # Favorite quotes page
 ├── tag/index.html                    # All tags listing
+├── tag/{tag}/index.html              # Per-tag post listings
 ├── feed.xml                          # RSS feed
+├── sitemap.xml                       # Sitemap
 ├── YYYY/MM/DD/slug/index.html        # Individual blog posts
 ├── videos/index.html                 # Static pages
 ├── dailynotes/index.html
@@ -47,7 +67,6 @@ build/
 ├── styles/                           # Copied from public/
 ├── scripts/                          # Copied from public/
 ├── assets/                           # Copied from public/
-├── sitemap.xml                       # Copied from public/
 └── favicon.ico                       # Copied from public/
 ```
 
@@ -62,9 +81,9 @@ build/
 
 **Steps**:
 1. `actions/checkout@v4` — checkout code
-2. `actions/setup-go@v4` — install Go 1.22
-3. `go build -v main.go` — compile
-4. `./main` — generate static site
+2. `actions/setup-node@v4` — install Node 20 and enable npm cache
+3. `npm ci` — install exact dependencies from `package-lock.json`
+4. `npm run build` — generate static site with Astro
 5. Deploy step (branch-conditional):
    - `main` branch: `cd build && npx vercel --prod --token $TOKEN` (production)
    - `preview` branch: `cd build && npx vercel --token $TOKEN` (Vercel preview environment)
@@ -74,14 +93,11 @@ build/
 
 ## Local Preview
 
-After running `./main`, serve the `build/` directory with any static file server:
+After running `npm run build`, serve the `build/` directory with any static file server:
 
 ```bash
 # Example using Python
 python3 -m http.server -d build 8000
-
-# Example using Go
-go run golang.org/x/tools/cmd/present@latest  # or any static server
 ```
 
 Then open `http://localhost:8000`.
@@ -89,5 +105,6 @@ Then open `http://localhost:8000`.
 ## Artifacts (git-ignored)
 
 - `build/` — generated output directory
-- `posts.db` — transient SQLite database
-- `main` — compiled Go binary
+- `node_modules/` — installed dependencies
+- `.astro/` — Astro cache/output metadata
+- `storybook-static/` — generated Storybook site

@@ -1,5 +1,3 @@
-# Good PMs have a 6th sense.
-
 ---
 title: Good PMs are canaries in a coal mine
 date: "2024-05-26"
@@ -8,10 +6,14 @@ slug: good-product-managers-canaries-in-coal-mine
 
 tags: 
 - product-management
+relatedPosts:
+- mental-models-and-broken-products
+- a-plan-is-not-a-roadmap
+- dev-tools-and-moats
 
 layout: layouts/posts.njk
 
---- 
+---
 
 Good Product Managers are the canary in the coal mine for changing markets and customer needs. Great PMs are the ones driving this shift in the market. 
 

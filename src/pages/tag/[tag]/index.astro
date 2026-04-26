@@ -1,0 +1,41 @@
+---
+import type { GetStaticPaths } from 'astro';
+
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { PostPreviewCard } from '../../../ui/PostPreviewCard';
+import { SectionHeading } from '../../../ui/SectionHeading';
+import { getPostPermalink, getPostsByTagSlug, getTagSummaries } from '../../../lib/content';
+import { formatDisplayDate } from '../../../lib/site';
+
+export const getStaticPaths = (async () => {
+  const tags = await getTagSummaries();
+
+  return tags.map((tag) => ({
+    params: { tag: tag.slug },
+    props: { tag },
+  }));
+}) satisfies GetStaticPaths;
+
+const { tag } = Astro.props;
+const posts = await getPostsByTagSlug(tag.slug);
+---
+
+<BaseLayout
+  title={`Tag: ${tag.name}`}
+  canonicalPath={`/tag/${tag.slug}/`}
+  pageClass="page-shell--content"
+>
+  <section class="content-panel">
+    <SectionHeading eyebrow="Tag archive" title={`Posts tagged ${tag.name}`} actionHref="/tag/" actionLabel="View all tags" />
+    <div class="post-grid post-grid--archive">
+      {posts.map((post) => (
+        <PostPreviewCard
+          title={post.data.title}
+          href={getPostPermalink(post)}
+          date={formatDisplayDate(post.data.date)}
+          description={post.data.description}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

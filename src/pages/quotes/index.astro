@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { QuotesPage } from '../../ui/QuotesPage';
+
+const title = 'Favorite Quotes';
+const description = 'Favorite quotes collected by Ravi Vyas, with attribution and notes on why each quote matters.';
+---
+
+<BaseLayout title={title} description={description} canonicalPath="/quotes/">
+  <QuotesPage />
+</BaseLayout>

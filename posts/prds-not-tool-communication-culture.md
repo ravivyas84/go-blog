@@ -1,4 +1,4 @@
---- 
+---
 title: PRDs- Not a Tool, but a communication culture
 date: "2022-09-25"
 slug: prds-not-tool-communication-culture
