@@ -39,6 +39,12 @@ const paths: Record<IconName, JSX.Element> = {
       <path d="M12 7.5v5l3.5 2" />
     </>
   ),
+  copy: (
+    <>
+      <rect x="8" y="8" width="11" height="11" rx="2" />
+      <path d="M5 15.5V6a1 1 0 0 1 1-1h9.5" />
+    </>
+  ),
   flask: (
     <>
       <path d="M10 2v5l-4.5 8.5a3 3 0 0 0 2.65 4.5h7.7a3 3 0 0 0 2.65-4.5L14 7V2" />

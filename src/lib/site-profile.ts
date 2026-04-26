@@ -4,6 +4,7 @@ export type IconName =
   | 'book-open'
   | 'box'
   | 'clock'
+  | 'copy'
   | 'flask'
   | 'github'
   | 'link'

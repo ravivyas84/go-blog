@@ -39,7 +39,7 @@ export function PostShareCard({ postTitle, postUrl }: PostShareCardProps) {
           aria-label="Copy link"
           data-copy-link={postUrl}
         >
-          <Icon name="link" />
+          <Icon name="copy" />
         </button>
       </div>
     </section>
