@@ -2079,6 +2079,33 @@ body.site-menu-open .site-header__drawer {
   min-width: 0;
 }
 
+.projects-section__heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 14px;
+}
+
+.projects-section__heading .section-title {
+  padding-bottom: 0;
+}
+
+.projects-section__heading-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #356bff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.projects-section__heading-link-icon {
+  width: 15px;
+  height: 15px;
+}
+
 .projects-section__carousel {
   width: 100%;
   max-width: 100%;
