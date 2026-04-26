@@ -1463,6 +1463,7 @@ pre {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.22s ease;
+  z-index: 1190;
 }
 
 .site-header__drawer {
@@ -1471,15 +1472,22 @@ pre {
   top: 0;
   right: 0;
   bottom: 0;
+  height: 100vh;
+  height: 100dvh;
   width: min(360px, 100%);
   padding: 24px;
   flex-direction: column;
   gap: 20px;
-  background: var(--bg);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #fffdfa;
+  background-color: #fffdfa;
   border-left: 1px solid rgba(219, 223, 234, 0.9);
+  box-shadow: -24px 0 60px rgba(21, 38, 73, 0.14);
   transform: translateX(100%);
   transition: transform 0.22s ease;
   z-index: 1200;
+  isolation: isolate;
 }
 
 .site-header__drawer-header {
@@ -2964,7 +2972,8 @@ body.site-menu-open .site-header__drawer {
 
 [data-theme="dark"] .site-header__icon-button,
 [data-theme="dark"] .site-header__drawer {
-  background: rgba(20, 30, 50, 0.96);
+  background: #141e32;
+  background-color: #141e32;
   border-color: rgba(143, 156, 184, 0.2);
   color: #eef4ff;
 }
