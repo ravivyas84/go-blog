@@ -2,9 +2,14 @@
 import type { GetStaticPaths } from 'astro';
 
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { PostPreviewCard } from '../../../ui/PostPreviewCard';
-import { SectionHeading } from '../../../ui/SectionHeading';
-import { getPostPermalink, getPostsByTagSlug, getTagSummaries } from '../../../lib/content';
+import { SectionTitle } from '../../../ui/SectionTitle';
+import { WritingListItem } from '../../../ui/WritingListItem';
+import {
+  formatTagLabel,
+  getPostPermalink,
+  getPostsByTagSlug,
+  getTagSummaries,
+} from '../../../lib/content';
 import { formatDisplayDate } from '../../../lib/site';
 
 export const getStaticPaths = (async () => {
@@ -17,7 +22,13 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { tag } = Astro.props;
-const posts = await getPostsByTagSlug(tag.slug);
+const posts = (await getPostsByTagSlug(tag.slug)).map((post) => ({
+  id: post.id,
+  title: post.data.title,
+  href: getPostPermalink(post),
+  date: formatDisplayDate(post.data.date),
+  tags: post.data.tags.map(formatTagLabel),
+}));
 ---
 
 <BaseLayout
@@ -25,15 +36,22 @@ const posts = await getPostsByTagSlug(tag.slug);
   canonicalPath={`/tag/${tag.slug}/`}
   pageClass="page-shell--content"
 >
-  <section class="content-panel">
-    <SectionHeading eyebrow="Tag archive" title={`Posts tagged ${tag.name}`} actionHref="/tag/" actionLabel="View all tags" />
-    <div class="post-grid post-grid--archive">
+  <section class="posts-listing-section latest-writing-section">
+    <SectionTitle
+      icon="writing"
+      title={`Posts tagged ${formatTagLabel(tag.name)}`}
+      headingLevel={1}
+      actionHref="/tag/"
+      actionLabel="View all tags"
+    />
+    <div class="latest-writing-section__list">
       {posts.map((post) => (
-        <PostPreviewCard
-          title={post.data.title}
-          href={getPostPermalink(post)}
-          date={formatDisplayDate(post.data.date)}
-          description={post.data.description}
+        <WritingListItem
+          key={post.id}
+          date={post.date}
+          href={post.href}
+          tags={post.tags}
+          title={post.title}
         />
       ))}
     </div>

@@ -2,14 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SectionTitle } from '../../ui/SectionTitle';
 import { WritingListItem } from '../../ui/WritingListItem';
-import { getAllPosts, getPostPermalink } from '../../lib/content';
+import { formatTagLabel, getAllPosts, getPostPermalink } from '../../lib/content';
 import { formatDisplayDate } from '../../lib/site';
-
-function formatTagLabel(tag: string) {
-  return tag
-    .replace(/-/g, ' ')
-    .replace(/\b\w/g, (char) => char.toUpperCase());
-}
 
 const posts = (await getAllPosts()).map((post) => ({
   id: post.id,
