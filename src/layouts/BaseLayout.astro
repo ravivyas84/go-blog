@@ -1,5 +1,4 @@
 ---
-import ReaderPreferences from '../components/ReaderPreferences.astro';
 import { getSiteNavItems } from '../lib/content';
 import { FAVICON_PATH, SITE_URL, UMAMI_SCRIPT_SRC, UMAMI_WEBSITE_ID } from '../lib/site';
 import { SiteFooter } from '../ui/SiteFooter';
@@ -40,7 +39,6 @@ const themeBootstrapScript = `
       </>
     )}
     <link rel="stylesheet" href="/styles/globals.css" />
-    <script is:inline src="/scripts/font-size.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charSet="UTF-8" />
     <link rel="canonical" href={canonicalUrl} />
@@ -59,7 +57,6 @@ const themeBootstrapScript = `
       <slot />
     </main>
     <SiteFooter />
-    <ReaderPreferences />
     <script is:inline src="/scripts/theme-toggle.js"></script>
     <script is:inline src="/scripts/site-chrome.js"></script>
     <script is:inline src="/scripts/toc.js"></script>

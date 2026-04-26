@@ -33,7 +33,6 @@
 - **CSS**: a single design-system stylesheet in `public/styles/globals.css`
 - **JavaScript**: existing scripts in `public/scripts/` are still served from `public/`
   - `toc.js` handles the interactive table of contents
-  - `font-size.js` handles reading preferences
   - `theme-toggle.js` handles the explicit light/dark theme toggle
 - **Storybook** documents the shared React components in isolation
 

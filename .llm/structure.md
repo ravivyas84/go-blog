@@ -17,7 +17,6 @@ markdown-html/
 ├── src/
 │   ├── content.config.ts              # Astro content collections loading from root posts/ + pages/
 │   ├── components/                    # Astro-only UI fragments
-│   │   ├── ReaderPreferences.astro
 │   │   └── Toc.astro
 │   ├── layouts/
 │   │   └── BaseLayout.astro           # Shared HTML document shell + SEO + scripts
@@ -58,7 +57,7 @@ markdown-html/
 ├── pages/                             # Static page Markdown files (6 pages)
 ├── public/                            # Static assets copied as-is to build/
 │   ├── assets/
-│   ├── scripts/                       # toc.js, font-size.js, theme-toggle.js, site-chrome.js
+│   ├── scripts/                       # toc.js, theme-toggle.js, site-chrome.js
 │   ├── styles/
 │   ├── favicon.ico
 │   └── .well-known/webfinger
@@ -149,6 +148,5 @@ Markdown files (posts/, pages/)
 BaseLayout.astro
   ├── SiteHeader.tsx
   ├── route content (`index.astro`, post page, list pages, etc.)
-  ├── SiteFooter.tsx
-  └── ReaderPreferences.astro
+  └── SiteFooter.tsx
 ```

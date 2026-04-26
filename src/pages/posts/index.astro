@@ -1,26 +1,36 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { PostPreviewCard } from '../../ui/PostPreviewCard';
-import { SectionHeading } from '../../ui/SectionHeading';
+import { SectionTitle } from '../../ui/SectionTitle';
+import { WritingListItem } from '../../ui/WritingListItem';
 import { getAllPosts, getPostPermalink } from '../../lib/content';
 import { formatDisplayDate } from '../../lib/site';
 
-const posts = await getAllPosts();
+function formatTagLabel(tag: string) {
+  return tag
+    .replace(/-/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+const posts = (await getAllPosts()).map((post) => ({
+  id: post.id,
+  title: post.data.title,
+  href: getPostPermalink(post),
+  date: formatDisplayDate(post.data.date),
+  tags: post.data.tags.map(formatTagLabel),
+}));
 ---
 
 <BaseLayout title="Blog" canonicalPath="/posts/" pageClass="page-shell--content">
-  <section class="content-panel">
-    <SectionHeading
-      eyebrow="Writing"
-      title="All Blog Posts"
-    />
-    <div class="post-grid post-grid--archive">
+  <section class="posts-listing-section latest-writing-section">
+    <SectionTitle icon="writing" title="All Writing" headingLevel={1} />
+    <div class="latest-writing-section__list">
       {posts.map((post) => (
-        <PostPreviewCard
-          title={post.data.title}
-          href={getPostPermalink(post)}
-          date={formatDisplayDate(post.data.date)}
-          description={post.data.description}
+        <WritingListItem
+          key={post.id}
+          date={post.date}
+          href={post.href}
+          tags={post.tags}
+          title={post.title}
         />
       ))}
     </div>
