@@ -4,7 +4,7 @@
 
 ## Overview
 
-Astro static site that renders Markdown blog posts and static pages into a `build/` directory for deployment on Vercel. The active site architecture now uses Astro content collections and route generation, while the previous Go generator remains in the repo as legacy migration context.
+Astro static site that renders Markdown blog posts and static pages into a `build/` directory for deployment on Vercel. The active site architecture uses Astro content collections and route generation; legacy Go generator files have been removed after the migration.
 
 ## Directory Tree
 
@@ -66,17 +66,8 @@ markdown-html/
 │   ├── main.ts
 │   └── preview.ts
 │
-├── .github/workflows/
-│   └── go.yml                         # CI/CD: npm ci → astro build → deploy build/ to Vercel
-│
 ├── .llm/                              # LLM context files
-├── build/                             # Generated static output (git-ignored)
-│
-├── main.go                            # Legacy Go generator kept during migration
-├── go.mod / go.sum                    # Legacy Go module metadata
-├── frontmatter/frontmatter.go         # Legacy Go helper
-├── utilities/utilities.go             # Legacy Go helper
-└── *.tmpl                             # Legacy Go templates retained during migration
+└── build/                             # Generated static output (git-ignored)
 ```
 
 ## Build Pipeline

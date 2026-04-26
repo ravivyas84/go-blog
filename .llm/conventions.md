@@ -123,7 +123,6 @@ These values are hardcoded in Astro config, helper modules, and layout/component
 - Use standard Astro and TypeScript formatting
 - Keep route files thin; prefer helpers in `src/lib/`
 - No automated tests currently in the project
-- Legacy Go files remain but are not the active implementation path
 
 ## Keeping Context Files Updated
 
@@ -156,4 +155,4 @@ When running the build, verify that `.llm/` files are up to date. The recommende
 Consider adding a build step or pre-commit hook that:
 - Counts `.md` files in `posts/` and compares to entries in `.llm/content.md`
 - Warns if counts don't match
-- This can be a simple shell script or Go function added to `main.go`
+- This can be a simple Node.js script or npm script

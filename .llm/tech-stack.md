@@ -7,7 +7,6 @@
 - **Node.js 20+** — primary build/runtime used in CI and local development
 - **Astro 5** — static site generator and route renderer
 - **TypeScript** — used for Astro config, content schemas, and helpers
-- Legacy Go files remain in the repo for migration reference but are no longer part of the active build pipeline
 
 ## App Dependencies
 

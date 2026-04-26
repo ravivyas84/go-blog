@@ -98,9 +98,6 @@ After running `npm run build`, serve the `build/` directory with any static file
 ```bash
 # Example using Python
 python3 -m http.server -d build 8000
-
-# Example using Go
-go run golang.org/x/tools/cmd/present@latest  # or any static server
 ```
 
 Then open `http://localhost:8000`.
