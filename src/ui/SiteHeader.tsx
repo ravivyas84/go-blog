@@ -26,40 +26,42 @@ function isActive(currentPath: string, match: string) {
 
 export function SiteHeader({ currentPath, items = siteNav }: SiteHeaderProps) {
   return (
-    <header className="site-header">
-      <div className="site-header__inner">
-        <BrandMark />
+    <>
+      <header className="site-header">
+        <div className="site-header__inner">
+          <BrandMark />
 
-        <nav className="site-header__nav" aria-label="Primary">
-          {items.map((item) => (
-            <NavItem
-              key={item.label}
-              active={isActive(currentPath, item.match)}
-              href={item.href}
-              icon={item.icon}
-              label={item.label}
-              match={item.match}
-            />
-          ))}
-        </nav>
+          <nav className="site-header__nav" aria-label="Primary">
+            {items.map((item) => (
+              <NavItem
+                key={item.label}
+                active={isActive(currentPath, item.match)}
+                href={item.href}
+                icon={item.icon}
+                label={item.label}
+                match={item.match}
+              />
+            ))}
+          </nav>
 
-        <div className="site-header__controls">
-          <ThemeToggle />
-          <div className="site-header__search-desktop">
+          <div className="site-header__controls">
+            <ThemeToggle />
+            {/* <div className="site-header__search-desktop">
             <SearchField />
+          </div> */}
+            <button
+              className="site-header__icon-button site-header__icon-button--menu"
+              type="button"
+              aria-label="Open menu"
+              aria-controls="site-header-drawer"
+              aria-expanded="false"
+              data-site-menu-toggle
+            >
+              <Icon name="menu" />
+            </button>
           </div>
-          <button
-            className="site-header__icon-button site-header__icon-button--menu"
-            type="button"
-            aria-label="Open menu"
-            aria-controls="site-header-drawer"
-            aria-expanded="false"
-            data-site-menu-toggle
-          >
-            <Icon name="menu" />
-          </button>
         </div>
-      </div>
+      </header>
 
       <div className="site-header__drawer-backdrop" data-site-menu-close />
 
@@ -76,9 +78,9 @@ export function SiteHeader({ currentPath, items = siteNav }: SiteHeaderProps) {
           </button>
         </div>
 
-        <div className="site-header__drawer-search">
+        {/* <div className="site-header__drawer-search">
           <SearchField />
-        </div>
+        </div> */}
 
         <nav className="site-header__drawer-nav" aria-label="Mobile primary">
           {items.map((item) => (
@@ -93,6 +95,6 @@ export function SiteHeader({ currentPath, items = siteNav }: SiteHeaderProps) {
           ))}
         </nav>
       </div>
-    </header>
+    </>
   );
 }

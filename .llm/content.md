@@ -2,12 +2,13 @@
 
 > **Auto-maintained**: Update this file whenever posts or pages are added, removed, or renamed. See [conventions.md](conventions.md) for update instructions.
 >
-> **Total: 60 blog posts, 9 static pages**
+> **Total: 61 blog posts, 9 static pages**
 
 ## Blog Posts (sorted by date, newest first)
 
 | Date | Title | Filename | Tags |
 |---|---|---|---|
+| 2026-04-26 | The Two Things That Make My AI Development Actually Work | `specs-iterations-ai-development.md` | artificial-intelligence, product-management, software-development |
 | 2026-03-21 | The Future of Knowledge Work | `future-of-knowledge-work.md` | AI, Knowledge Work, Productivity |
 | 2026-03-01 | Dev Tools and Moats | `devtools-and-moats.md` | product-management, artificial-intelligence |
 | 2026-02-22 | Something Big Is Indeed Happening- The Changes I See in My World | `something-big-is-happening-notes-from-my-world.md` | product-management, artificial-intelligence |
