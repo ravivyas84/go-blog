@@ -316,7 +316,7 @@ export const aboutPageNote = ['Curious forever.', 'Building always.'];
 
 export const footerLinks: LinkItem[] = [
   { href: 'https://mastodon.social/@ravi', icon: 'mastodon', label: 'Mastodon', external: true },
-  { href: 'https://twitter.com/ravivyas84', icon: 'twitter', label: 'Twitter', external: true },
+  { href: 'http://x.com/ravivyas', icon: 'twitter', label: 'Twitter', external: true },
   { href: 'https://www.linkedin.com/in/ravivyas/', icon: 'linkedin', label: 'LinkedIn', external: true },
   { href: 'https://github.com/ravivyas84', icon: 'github', label: 'GitHub', external: true },
   { href: '/feed.xml', icon: 'rss', label: 'RSS' },

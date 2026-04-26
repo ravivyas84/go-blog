@@ -144,6 +144,12 @@ export async function getPostsByTagSlug(tagSlug: string) {
   );
 }
 
+export function formatTagLabel(tag: string) {
+  return tag
+    .replace(/-/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
 export function getPostPermalink(post: PostEntry) {
   return getPostPath(post.data.date, post.data.slug);
 }

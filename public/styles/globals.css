@@ -2857,6 +2857,14 @@ body.site-menu-open .site-header__drawer {
   font-weight: 500;
 }
 
+.site-footer__links .site-footer__link {
+  color: #4e5a73;
+}
+
+.site-footer__links .site-footer__link:hover {
+  color: #356bff;
+}
+
 .site-footer__link-icon {
   width: 16px;
   height: 16px;
@@ -3011,6 +3019,14 @@ body.site-menu-open .site-header__drawer {
 [data-theme="dark"] .site-footer,
 [data-theme="dark"] .site-footer__copyright {
   border-color: rgba(143, 156, 184, 0.14);
+}
+
+[data-theme="dark"] .site-footer__links .site-footer__link {
+  color: #b7c4de;
+}
+
+[data-theme="dark"] .site-footer__links .site-footer__link:hover {
+  color: #8bb3ff;
 }
 
 [data-theme="dark"] .currently-exploring__card {
