@@ -76,8 +76,28 @@
     });
   }
 
+  function setupSearchShortcut() {
+    var input = document.querySelector('[data-search-input]');
+    if (!input) return;
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key !== '/') return;
+      var tag = document.activeElement && document.activeElement.tagName.toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || document.activeElement.isContentEditable) return;
+      event.preventDefault();
+      input.focus();
+    });
+
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        input.blur();
+      }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     setupCopyLinks();
     setupHeaderDrawer();
+    setupSearchShortcut();
   });
 })();

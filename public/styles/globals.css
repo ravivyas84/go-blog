@@ -1980,6 +1980,52 @@ body.site-menu-open .site-header__drawer {
   margin: 0 auto;
 }
 
+.search-results-section {
+  width: min(100%, 1160px);
+  margin: 0 auto;
+}
+
+.search-results-section__field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border: 1px solid rgba(205, 211, 225, 0.9);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 24px rgba(21, 38, 73, 0.05);
+  margin-bottom: 32px;
+}
+
+.search-results-section__icon {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  color: #8a93a8;
+}
+
+.search-results-section__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 1.1rem;
+  outline: none;
+}
+
+.search-results-section__input::placeholder {
+  color: #8a93a8;
+}
+
+.search-results-section__status {
+  color: #8a93a8;
+  font-size: 0.95rem;
+  margin: 0;
+  padding: 8px 0;
+}
+
 .latest-writing-section__list {
   border-top: 1px solid rgba(219, 223, 234, 0.9);
 }
@@ -2963,6 +3009,7 @@ body.site-menu-open .site-header__drawer {
 }
 
 [data-theme="dark"] .search-field,
+[data-theme="dark"] .search-results-section__field,
 [data-theme="dark"] .hero-profile-card,
 [data-theme="dark"] .inbox-subscribe-card {
   background: rgba(20, 30, 50, 0.92);

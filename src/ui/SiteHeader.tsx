@@ -46,9 +46,9 @@ export function SiteHeader({ currentPath, items = siteNav }: SiteHeaderProps) {
 
           <div className="site-header__controls">
             <ThemeToggle />
-            {/* <div className="site-header__search-desktop">
-            <SearchField />
-          </div> */}
+            <div className="site-header__search-desktop">
+              <SearchField />
+            </div>
             <button
               className="site-header__icon-button site-header__icon-button--menu"
               type="button"
@@ -78,9 +78,9 @@ export function SiteHeader({ currentPath, items = siteNav }: SiteHeaderProps) {
           </button>
         </div>
 
-        {/* <div className="site-header__drawer-search">
+        <div className="site-header__drawer-search">
           <SearchField />
-        </div> */}
+        </div>
 
         <nav className="site-header__drawer-nav" aria-label="Mobile primary">
           {items.map((item) => (

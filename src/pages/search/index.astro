@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SearchResults } from '../../ui/SearchResults';
+---
+
+<BaseLayout title="Search" canonicalPath="/search/" pageClass="page-shell--content">
+  <SearchResults client:load />
+</BaseLayout>
