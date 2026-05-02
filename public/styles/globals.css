@@ -2064,6 +2064,19 @@ body.site-menu-open .site-header__drawer {
   transition: color 0.22s ease;
 }
 
+.writing-list-item__excerpt {
+  margin: 6px 0 0;
+  color: #5a6478;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.search-highlight {
+  background: transparent;
+  color: inherit;
+  font-weight: 700;
+}
+
 .writing-list-item__tags {
   display: flex;
   flex-wrap: wrap;
@@ -3050,6 +3063,10 @@ body.site-menu-open .site-header__drawer {
 [data-theme="dark"] .about-banner__title,
 [data-theme="dark"] .site-footer__label {
   color: #eef4ff;
+}
+
+[data-theme="dark"] .writing-list-item__excerpt {
+  color: #8a93a8;
 }
 
 [data-theme="dark"] .hero-canvas__description,

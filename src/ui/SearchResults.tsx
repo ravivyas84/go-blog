@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 import { Icon } from './Icon';
@@ -26,6 +27,34 @@ function filterEntries(entries: SearchEntry[], query: string) {
       e.tags.some((t) => t.toLowerCase().includes(q)) ||
       e.content.toLowerCase().includes(q),
   );
+}
+
+function getExcerpt(entry: SearchEntry, query: string): ReactNode {
+  const q = query.trim().toLowerCase();
+  const BEFORE = 80;
+  const AFTER = 120;
+
+  for (const source of [entry.description, entry.content]) {
+    if (!source) continue;
+    const idx = source.toLowerCase().indexOf(q);
+    if (idx === -1) continue;
+
+    const start = Math.max(0, idx - BEFORE);
+    const end = Math.min(source.length, idx + q.length + AFTER);
+    const before = (start > 0 ? '…' : '') + source.slice(start, idx);
+    const match = source.slice(idx, idx + q.length);
+    const after = source.slice(idx + q.length, end) + (end < source.length ? '…' : '');
+
+    return (
+      <>
+        {before}
+        <mark className="search-highlight">{match}</mark>
+        {after}
+      </>
+    );
+  }
+
+  return null;
 }
 
 export function SearchResults() {
@@ -105,6 +134,7 @@ export function SearchResults() {
             <WritingListItem
               key={entry.href}
               date={entry.date}
+              excerpt={getExcerpt(entry, query)}
               href={entry.href}
               tags={entry.tags.map(formatTag)}
               title={entry.title}
