@@ -154,7 +154,7 @@ export function getPostPermalink(post: PostEntry) {
   return getPostPath(post.data.date, post.data.slug);
 }
 
-function normalizeWords(body: string) {
+export function normalizeWords(body: string) {
   return body
     .replace(/```[\s\S]*?```/g, ' ')
     .replace(/`[^`]*`/g, ' ')

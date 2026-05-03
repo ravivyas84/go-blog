@@ -30,7 +30,7 @@ markdown-html/
 │   │   ├── home/HomePage.tsx          # Concept homepage composition
 │   │   ├── SiteHeader.tsx / SiteFooter.tsx
 │   │   ├── BrandMark.tsx / Icon.tsx / Button.tsx
-│   │   ├── ThemeToggle.tsx / SearchField.tsx / NavItem.tsx / SectionTitle.tsx
+│   │   ├── ThemeToggle.tsx / SearchField.tsx / SearchResults.tsx / NavItem.tsx / SectionTitle.tsx
 │   │   ├── TagPill.tsx / StatusPill.tsx / TopicChip.tsx
 │   │   ├── HeroCanvas.tsx / HeroProfileCard.tsx
 │   │   ├── LatestWritingSection.tsx / WritingListItem.tsx / CurrentlyExploringCard.tsx
@@ -48,6 +48,8 @@ markdown-html/
 │       ├── projects-and-tools/index.astro # Dedicated projects/tools catalog page
 │       ├── quotes/index.astro        # Dedicated favorite quotes page
 │       ├── posts/index.astro          # All-posts listing
+│       ├── search/index.astro         # Search results page (client-side, React SearchResults)
+│       ├── search.json.ts             # Build-time search index (title, description, tags, content, href)
 │       ├── tag/index.astro            # All-tags listing
 │       ├── tag/[tag]/index.astro      # Per-tag post listing
 │       ├── [slug]/index.astro         # Static pages from pages/
@@ -102,6 +104,8 @@ Markdown files (posts/, pages/)
   ├── Static pages              → build/{slug}/index.html
   ├── Favorite quotes           → build/quotes/index.html
   ├── All posts listing         → build/posts/index.html
+  ├── Search results page       → build/search/index.html
+  ├── Search index              → build/search.json
   ├── Tag listing               → build/tag/index.html
   ├── Per-tag pages             → build/tag/{tag}/index.html
   ├── RSS feed                  → build/feed.xml
@@ -129,6 +133,9 @@ Markdown files (posts/, pages/)
 | `src/pages/quotes/index.astro` | Renders the dedicated favorite quotes page |
 | `src/pages/[year]/[month]/[day]/[slug]/index.astro` | Renders redesigned post pages with hero metadata, sidebar cards, and adjacent navigation |
 | `src/pages/posts/index.astro` | All-posts listing page |
+| `src/pages/search/index.astro` | Client-side search results page (renders `SearchResults` with `client:load`) |
+| `src/pages/search.json.ts` | Astro API endpoint generating `/search.json` at build time — full-text index of all posts and pages |
+| `src/ui/SearchResults.tsx` | Client-side React component: fetches `/search.json`, filters by query, updates URL via `history.replaceState` |
 | `src/pages/tag/index.astro` / `src/pages/tag/[tag]/index.astro` | Tag index and per-tag pages |
 | `src/pages/feed.xml.js` | Generates the RSS feed |
 | `.storybook/main.ts` / `.storybook/preview.ts` | Storybook entrypoints for the shared component system |
